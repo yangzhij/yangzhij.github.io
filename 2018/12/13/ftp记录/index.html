@@ -14,12 +14,10 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="FTP：用于文件上传下载。FTP采用客户/服务器模式，客户机与服务器之间利用TCP建立连接，客户可以从服务器上下载文件，也可以把本地文件上传至服务器。 vi /etc/selinux/configSELINUX=enforcing 设置成SELINUX=disabled systemctl stop firewalld.service #停止firewallsystemctl disable fi">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://www.baidu.com/img/bd_logo1.png">
-<meta property="og:updated_time" content="2018-12-13T05:34:08.979Z">
+<meta property="og:updated_time" content="2018-12-14T01:35:56.102Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ftp记录">
 <meta name="twitter:description" content="FTP：用于文件上传下载。FTP采用客户/服务器模式，客户机与服务器之间利用TCP建立连接，客户可以从服务器上下载文件，也可以把本地文件上传至服务器。 vi /etc/selinux/configSELINUX=enforcing 设置成SELINUX=disabled systemctl stop firewalld.service #停止firewallsystemctl disable fi">
-<meta name="twitter:image" content="https://www.baidu.com/img/bd_logo1.png">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -102,12 +100,11 @@
 <p>#重启服务systemctl restart vsftpd</p>
 <p>线上ftp配置：<br>anonymous_enable=NO     #禁止匿名用户访问<br>local_enable=YES<br>write_enable=YES<br>local_umask=022<br>dirmessage_enable=YES          #dirmessage_enable=YES<br>xferlog_enable=YES            #启用记录上传/下载活动日志功能。<br>connect_from_port_20=YES          启用FTP数据端口的连接请求<br>xferlog_std_format=YES             #用标准的ftpdxferlog日志格式<br>chroot_local_user=YES           #将所有用户限制在工作目录<br>chroot_list_enable=YES             ##启动限制用户的名单<br>chroot_list_file=/etc/vsftpd/chroot_list<br>listen=NO<br>listen_ipv6=YES</p>
 <p>pam_service_name=vsftpd<br>userlist_enable=YES   #此项配置/etc/vsftpd.user_list中指定的用户也不能访问服务器<br>tcp_wrappers=YES<br>allow_writeable_chroot=YES</p>
-<p><img src="https://www.baidu.com/img/bd_logo1.png" alt="https://www.baidu.com/img/bd_logo1.png"> </p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/13/ftp记录/" data-id="cjpnbxfno0002nku7y1p3007i" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/12/13/ftp记录/" data-id="cjpndat4n0001m0u7lvb4v5sp" class="article-share-link">Share</a>
       
       
     </footer>
@@ -115,6 +112,15 @@
   
     
 <nav id="article-nav">
+  
+    <a href="/2018/12/14/centos7升级python/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          centos7升级python
+        
+      </div>
+    </a>
   
   
     <a href="/2018/12/12/redis集群-cluster模式/" id="article-nav-older" class="article-nav-link-wrap">
@@ -154,6 +160,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2018/12/14/centos7升级python/">centos7升级python</a>
+          </li>
         
           <li>
             <a href="/2018/12/13/ftp记录/">ftp记录</a>
