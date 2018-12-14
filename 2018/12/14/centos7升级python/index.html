@@ -79,17 +79,17 @@
 
 
 
-<meta name="description" content="升级python为3.7，centos7自带python为Python 2.7，    直接执行即可 mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup cd /etc/yum.repos.d/ wget -O /etc/yum.repos.d/CentOS-Base.repo http://m">
+<meta name="description" content="升级python为3.7，centos7自带python为Python 2.7，    直接执行即可 mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backupcd /etc/yum.repos.d/wget -O /etc/yum.repos.d/CentOS-Base.repo http://mir">
 <meta property="og:type" content="article">
 <meta property="og:title" content="centos7升级python">
 <meta property="og:url" content="http://yoursite.com/2018/12/14/centos7升级python/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="升级python为3.7，centos7自带python为Python 2.7，    直接执行即可 mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup cd /etc/yum.repos.d/ wget -O /etc/yum.repos.d/CentOS-Base.repo http://m">
+<meta property="og:description" content="升级python为3.7，centos7自带python为Python 2.7，    直接执行即可 mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backupcd /etc/yum.repos.d/wget -O /etc/yum.repos.d/CentOS-Base.repo http://mir">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-12-14T01:41:28.037Z">
+<meta property="og:updated_time" content="2018-12-14T04:40:46.681Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="centos7升级python">
-<meta name="twitter:description" content="升级python为3.7，centos7自带python为Python 2.7，    直接执行即可 mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup cd /etc/yum.repos.d/ wget -O /etc/yum.repos.d/CentOS-Base.repo http://m">
+<meta name="twitter:description" content="升级python为3.7，centos7自带python为Python 2.7，    直接执行即可 mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backupcd /etc/yum.repos.d/wget -O /etc/yum.repos.d/CentOS-Base.repo http://mir">
 
 
 
@@ -300,26 +300,8 @@
 
       
         <p>升级python为3.7，centos7自带python为Python 2.7，    直接执行即可</p>
-<p>mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup</p>
-<p>cd /etc/yum.repos.d/</p>
-<p>wget -O /etc/yum.repos.d/CentOS-Base.repo <a href="http://mirrors.aliyun.com/repo/Centos-7.repo" target="_blank" rel="noopener">http://mirrors.aliyun.com/repo/Centos-7.repo</a></p>
-<p>yum makecache</p>
-<p>cd /usr/local/src</p>
-<p>wget “<a href="https://www.python.org/ftp/python/3.7.0/Python-3.7.0.tgz&quot;" target="_blank" rel="noopener">https://www.python.org/ftp/python/3.7.0/Python-3.7.0.tgz&quot;</a></p>
-<p>tar -zxvf  Python-3.7.0.tgz -C /tmp</p>
-<p>cd /tmp/Python-3.7.0/</p>
-<p>yum -y groupinstall “Development tools”</p>
-<p>yum -y install openssl-devel bzip2-devel expat-devel gdbm-devel readline-devel sqlite-devel</p>
-<p>yum install libffi-devel -y</p>
-<p>./configure –prefix=/usr/local/python3</p>
-<p>./configure –enable-optimizations</p>
-<p>make &amp;&amp; make install</p>
-<p>cd /usr/bin</p>
-<p>ln -s /usr/local/python/bin/python3.7 /usr/bin/python3</p>
-<p>rm  python</p>
-<p>ln -s /usr/local/bin/python3.7 /bin/python</p>
-<p>python    进入python3</p>
-<p>python2    进入python2</p>
+<p>mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup<br>cd /etc/yum.repos.d/<br>wget -O /etc/yum.repos.d/CentOS-Base.repo <a href="http://mirrors.aliyun.com/repo/Centos-7.repo" target="_blank" rel="noopener">http://mirrors.aliyun.com/repo/Centos-7.repo</a><br>yum makecache<br>cd /usr/local/src<br>wget “<a href="https://www.python.org/ftp/python/3.7.0/Python-3.7.0.tgz&quot;" target="_blank" rel="noopener">https://www.python.org/ftp/python/3.7.0/Python-3.7.0.tgz&quot;</a><br>tar -zxvf  Python-3.7.0.tgz -C /tmp<br>cd /tmp/Python-3.7.0/<br>yum -y groupinstall “Development tools”<br>yum -y install openssl-devel bzip2-devel expat-devel gdbm-devel readline-devel sqlite-devel<br>yum install libffi-devel -y<br>./configure –prefix=/usr/local/python3<br>./configure –enable-optimizations<br>make &amp;&amp; make install<br>cd /usr/bin<br>ln -s /usr/local/python/bin/python3.7 /usr/bin/python3<br>rm  python<br>ln -s /usr/local/bin/python3.7 /bin/python</p>
+<p>python    进入python3<br>python2    进入python2</p>
 <p>#############################</p>
 <p>升级完后可能会导致yum不能用，解决方法如下：</p>
 <p>将下列3个文件中原来的 /usr/bin/python   改成  /usr/bin/python2.7  就行<br>centos6  的改成 python2.6<br>centos7  的改成 python2.7</p>
