@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>redis集群-cluster模式 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="之前应开发要求，真真切切的搭建了一次redis集群。特根据查阅相关资源的内容以及具体实现做一个笔记。 集群一、 6台服务器，每台起一个7000端口  集群二、 3台云服务器，每台起3个端口（7000,7001,7002，7003,7004,7005，7006,7007,7008）（3台云服务器，每台启动3个redis节点，一共9个。并让它们按照Cluster模式工作起来。每台开启了3个redis监">
+<meta property="og:type" content="article">
+<meta property="og:title" content="redis集群-cluster模式">
+<meta property="og:url" content="http://yoursite.com/2018/12/12/redis集群-cluster模式/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="之前应开发要求，真真切切的搭建了一次redis集群。特根据查阅相关资源的内容以及具体实现做一个笔记。 集群一、 6台服务器，每台起一个7000端口  集群二、 3台云服务器，每台起3个端口（7000,7001,7002，7003,7004,7005，7006,7007,7008）（3台云服务器，每台启动3个redis节点，一共9个。并让它们按照Cluster模式工作起来。每台开启了3个redis监">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-12-12T00:25:24.832Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="redis集群-cluster模式">
+<meta name="twitter:description" content="之前应开发要求，真真切切的搭建了一次redis集群。特根据查阅相关资源的内容以及具体实现做一个笔记。 集群一、 6台服务器，每台起一个7000端口  集群二、 3台云服务器，每台起3个端口（7000,7001,7002，7003,7004,7005，7006,7007,7008）（3台云服务器，每台启动3个redis节点，一共9个。并让它们按照Cluster模式工作起来。每台开启了3个redis监">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-redis集群-cluster模式" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/12/12/redis集群-cluster模式/" class="article-date">
+  <time datetime="2018-12-12T00:18:08.000Z" itemprop="datePublished">2018-12-12</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      redis集群-cluster模式
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>之前应开发要求，真真切切的搭建了一次redis集群。特根据查阅相关资源的内容以及具体实现做一个笔记。</p>
+<p>集群一、 6台服务器，每台起一个7000端口 </p>
+<p>集群二、 3台云服务器，每台起3个端口（7000,7001,7002，7003,7004,7005，7006,7007,7008）<br>（3台云服务器，每台启动3个redis节点，一共9个。并让它们按照Cluster模式工作起来。每台开启了3个redis监听实例，就等于3个redis了但在生产环境中并不建议在一台机器上部署多个Redis节点，因为这样会增加了多个Redis节点同时不可用的风险。）</p>
+<p>Redis，非关系数据库，运行在内存拥有更快的读写。性能极高，数据类型丰富。redis是一种典型的no-sql 即非关系数据库 像python的字典一样 存储key-value键值对 工作在memory中。</p>
+<p>作用：减轻db的压力</p>
+<p>memcache和redis都工作在memory中，但memcache重启或者宕机memory中的数据就全没了，数据的一致性的不到保障. 但是redis不同,redis有相对的数据持久化的方案 </p>
+<p>redis集群实现方案： </p>
+<p>1、豌豆荚开发的codis<br>2、redis官方的redis-cluster</p>
+<p>redis-cluster是三个里性能最强大的 因为他使用去中心化的思想。<br>codis使用的也是proxy思路。是这两种之间的一个中间级 而且支持redis命令是最多的 有图形化GUI管理和监控工具，运维友好。</p>
+<p>Redis 集群是一个可以在多个 Redis 节点之间进行数据共享的设施<br>Redis集群提供了以下两个好处：<br>将数据自动切分split到多个节点的能力。<br>当集群中的一部分节点失效或者无法进行通讯时， 仍然可以继续处理命令请求的能力。</p>
+<p>redis-cluster：<br>所有的redis节点彼此互联<br>客户端与redis节点直连,不需要中间proxy层.客户端不需要连接集群所有节点,连接集群中任何一个可用节点即可。</p>
+<p>什么时候整个集群不可用？<br>如果集群任意master挂掉,且当前master没有slave.集群进入fail状态<br>如果集群超过半数以上master挂掉，无论是否有slave，集群进入fail状态.</p>
+<p>——————————具体实现</p>
+<p>安装redis<br>检查Java<br>java -version<br>没有的话下载，U盘里有包，直接解压，然后配置环境变量<br>vi /etc/profile<br>export JAVA_HOME=/usr/local/java/jdk1.8.0_171<br>export CLASSPATH=.:$JAVA_HOME/jre/lib/rt.jar:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar<br>export PATH=$PATH:$JAVA_HOME/bin<br>source /etc/profile</p>
+<p>cd /usr/local/src<br>yum -y install gcc-c++<br>wget <a href="http://download.redis.io/releases/redis-4.0.8.tar.gz" target="_blank" rel="noopener">http://download.redis.io/releases/redis-4.0.8.tar.gz</a><br>tar zxvf redis-4.0.8.tar.gz -C /usr/local/<br>cd /usr/local/redis-4.0.8<br>mkdir redis_cluster<br>cd redis_cluster<br>mkdir 7003 7004 7005   （在集群所在的服务器创建）</p>
+<p>#把redis文件分别复制到创建的目录下，然后更改配置文件中的内容<br>cp /usr/local/redis-4.0.8/redis.conf /usr/local/redis-4.0.8/redis_cluster/7003<br>cp /usr/local/redis-4.0.8/redis.conf /usr/local/redis-4.0.8/redis_cluster/7004<br>cp /usr/local/redis-4.0.8/redis.conf /usr/local/redis-4.0.8/redis_cluster/7005 </p>
+<p>daemonize yes<br>port 7003 （对应文件夹）<br>cluster-enabled yes<br>bind 0.0.0.0<br>cluster-config-file nodes.conf<br>cluster-node-timeout 5000<br>appendonly yes</p>
+<p>通过端口启动多个redis实例.</p>
+<p>启动103上的三个redis节点<br>/usr/local/redis-4.0.8/src/redis-server /usr/local/redis-4.0.8/redis_cluster/7000/redis.conf<br>/usr/local/redis-4.0.8/src/redis-server /usr/local/redis-4.0.8/redis_cluster/7001/redis.conf<br>/usr/local/redis-4.0.8/src/redis-server /usr/local/redis-4.0.8/redis_cluster/7002/redis.conf</p>
+<p>下载ruby-2.3.7.tar.gz<br>tar zxvf ruby-2.3.7.tar.gz -C /usr/loacl<br>cd ruby-2.3.7<br>./configure<br>make &amp;&amp; make install</p>
+<p>ln -s /usr/local/bin/ruby /usr/bin/ruby<br>ln -s /usr/local/bin/gem /usr/bin/gem</p>
+<p>安装gem redis接口<br>gem install redis</p>
+<p>——报错1</p>
+<p>[root@izj6cac2xjnladms506dsxz src]# gem install redis<br>ERROR:  Loading command: install (LoadError)<br>        cannot load such file – zlib<br>ERROR:  While executing gem … (NoMethodError)<br>    undefined method `invoke_with_build_args’ for nil:NilClass</p>
+<p>#解决<br>yum -y install gcc zlib-devel<br>cd /usr/local/ruby-2.3.7/ext/zlib<br>ruby ./extconf.rb<br>make &amp;&amp;make install</p>
+<p>——-报错2<br>[root@izj6cac2xjnladms506dsxz zlib]# gem install redis<br>ERROR:  While executing gem … (Gem::Exception)<br>    Unable to require openssl, install OpenSSL and rebuild ruby (preferred) or use non-HTTPS sources</p>
+<p>#解决：<br>cd ruby-2.3.7/<br>./configure  –with-openssl-dir=/usr/local/ssl<br>make &amp;&amp;make install</p>
+<p>执行创建集群命令（也就是把集群中所有节点的ip:port串联起来）<br>/usr/local/redis-4.0.8/src/redis-trib.rb create –replicas 1 47.244.31.250:7000 47.244.31.250:7001 47.244.31.250:7002 47.244.7.22:7003 47.244.7.22:7004 47.244.7.22:7005 47.90.122.138:7006 47.90.122.138:7007 47.90.122.138:7008</p>
+<p>检查集群状态<br>./redis-trib.rb check 172.31.245.103:7002</p>
+<p>./redis-cli -c -h 47.90.122.138 -p 7000</p>
+<p>集群创建成功登陆任意redis结点查询集群中的节点情况。(随便一个ip对应的端口都可以登陆)<br>客户端以集群方式登陆：<br>[root@izj6cac2xjnladms506dsuz src]# ./redis-cli -c -h 47.244.31.250 -p 7000<br>172.31.245.103:7000&gt; cluster nodes</p>
+<p>其中-c表示以集群方式连接redis，-h指定ip地址，-p指定端口号<br>cluster nodes 查询集群结点信息<br>cluster info 查询集群状态信息</p>
+<p>添加节点：<a href="https://blog.csdn.net/truelove12358/article/details/79612954" target="_blank" rel="noopener">https://blog.csdn.net/truelove12358/article/details/79612954</a></p>
+<p>#单个端口启动不了，然后进入配置文件注释掉这两行<br>slave-serve-stale-data yes<br>slave-read-only yes</p>
+<p>使用：<br>127.0.0.1:7000&gt;set name aa1</p>
+<p>127.0.0.1:7000&gt;get name               (去哪个redis里取都可以)</p>
+<p>删除节点<br>127.0.0.1:7000&gt; cluster forget 930daea84150b5fabd32a95592781b27ceab1b71</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/12/12/redis集群-cluster模式/" data-id="cjpnbjfj100029wu7wjozesi0" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/12/13/ftp记录/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          ftp记录
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/12/12/redis主从-keepalived/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">redis主从+keepalived</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/12/13/ftp记录/">ftp记录</a>
+          </li>
+        
+          <li>
+            <a href="/2018/12/12/redis集群-cluster模式/">redis集群-cluster模式</a>
+          </li>
+        
+          <li>
+            <a href="/2018/12/12/redis主从-keepalived/">redis主从+keepalived</a>
+          </li>
+        
+          <li>
+            <a href="/2018/12/11/伊始/">伊始</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

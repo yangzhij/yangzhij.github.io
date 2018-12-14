@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>ftp记录 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="FTP：用于文件上传下载。FTP采用客户/服务器模式，客户机与服务器之间利用TCP建立连接，客户可以从服务器上下载文件，也可以把本地文件上传至服务器。 vi /etc/selinux/configSELINUX=enforcing 设置成SELINUX=disabled systemctl stop firewalld.service #停止firewallsystemctl disable fi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ftp记录">
+<meta property="og:url" content="http://yoursite.com/2018/12/13/ftp记录/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="FTP：用于文件上传下载。FTP采用客户/服务器模式，客户机与服务器之间利用TCP建立连接，客户可以从服务器上下载文件，也可以把本地文件上传至服务器。 vi /etc/selinux/configSELINUX=enforcing 设置成SELINUX=disabled systemctl stop firewalld.service #停止firewallsystemctl disable fi">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://www.baidu.com/img/bd_logo1.png">
+<meta property="og:updated_time" content="2018-12-13T05:34:08.979Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ftp记录">
+<meta name="twitter:description" content="FTP：用于文件上传下载。FTP采用客户/服务器模式，客户机与服务器之间利用TCP建立连接，客户可以从服务器上下载文件，也可以把本地文件上传至服务器。 vi /etc/selinux/configSELINUX=enforcing 设置成SELINUX=disabled systemctl stop firewalld.service #停止firewallsystemctl disable fi">
+<meta name="twitter:image" content="https://www.baidu.com/img/bd_logo1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-ftp记录" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/12/13/ftp记录/" class="article-date">
+  <time datetime="2018-12-13T00:56:01.000Z" itemprop="datePublished">2018-12-13</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      ftp记录
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>FTP：用于文件上传下载。FTP采用客户/服务器模式，客户机与服务器之间利用TCP建立连接，客户可以从服务器上下载文件，也可以把本地文件上传至服务器。</p>
+<p>vi /etc/selinux/config<br>SELINUX=enforcing 设置成SELINUX=disabled</p>
+<p>systemctl stop firewalld.service #停止firewall<br>systemctl disable firewalld.service #禁止firewall开机启动<br>firewall-cmd –state #查看默认防火墙状态</p>
+<p>——————————-安装</p>
+<p>yum install vsftpd</p>
+<p>mkdir -p /var/virtual/zbphp.com/{public_html,logs,backup}   #创建工作目录</p>
+<p>useradd zbphp.com -d /var/virtual/zbphp.com         #创建指定用户的工作目录，即用户登陆后直接进入该目录<br>echo “123456” | passwd zbphp.com –stdin       #设置用户密码为123456</p>
+<p>#启动systemctl start vsftpd</p>
+<p>配置 vsftpd 的配置文件 /etc/vsftpd/vsftpd.conf 开启chroot_list,在/etc/vsftpd/chroot_list 中加入 zbphp.com  zbphp用户</p>
+<p>修改基本配置<br>sed -i ‘s/anonymous_enable=YES/anonymous_enable=NO/‘ /etc/vsftpd/vsftpd.conf<br>sed -i ‘s/#chroot_local_user=YES/chroot_local_user=YES/‘ /etc/vsftpd/vsftpd.conf<br>sed -i ‘s/#chroot_list_enable=YES/chroot_list_enable=YES/‘ /etc/vsftpd/vsftpd.conf<br>anon_mkdir_write_enable=YES     #可以新建文件夹</p>
+<p>然后给目录权限，可以通过属组来限制用户上传</p>
+<p>#重启服务systemctl restart vsftpd</p>
+<p>线上ftp配置：<br>anonymous_enable=NO     #禁止匿名用户访问<br>local_enable=YES<br>write_enable=YES<br>local_umask=022<br>dirmessage_enable=YES          #dirmessage_enable=YES<br>xferlog_enable=YES            #启用记录上传/下载活动日志功能。<br>connect_from_port_20=YES          启用FTP数据端口的连接请求<br>xferlog_std_format=YES             #用标准的ftpdxferlog日志格式<br>chroot_local_user=YES           #将所有用户限制在工作目录<br>chroot_list_enable=YES             ##启动限制用户的名单<br>chroot_list_file=/etc/vsftpd/chroot_list<br>listen=NO<br>listen_ipv6=YES</p>
+<p>pam_service_name=vsftpd<br>userlist_enable=YES   #此项配置/etc/vsftpd.user_list中指定的用户也不能访问服务器<br>tcp_wrappers=YES<br>allow_writeable_chroot=YES</p>
+<p><img src="https://www.baidu.com/img/bd_logo1.png" alt="https://www.baidu.com/img/bd_logo1.png"> </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/12/13/ftp记录/" data-id="cjpnbjfj000019wu7mmxlhuhk" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2018/12/12/redis集群-cluster模式/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">redis集群-cluster模式</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/12/13/ftp记录/">ftp记录</a>
+          </li>
+        
+          <li>
+            <a href="/2018/12/12/redis集群-cluster模式/">redis集群-cluster模式</a>
+          </li>
+        
+          <li>
+            <a href="/2018/12/12/redis主从-keepalived/">redis主从+keepalived</a>
+          </li>
+        
+          <li>
+            <a href="/2018/12/11/伊始/">伊始</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
