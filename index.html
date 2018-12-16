@@ -307,7 +307,7 @@
 <p>————-测试连接：<br>[root@localhost redis-5.0.1]# cd /root/redis-5.0.1/src/<br>[root@localhost src]# redis-cli<br>127.0.0.1:6379&gt; </p>
 <p>设置软连接，让redis指令可以在任意目录下直接使用<br>ln -s /root/redis-5.0.1/src/redis-cli /usr/bin/redis<br>[root@localhost ~]# redis<br>127.0.0.1:6379&gt; </p>
 <p>或者将redis-cli拷贝到/usr/bin/下，让redis-cli指令可以在任意目录下直接使用<br>cp /root/redis-5.0.1/src/redis-cli /usr/local/bin</p>
-<p>设置redis密码<br>cd /usr/local/redis-5.0.1/<br>打开redis.conf文件，搜索requirepass关键字，在#requirepass foobared下面添加一行<br>requirepass    123456         #设置redis密码为123456</p>
+<p>设置redis密码，一般也不设置吧，不清楚，反正我们公司总没有设置，具体看要求吧<br>cd /usr/local/redis-5.0.1/<br>打开redis.conf文件，搜索requirepass关键字，在#requirepass foobared下面添加一行<br>requirepass    123456         #设置redis密码为123456</p>
 <p>保存退出并重启redis</p>
 <p>通过客户端连接的话必须加上密码参数才能正常连接：<br>[root@localhost redis-5.0.1]# redis -a 123456</p>
 
