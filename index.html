@@ -301,7 +301,7 @@
         
           
             <p>1.浏览器查看下载哪个版本<a href="http://download.redis.io/release" target="_blank" rel="noopener">http://download.redis.io/release</a><br>2.安装依赖 yum -y install gcc<br>3.安装<br>cd /usr/local<br>wget <a href="http://download.redis.io/releases/redis-5.0.1.tar.gz" target="_blank" rel="noopener">http://download.redis.io/releases/redis-5.0.1.tar.gz</a><br>tar zxvf redis-5.0.1.tar.gz<br>cd redis-5.0.1<br>make MALLOC=libc<br>cd src &amp;&amp; make install</p>
-<p>4.更改配置：#以守护进程方式启动  #允许所有ip访问<br>sed -i ‘s/daemonize no/daemonize yes/‘ /usr/local/redis-5.0.1/redis.conf<br>sed -i ‘s/bind 127.0.0.1/#bind 127.0.0.1/‘ /usr/local/redis-5.0.1/redis.conf</p>
+<p>4.更改配置： #以守护进程方式启动  #允许所有ip访问   #有必要的情况下修改默认端口<br>sed -i ‘s/daemonize no/daemonize yes/‘ /usr/local/redis-5.0.1/redis.conf<br>sed -i ‘s/bind 127.0.0.1/#bind 127.0.0.1/‘ /usr/local/redis-5.0.1/redis.conf<br>sed -i ‘s/port 6379/port 6377/‘ /usr/local/redis-5.0.1/redis.conf</p>
 <p>5.启动，两种方式，一般通过后台进程启动<br>1.直接启动redis<br>cd /usr/local/redis-5.0.1/src<br>./redis-server<br>该启动方式需要一直打开窗口，ctrl + c退出。</p>
 <p>2.后台进程方式启动,指定文件启动<br>./redis-server ../redis.conf</p>
 <p>————-测试连接：<br>[root@localhost redis-5.0.1]# cd /root/redis-5.0.1/src/<br>[root@localhost src]# redis-cli<br>127.0.0.1:6379&gt; </p>
