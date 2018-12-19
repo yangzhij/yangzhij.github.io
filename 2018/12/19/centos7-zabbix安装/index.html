@@ -79,17 +79,17 @@
 
 
 
-<meta name="description" content="firewall:查看防火墙状态： firewall-cmd –state关闭：systemctl stop firewalld.service禁止开机自启：systemctl disable firewalld.serviceselinux:临时关闭：setenforce 0永久关闭：vi /etc/selinux/config，将SELINUX=enforcing改为SELINUX=disab">
+<meta name="description" content="firewall:123查看防火墙状态：firewall-cmd --state关闭：systemctl stop firewalld.service禁止开机自启：systemctl disable firewalld.service selinux:12临时关闭：setenforce 0永久关闭：vi /etc/selinux/config，将SELINUX=enforcing改为SELINUX">
 <meta property="og:type" content="article">
 <meta property="og:title" content="centos7 zabbix安装">
 <meta property="og:url" content="http://yoursite.com/2018/12/19/centos7-zabbix安装/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="firewall:查看防火墙状态： firewall-cmd –state关闭：systemctl stop firewalld.service禁止开机自启：systemctl disable firewalld.serviceselinux:临时关闭：setenforce 0永久关闭：vi /etc/selinux/config，将SELINUX=enforcing改为SELINUX=disab">
+<meta property="og:description" content="firewall:123查看防火墙状态：firewall-cmd --state关闭：systemctl stop firewalld.service禁止开机自启：systemctl disable firewalld.service selinux:12临时关闭：setenforce 0永久关闭：vi /etc/selinux/config，将SELINUX=enforcing改为SELINUX">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-12-19T08:59:00.492Z">
+<meta property="og:updated_time" content="2018-12-19T10:13:26.182Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="centos7 zabbix安装">
-<meta name="twitter:description" content="firewall:查看防火墙状态： firewall-cmd –state关闭：systemctl stop firewalld.service禁止开机自启：systemctl disable firewalld.serviceselinux:临时关闭：setenforce 0永久关闭：vi /etc/selinux/config，将SELINUX=enforcing改为SELINUX=disab">
+<meta name="twitter:description" content="firewall:123查看防火墙状态：firewall-cmd --state关闭：systemctl stop firewalld.service禁止开机自启：systemctl disable firewalld.service selinux:12临时关闭：setenforce 0永久关闭：vi /etc/selinux/config，将SELINUX=enforcing改为SELINUX">
 
 
 
@@ -299,10 +299,17 @@
       
 
       
-        <p>firewall:<br>查看防火墙状态： firewall-cmd –state<br>关闭：systemctl stop firewalld.service<br>禁止开机自启：systemctl disable firewalld.service<br>selinux:<br>临时关闭：setenforce 0<br>永久关闭：vi /etc/selinux/config，将SELINUX=enforcing改为SELINUX=disabled;重启生效</p>
-<p>Zabbix安装<br>1.下载yum源: #查看具体版本<a href="http://repo.zabbix.com/zabbix/" target="_blank" rel="noopener">http://repo.zabbix.com/zabbix/</a><br>rpm -ivh <a href="http://repo.zabbix.com/zabbix/4.0/rhel/7/x86_64/zabbix-release-4.0-1.el7.noarch.rpm" target="_blank" rel="noopener">http://repo.zabbix.com/zabbix/4.0/rhel/7/x86_64/zabbix-release-4.0-1.el7.noarch.rpm</a><br>2.安装：<br>yum install -y zabbix-server-mysql zabbix-web-mysql zabbix-agent mariadb mariadb-server<br>3.启动mysql并设置开机启动<br>systemctl start mariadb<br>systemctl enable mariadb<br>4.进入mysql创建实例并授权<br>MariaDB [(none)]&gt; create database zabbix character set utf8 collate utf8_bin;   #创建数据库实例<br>MariaDB [(none)]&gt; grant all privileges on zabbix.* to zabbix@’%’ identified by ‘zabbix’;  #授权所有主机访问数据库实例zabbix<br>MariaDB [(none)]&gt; flush privileges;    #刷新保存<br>5.导入出始表数据<br>cd /usr/share/doc/zabbix-server-mysql-4.0.1/<br>zcat create.sql.gz |mysql -uroot zabbix             #导入<br>6.修改zabbix的配置<br>vi /etc/zabbix/zabbix_server.conf<br>DBHost=localhost          # 数据库主机名<br>DBName=zabbix            # 数据库实例<br>DBUser=zabbix            # 用户名<br>DBPassword=zabbix      # 密码<br>启动：<br>systemctl start zabbix-server           #启动zabbix-server服务<br>systemctl enable zabbix-server       #设置zabbix-server服务开机自启动<br>7.安装apache：  yum -y install httpd<br>编辑Apache的配置文件<br>vi /etc/httpd/conf.d/zabbix.conf<br>修改为：hp_value date.timezone Asia/Shanghai</p>
-<p>启动httpd服务 ，设置开机启动httpd服务<br>ystemctl start httpd<br>ystemctl enable httpd</p>
-<p>启动zabbix-agent并设置开机自启动<br>systemctl start zabbix-agent<br>systemctl enable zabbix-agent</p>
+        <p>firewall:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">查看防火墙状态：firewall-cmd --state</span><br><span class="line">关闭：systemctl stop firewalld.service</span><br><span class="line">禁止开机自启：systemctl disable firewalld.service</span><br></pre></td></tr></table></figure></p>
+<p>selinux:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">临时关闭：setenforce 0</span><br><span class="line">永久关闭：vi /etc/selinux/config，将SELINUX=enforcing改为SELINUX=disabled;重启生效</span><br></pre></td></tr></table></figure></p>
+<p>Zabbix安装<br>1.下载yum源: #查看具体版本<a href="http://repo.zabbix.com/zabbix/" target="_blank" rel="noopener">http://repo.zabbix.com/zabbix/</a><br>rpm -ivh <a href="http://repo.zabbix.com/zabbix/4.0/rhel/7/x86_64/zabbix-release-4.0-1.el7.noarch.rpm" target="_blank" rel="noopener">http://repo.zabbix.com/zabbix/4.0/rhel/7/x86_64/zabbix-release-4.0-1.el7.noarch.rpm</a><br>2.安装：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y zabbix-server-mysql zabbix-web-mysql zabbix-agent mariadb mariadb-server</span><br></pre></td></tr></table></figure></p>
+<p>3.启动mysql并设置开机启动<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl start mariadb</span><br><span class="line">systemctl enable mariadb</span><br></pre></td></tr></table></figure></p>
+<p>4.进入mysql创建实例并授权<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">MariaDB [(none)]&gt; create database zabbix character set utf8 collate utf8_bin;   #创建数据库实例</span><br><span class="line">MariaDB [(none)]&gt; grant all privileges on zabbix.* to zabbix@&apos;%&apos; identified by &apos;zabbix&apos;;  #授权所有主机访问数据库实例zabbix</span><br><span class="line">MariaDB [(none)]&gt; flush privileges;    #刷新保存</span><br></pre></td></tr></table></figure></p>
+<p>5.导入出始表数据<br>cd /usr/share/doc/zabbix-server-mysql-4.0.1/<br>zcat create.sql.gz |mysql -uroot zabbix             #导入</p>
+<p>6.修改zabbix的配置<br>vi /etc/zabbix/zabbix_server.conf<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">DBHost=localhost          # 数据库主机名</span><br><span class="line">DBName=zabbix            # 数据库实例</span><br><span class="line">DBUser=zabbix            # 用户名</span><br><span class="line">DBPassword=zabbix      # 密码</span><br></pre></td></tr></table></figure></p>
+<p>启动：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl start zabbix-server           #启动zabbix-server服务</span><br><span class="line">systemctl enable zabbix-server       #设置zabbix-server服务开机自启动</span><br></pre></td></tr></table></figure></p>
+<p>7.安装apache：  yum -y install httpd<br>编辑Apache的配置文件<br>vi /etc/httpd/conf.d/zabbix.conf<br>修改为：hp_value date.timezone Asia/Shanghai</p>
+<p>启动httpd服务 ，设置开机启动httpd服务<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl start httpd</span><br><span class="line">systemctl enable httpd</span><br></pre></td></tr></table></figure></p>
+<p>启动zabbix-agent并设置开机自启动<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl start zabbix-agent</span><br><span class="line">systemctl enable zabbix-agent</span><br></pre></td></tr></table></figure></p>
 <p>在浏览器输入地址<a href="http://172.20.100.115/zabbix/setup.php" target="_blank" rel="noopener">http://172.20.100.115/zabbix/setup.php</a></p>
 <p>管理员用户名Admin(区分大小写)，默认密码zabbix<br>默认页面为英文，点击右上角头像，将语言改为中文，主题Theme改为黑色，修改完成以后退出登录重进即可。</p>
 

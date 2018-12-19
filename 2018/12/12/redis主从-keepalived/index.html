@@ -86,7 +86,7 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="为保证redis在运行中应对宕机故障，采用Redis主从+KeepAlived实现高可用。此次试验事先关闭了防火墙和selinux，生产环境建议开启防火墙。 172.20.100.189 主redis  主keepalived172.20.100.191 从redis  从keepalived VIP   172.20.100.66 （随意，一般同网段只要没人在用即可） ————–应用（程序配置）">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-12-12T00:08:18.407Z">
+<meta property="og:updated_time" content="2018-12-19T10:53:58.590Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="redis主从+keepalived">
 <meta name="twitter:description" content="为保证redis在运行中应对宕机故障，采用Redis主从+KeepAlived实现高可用。此次试验事先关闭了防火墙和selinux，生产环境建议开启防火墙。 172.20.100.189 主redis  主keepalived172.20.100.191 从redis  从keepalived VIP   172.20.100.66 （随意，一般同网段只要没人在用即可） ————–应用（程序配置）">
@@ -317,8 +317,8 @@
 <p>#配置redis启动脚本<br>cd /etc/init.d/<br>直接将脚本redis上传，注意脚本中的内容</p>
 <p>chmod +x /etc/init.d/redis<br>添加开机启动：<br>chkconfig –add redis<br>chkconfig redis on</p>
 <p>#添加redis命令环境变量<br>vi /etc/profile<br>export PATH=”$PATH:/usr/local/redis/bin”   #添加到末尾即可<br>source /etc/profile  #配置生效</p>
-<p>#配置redis的配置文件vim /etc/redis/redis.conf<br>master配置如下：<br>bind 0.0.0.0<br>port 6379<br>daemonize yes<br>requirepass 123456            #设置认证密码，如果无需要则取消<br>slave-serve-stale-data yes<br>slave-read-only no<br>pidfile /var/run/redis_6379.pid<br>logfile /var/log/redis.log</p>
-<p>slave配置如下<br>bind 0.0.0.0<br>port 6379<br>daemonize yes<br>slaveof 172.20.100.189 6379    #注意这里是主节点的ip<br>masterauth 123456<br>slave-serve-stale-data yes<br>slave-read-only no<br>pidfile /var/run/redis_6379.pid<br>logfile /var/log/redis.log</p>
+<p>#配置redis的配置文件vim /etc/redis/redis.conf<br>master配置如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">bind 0.0.0.0</span><br><span class="line">port 6379</span><br><span class="line">daemonize yes</span><br><span class="line">requirepass 123456            #设置认证密码，如果无需要则取消</span><br><span class="line">slave-serve-stale-data yes</span><br><span class="line">slave-read-only no</span><br><span class="line">pidfile /var/run/redis_6379.pid</span><br><span class="line">logfile /var/log/redis.log</span><br></pre></td></tr></table></figure></p>
+<p>slave配置如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">bind 0.0.0.0</span><br><span class="line">port 6379</span><br><span class="line">daemonize yes</span><br><span class="line">slaveof 172.20.100.189 6379    #注意这里是主节点的ip</span><br><span class="line">masterauth 123456</span><br><span class="line">slave-serve-stale-data yes</span><br><span class="line">slave-read-only no</span><br><span class="line">pidfile /var/run/redis_6379.pid</span><br><span class="line">logfile /var/log/redis.log</span><br></pre></td></tr></table></figure></p>
 <p>配置完成后重启redis服务!!!</p>
 <p>验证主从是否正常：<br>主节点189终端登录测试：<br>[root@localhost ~]# redis-cli -a 123456<br>127.0.0.1:6379&gt; info</p>
 <p>主节点191终端登录测试：<br>[root@localhost ~]# redis-cli -a 123456<br>127.0.0.1:6379&gt; info</p>
@@ -327,50 +327,8 @@
 <p>接下来！！！<br>开始配置KeepAlived实现双机热备</p>
 <p>#安装，有两种方式—–这里用的是yum安装<br>1.yum安装yum -y install keepalived</p>
 <p>默认安装有可能是没有配置文件的。新建一个 vi /etc/keepalived/keepalived.conf   直接cd /etc/keepalived/, 然后上传文件即可，注意主备</p>
-<p>—master配置如下：</p>
-<p>vrrp_script chk_redis {<br>    script “/etc/keepalived/script/redis_check.sh”     # 检查redis的脚本<br>    interval 2                          # 每两秒检查一次<br>    weight 2                            #每次检查的加权权重值<br>}</p>
-<p>vrrp_instance VI_1 {<br>    state MASTER                #指定实例初始化的状态,如果都是backup，那么就按照priority的值来确定谁是master<br>    interface eth0              #网卡<br>    virtual_router_id 61        # VRID标记（0-255）<br>    priority 101                #priority 高优先级的为master,最好相差大于50<br>    nopreempt                   #设置不抢占  –如果这样的话，上面的state MASTER 也要修改为 state BACKUP<br>    advert_int 1                # 检查间隔时间,默认1s</p>
-<pre><code>authentication {                 #authentication 这一段设置认证
-    auth_type PASS               #认证方式，支持PASS和HA（据说HA有问题）
-    auth_pass 1111               #认证密码
-}
-
-
-virtual_ipaddress {
-    172.20.100.66                    #VIP
-}
-
-
-track_script {
-    chk_redis                     # 调用检查脚本
-}
-
-notify_master /etc/keepalived/script/redis_master.sh
-notify_backup /etc/keepalived/script/redis_backup.sh
-notify_fault  /etc/keepalived/script/redis_fault.sh  
-notify_stop  /etc/keepalived/script/redis_stop.sh
-</code></pre><p>}</p>
-<p>—-slave配置如下:</p>
-<p>vrrp_script chk_redis {<br>    script “/etc/keepalived/script/redis_check.sh”     # 检查haproxy的脚本<br>    interval 2                          # 每两秒检查一次<br>}</p>
-<p>vrrp_instance VI_1 {<br>    state BACKUP                #指定实例初始化的状态,如果都是backup，那么就按照priority的值来确定谁是master<br>    interface eth0              #网卡<br>    virtual_router_id 61        # VRID标记（0-255）<br>    priority 99                #priority 高优先级的为master,最好相差大于50<br>    advert_int 1                # 检查间隔时间,默认1s</p>
-<pre><code>authentication {                 #authentication 这一段设置认证
-    auth_type PASS               #认证方式，支持PASS和HA（据说HA有问题）
-    auth_pass 1111               #认证密码
-}
-
-virtual_ipaddress {
-    172.20.100.66                  #VIP
-}
-
-track_script {
-    chk_redis                     # 调用检查脚本
-}
-
-notify_master /etc/keepalived/script/redis_master.sh
-notify_backup /etc/keepalived/script/redis_backup.sh
-notify_fault  /etc/keepalived/script/redis_fault.sh  
-notify_stop  /etc/keepalived/script/redis_stop.sh
-</code></pre><p>}</p>
+<p>—master配置如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">vrrp_script chk_redis &#123;</span><br><span class="line">    script &quot;/etc/keepalived/script/redis_check.sh&quot;     # 检查redis的脚本</span><br><span class="line">    interval 2                          # 每两秒检查一次</span><br><span class="line">    weight 2                            #每次检查的加权权重值</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">vrrp_instance VI_1 &#123;</span><br><span class="line">    state MASTER                #指定实例初始化的状态,如果都是backup，那么就按照priority的值来确定谁是master</span><br><span class="line">    interface eth0              #网卡</span><br><span class="line">    virtual_router_id 61        # VRID标记（0-255）</span><br><span class="line">    priority 101                #priority 高优先级的为master,最好相差大于50</span><br><span class="line">    nopreempt                   #设置不抢占  --如果这样的话，上面的state MASTER 也要修改为 state BACKUP </span><br><span class="line">    advert_int 1                # 检查间隔时间,默认1s</span><br><span class="line"></span><br><span class="line">    authentication &#123;                 #authentication 这一段设置认证</span><br><span class="line">        auth_type PASS               #认证方式，支持PASS和HA（据说HA有问题）</span><br><span class="line">        auth_pass 1111               #认证密码</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    virtual_ipaddress &#123;</span><br><span class="line">        172.20.100.66                    #VIP</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    track_script &#123;</span><br><span class="line">        chk_redis                     # 调用检查脚本</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    notify_master /etc/keepalived/script/redis_master.sh</span><br><span class="line">    notify_backup /etc/keepalived/script/redis_backup.sh</span><br><span class="line">    notify_fault  /etc/keepalived/script/redis_fault.sh  </span><br><span class="line">    notify_stop  /etc/keepalived/script/redis_stop.sh</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>—-slave配置如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">vrrp_script chk_redis &#123;</span><br><span class="line">    script &quot;/etc/keepalived/script/redis_check.sh&quot;     # 检查haproxy的脚本</span><br><span class="line">    interval 2                          # 每两秒检查一次</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">vrrp_instance VI_1 &#123;</span><br><span class="line">    state BACKUP                #指定实例初始化的状态,如果都是backup，那么就按照priority的值来确定谁是master</span><br><span class="line">    interface eth0              #网卡</span><br><span class="line">    virtual_router_id 61        # VRID标记（0-255）</span><br><span class="line">    priority 99                #priority 高优先级的为master,最好相差大于50</span><br><span class="line">    advert_int 1                # 检查间隔时间,默认1s</span><br><span class="line"></span><br><span class="line">    authentication &#123;                 #authentication 这一段设置认证</span><br><span class="line">        auth_type PASS               #认证方式，支持PASS和HA（据说HA有问题）</span><br><span class="line">        auth_pass 1111               #认证密码</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    virtual_ipaddress &#123;</span><br><span class="line">        172.20.100.66                  #VIP</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    track_script &#123;</span><br><span class="line">        chk_redis                     # 调用检查脚本</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    notify_master /etc/keepalived/script/redis_master.sh</span><br><span class="line">    notify_backup /etc/keepalived/script/redis_backup.sh</span><br><span class="line">    notify_fault  /etc/keepalived/script/redis_fault.sh  </span><br><span class="line">    notify_stop  /etc/keepalived/script/redis_stop.sh</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>########配置脚本–此为负责运作的关键脚本<br>Master KeepAlived—189</p>
 <p>#创建存放脚本目录：<br>mkdir -p /etc/keepalived/<br>cd /etc/keepalived/</p>
 <p>#上传189conf_script.tar.gz,里面包含了主Keepalived的配置及脚本<br>tar xvf 189conf_script.tar.gz<br>rm -rf 189conf_script.tar.gz</p>
