@@ -229,6 +229,131 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/19/centos7-zabbix安装/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/12/19/centos7-zabbix安装/" itemprop="url">centos7 zabbix安装</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-19T16:29:11+08:00">
+                2018-12-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>firewall:<br>查看防火墙状态： firewall-cmd –state<br>关闭：systemctl stop firewalld.service<br>禁止开机自启：systemctl disable firewalld.service<br>selinux:<br>临时关闭：setenforce 0<br>永久关闭：vi /etc/selinux/config，将SELINUX=enforcing改为SELINUX=disabled;重启生效</p>
+<p>Zabbix安装<br>1.下载yum源: #查看具体版本<a href="http://repo.zabbix.com/zabbix/" target="_blank" rel="noopener">http://repo.zabbix.com/zabbix/</a><br>rpm -ivh <a href="http://repo.zabbix.com/zabbix/4.0/rhel/7/x86_64/zabbix-release-4.0-1.el7.noarch.rpm" target="_blank" rel="noopener">http://repo.zabbix.com/zabbix/4.0/rhel/7/x86_64/zabbix-release-4.0-1.el7.noarch.rpm</a><br>2.安装：<br>yum install -y zabbix-server-mysql zabbix-web-mysql zabbix-agent mariadb mariadb-server<br>3.启动mysql并设置开机启动<br>systemctl start mariadb<br>systemctl enable mariadb<br>4.进入mysql创建实例并授权<br>MariaDB [(none)]&gt; create database zabbix character set utf8 collate utf8_bin;   #创建数据库实例<br>MariaDB [(none)]&gt; grant all privileges on zabbix.* to zabbix@’%’ identified by ‘zabbix’;  #授权所有主机访问数据库实例zabbix<br>MariaDB [(none)]&gt; flush privileges;    #刷新保存<br>5.导入出始表数据<br>cd /usr/share/doc/zabbix-server-mysql-4.0.1/<br>zcat create.sql.gz |mysql -uroot zabbix             #导入<br>6.修改zabbix的配置<br>vi /etc/zabbix/zabbix_server.conf<br>DBHost=localhost          # 数据库主机名<br>DBName=zabbix            # 数据库实例<br>DBUser=zabbix            # 用户名<br>DBPassword=zabbix      # 密码<br>启动：<br>systemctl start zabbix-server           #启动zabbix-server服务<br>systemctl enable zabbix-server       #设置zabbix-server服务开机自启动<br>7.安装apache：  yum -y install httpd<br>编辑Apache的配置文件<br>vi /etc/httpd/conf.d/zabbix.conf<br>修改为：hp_value date.timezone Asia/Shanghai</p>
+<p>启动httpd服务 ，设置开机启动httpd服务<br>ystemctl start httpd<br>ystemctl enable httpd</p>
+<p>启动zabbix-agent并设置开机自启动<br>systemctl start zabbix-agent<br>systemctl enable zabbix-agent</p>
+<p>在浏览器输入地址<a href="http://172.20.100.115/zabbix/setup.php" target="_blank" rel="noopener">http://172.20.100.115/zabbix/setup.php</a></p>
+<p>管理员用户名Admin(区分大小写)，默认密码zabbix<br>默认页面为英文，点击右上角头像，将语言改为中文，主题Theme改为黑色，修改完成以后退出登录重进即可。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/19/在线web日志finder部署/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1388,211 +1513,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/12/redis主从-keepalived/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/12/redis主从-keepalived/" itemprop="url">redis主从+keepalived</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-12T07:52:04+08:00">
-                2018-12-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>为保证redis在运行中应对宕机故障，采用Redis主从+KeepAlived实现高可用。此次试验事先关闭了防火墙和selinux，生产环境建议开启防火墙。</p>
-<p>172.20.100.189 主redis  主keepalived<br>172.20.100.191 从redis  从keepalived</p>
-<p>VIP   172.20.100.66 （随意，一般同网段只要没人在用即可） ————–应用（程序配置）通过VIP的6379端口访问redis数据库</p>
-<p>redis-4.0.8<br>Keepalived-2.0.8                    keepalived直接用yum装也可以</p>
-<p>原理（思路）：<br>正常运行下，主负责服务，从负责同步，应用通过vip的6379端口访问redis数据库，当主节点189宕机（或服务挂掉）后， vip漂到191上，191会接管189成为主节点，继续提供读写操作，同时关闭主从复制功能。<br>当主恢复后，主会和从进行一次数据同步（即从slave同步数据），同步完成后恢复master身份，而Slave等Master同步完数据后会再恢复到Slave身份，继续不间断的读写服务。</p>
-<p>有时候我们需要M服务器在恢复正常后不要重新接管VIP，让B服务器继续为主  让后来恢复正常的M服务器为备。如下处理：   </p>
-<p>修改Master配置， Backup服务器的配置不变。<br>state MASTER 修改为 state BACKUP<br>nopreempt  添加该参数，设置为不抢夺VIP</p>
-<p>主从都为slave类型，同时主设置不抢夺vip，然后先后启动主从，因为主的优先级高，所以从不会抢夺vip。当主挂掉后，从成为主，然后等原来主恢复后，由于设置了不抢夺vip，所以从继续为主。</p>
-<p>—————————–具体操作如下———————————–</p>
-<p>检查Java<br>java -version<br>没有的话进行安装</p>
-<p>配置java环境变量<br>export JAVA_HOME=/usr/local/java/jdk1.8.0_171<br>export CLASSPATH=.:$JAVA_HOME/jre/lib/rt.jar:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar<br>export PATH=$PATH:$JAVA_HOME/bin</p>
-<p>#安装依赖<br>yum -y install gcc-c++</p>
-<p>#下载redis包，先浏览器访问<a href="http://download.redis.io/releases/" target="_blank" rel="noopener">http://download.redis.io/releases/</a> 看看用哪个，然后下载即可</p>
-<p>cd /usr/local/src<br>wget <a href="http://download.redis.io/releases/redis-4.0.8.tar.gz" target="_blank" rel="noopener">http://download.redis.io/releases/redis-4.0.8.tar.gz</a><br>tar zxvf redis-4.0.8.tar.gz -C /usr/local/<br>mv redis-4.0.8 redis<br>cd /usr/local/redis</p>
-<p>#编译安装<br>makeMALLOC=libc<br>make PREFIX=/usr/local/redis install</p>
-<p>#配置redis启动脚本<br>cd /etc/init.d/<br>直接将脚本redis上传，注意脚本中的内容</p>
-<p>chmod +x /etc/init.d/redis<br>添加开机启动：<br>chkconfig –add redis<br>chkconfig redis on</p>
-<p>#添加redis命令环境变量<br>vi /etc/profile<br>export PATH=”$PATH:/usr/local/redis/bin”   #添加到末尾即可<br>source /etc/profile  #配置生效</p>
-<p>#配置redis的配置文件vim /etc/redis/redis.conf<br>master配置如下：<br>bind 0.0.0.0<br>port 6379<br>daemonize yes<br>requirepass 123456            #设置认证密码，如果无需要则取消<br>slave-serve-stale-data yes<br>slave-read-only no<br>pidfile /var/run/redis_6379.pid<br>logfile /var/log/redis.log</p>
-<p>slave配置如下<br>bind 0.0.0.0<br>port 6379<br>daemonize yes<br>slaveof 172.20.100.189 6379    #注意这里是主节点的ip<br>masterauth 123456<br>slave-serve-stale-data yes<br>slave-read-only no<br>pidfile /var/run/redis_6379.pid<br>logfile /var/log/redis.log</p>
-<p>配置完成后重启redis服务!!!</p>
-<p>验证主从是否正常：<br>主节点189终端登录测试：<br>[root@localhost ~]# redis-cli -a 123456<br>127.0.0.1:6379&gt; info</p>
-<p>主节点191终端登录测试：<br>[root@localhost ~]# redis-cli -a 123456<br>127.0.0.1:6379&gt; info</p>
-<p>然后再看看测试截图</p>
-<p>————————————-到此redis的主从已经完成！</p>
-<p>接下来！！！<br>开始配置KeepAlived实现双机热备</p>
-<p>#安装，有两种方式—–这里用的是yum安装<br>1.yum安装yum -y install keepalived</p>
-<p>默认安装有可能是没有配置文件的。新建一个 vi /etc/keepalived/keepalived.conf   直接cd /etc/keepalived/, 然后上传文件即可，注意主备</p>
-<p>—master配置如下：</p>
-<p>vrrp_script chk_redis {<br>    script “/etc/keepalived/script/redis_check.sh”     # 检查redis的脚本<br>    interval 2                          # 每两秒检查一次<br>    weight 2                            #每次检查的加权权重值<br>}</p>
-<p>vrrp_instance VI_1 {<br>    state MASTER                #指定实例初始化的状态,如果都是backup，那么就按照priority的值来确定谁是master<br>    interface eth0              #网卡<br>    virtual_router_id 61        # VRID标记（0-255）<br>    priority 101                #priority 高优先级的为master,最好相差大于50<br>    nopreempt                   #设置不抢占  –如果这样的话，上面的state MASTER 也要修改为 state BACKUP<br>    advert_int 1                # 检查间隔时间,默认1s</p>
-<pre><code>authentication {                 #authentication 这一段设置认证
-    auth_type PASS               #认证方式，支持PASS和HA（据说HA有问题）
-    auth_pass 1111               #认证密码
-}
-
-
-virtual_ipaddress {
-    172.20.100.66                    #VIP
-}
-
-
-track_script {
-    chk_redis                     # 调用检查脚本
-}
-
-notify_master /etc/keepalived/script/redis_master.sh
-notify_backup /etc/keepalived/script/redis_backup.sh
-notify_fault  /etc/keepalived/script/redis_fault.sh  
-notify_stop  /etc/keepalived/script/redis_stop.sh
-</code></pre><p>}</p>
-<p>—-slave配置如下:</p>
-<p>vrrp_script chk_redis {<br>    script “/etc/keepalived/script/redis_check.sh”     # 检查haproxy的脚本<br>    interval 2                          # 每两秒检查一次<br>}</p>
-<p>vrrp_instance VI_1 {<br>    state BACKUP                #指定实例初始化的状态,如果都是backup，那么就按照priority的值来确定谁是master<br>    interface eth0              #网卡<br>    virtual_router_id 61        # VRID标记（0-255）<br>    priority 99                #priority 高优先级的为master,最好相差大于50<br>    advert_int 1                # 检查间隔时间,默认1s</p>
-<pre><code>authentication {                 #authentication 这一段设置认证
-    auth_type PASS               #认证方式，支持PASS和HA（据说HA有问题）
-    auth_pass 1111               #认证密码
-}
-
-virtual_ipaddress {
-    172.20.100.66                  #VIP
-}
-
-track_script {
-    chk_redis                     # 调用检查脚本
-}
-
-notify_master /etc/keepalived/script/redis_master.sh
-notify_backup /etc/keepalived/script/redis_backup.sh
-notify_fault  /etc/keepalived/script/redis_fault.sh  
-notify_stop  /etc/keepalived/script/redis_stop.sh
-</code></pre><p>}</p>
-<p>########配置脚本–此为负责运作的关键脚本<br>Master KeepAlived—189</p>
-<p>#创建存放脚本目录：<br>mkdir -p /etc/keepalived/<br>cd /etc/keepalived/</p>
-<p>#上传189conf_script.tar.gz,里面包含了主Keepalived的配置及脚本<br>tar xvf 189conf_script.tar.gz<br>rm -rf 189conf_script.tar.gz</p>
-<p>Slave KeepAlived—191</p>
-<p>#创建存放脚本目录：<br>mkdir -p /etc/keepalived/<br>cd /etc/keepalived/</p>
-<p>#上传191conf_script.tar.gz,里面包含了主Keepalived的配置及脚本<br>tar xvf 191conf_script.tar.gz<br>rm -rf 191conf_script.tar.gz</p>
-<p>—-scriptl里面只需要更改redis_master.sh和redis_backup.sh里面的ip即可，fault和stop的脚本 主从一样</p>
-<p>///注解：</p>
-<p>Keepalived在转换状态时会依照状态来呼叫:</p>
-<p>当keepalived进入Master状态时，会执行notify_master; </p>
-<p>当keepalived进入Backup状态时，会执行notify_backup;</p>
-<p>当keepalived发现异常情况时进入进入fault状态时，会执行notify_fault；</p>
-<p>当Keepalived程序终止进入stop状态时，会执行notify_stop；</p>
-<p>///</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1643,7 +1563,7 @@ notify_stop  /etc/keepalived/script/redis_stop.sh
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-count">12</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
