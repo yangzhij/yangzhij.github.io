@@ -79,17 +79,13 @@
 
 
 
-<meta name="description" content="升级python为3.7，centos7自带python为Python 2.7，    直接执行即可 mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backupcd /etc/yum.repos.d/wget -O /etc/yum.repos.d/CentOS-Base.repo http://mir">
-<meta property="og:type" content="article">
-<meta property="og:title" content="centos7升级python">
-<meta property="og:url" content="http://yoursite.com/2018/12/14/centos7升级python/index.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://yoursite.com/page/2/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="升级python为3.7，centos7自带python为Python 2.7，    直接执行即可 mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backupcd /etc/yum.repos.d/wget -O /etc/yum.repos.d/CentOS-Base.repo http://mir">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-12-14T04:40:46.681Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="centos7升级python">
-<meta name="twitter:description" content="升级python为3.7，centos7自带python为Python 2.7，    直接执行即可 mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backupcd /etc/yum.repos.d/wget -O /etc/yum.repos.d/CentOS-Base.repo http://mir">
+<meta name="twitter:title" content="Hexo">
 
 
 
@@ -119,13 +115,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/12/14/centos7升级python/">
+  <link rel="canonical" href="http://yoursite.com/page/2/">
 
 
 
 
 
-  <title>centos7升级python | Hexo</title>
+  <title>Hexo</title>
   
 
 
@@ -144,7 +140,8 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail">
+  <div class="container sidebar-position-left 
+  page-home">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
@@ -217,9 +214,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-
-  <div id="posts" class="posts-expand">
+  <section id="posts" class="posts-expand">
     
+      
 
   
 
@@ -232,7 +229,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/14/centos7升级python/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/11/伊始/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John Doe">
@@ -249,7 +246,9 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">centos7升级python</h1>
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/12/11/伊始/" itemprop="url">伊始</a></h1>
         
 
         <div class="post-meta">
@@ -261,8 +260,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-14T09:38:07+08:00">
-                2018-12-14
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-11T14:30:33+08:00">
+                2018-12-11
               </time>
             
 
@@ -299,14 +298,12 @@
       
 
       
-        <p>升级python为3.7，centos7自带python为Python 2.7，    直接执行即可</p>
-<p>mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup<br>cd /etc/yum.repos.d/<br>wget -O /etc/yum.repos.d/CentOS-Base.repo <a href="http://mirrors.aliyun.com/repo/Centos-7.repo" target="_blank" rel="noopener">http://mirrors.aliyun.com/repo/Centos-7.repo</a><br>yum makecache<br>cd /usr/local/src<br>wget “<a href="https://www.python.org/ftp/python/3.7.0/Python-3.7.0.tgz&quot;" target="_blank" rel="noopener">https://www.python.org/ftp/python/3.7.0/Python-3.7.0.tgz&quot;</a><br>tar -zxvf  Python-3.7.0.tgz -C /tmp<br>cd /tmp/Python-3.7.0/<br>yum -y groupinstall “Development tools”<br>yum -y install openssl-devel bzip2-devel expat-devel gdbm-devel readline-devel sqlite-devel<br>yum install libffi-devel -y<br>./configure –prefix=/usr/local/python3<br>./configure –enable-optimizations<br>make &amp;&amp; make install<br>cd /usr/bin<br>ln -s /usr/local/python/bin/python3.7 /usr/bin/python3<br>rm  python<br>ln -s /usr/local/bin/python3.7 /bin/python</p>
-<p>python    进入python3<br>python2    进入python2</p>
-<p>#############################</p>
-<p>升级完后可能会导致yum不能用，解决方法如下：</p>
-<p>将下列3个文件中原来的 /usr/bin/python   改成  /usr/bin/python2.7  就行<br>centos6  的改成 python2.6<br>centos7  的改成 python2.7</p>
-<p>1、vi /usr/bin/yum<br>2、vi /usr/libexec/urlgrabber-ext-down<br>3、vi /usr/bin/yum-config-manager</p>
+        
+          
+            <p>啊啊啊…<br>终于要开始写博客了，也没啥，就是想记录一些工作当中的笔记以及生活中的心情，方便以后查阅。本来还想多写点，一时词穷，才发现原来是肚子里墨水儿太少，好吧，看来我平时要多看看书了。唉、买书容易看书难，搬家还麻烦…（又在不经意间提醒自己还没房，仔细一想，哪是没房啊，还没车，没存款啊）。吓得我都不敢写了，赶快关了..<br>最后呢，还是想感谢一个友人，帮我把这个地基搭起来。<br>这个怎么缩进啊，好烦人~<br>​    </p>
 
+          
+        
       
     </div>
     
@@ -323,32 +320,12 @@
       
 
       
-      
+
       
 
       
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2018/12/13/ftp记录/" rel="next" title="ftp记录">
-                <i class="fa fa-chevron-left"></i> ftp记录
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/12/14/Linux截取某段时间日志/" rel="prev" title="Linux截取某段时间日志">
-                Linux截取某段时间日志 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
       
-
-      
+        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -358,11 +335,14 @@
   </article>
 
 
+    
+  </section>
 
-    <div class="post-spread">
-      
-    </div>
-  </div>
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+  </nav>
+
 
 
           </div>
@@ -370,10 +350,6 @@
 
 
           
-
-  
-
-
 
         </div>
         
@@ -570,10 +546,6 @@
   
 
   
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
-
-
 
   
 
