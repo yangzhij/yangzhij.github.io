@@ -79,17 +79,20 @@
 
 
 
-<meta name="description" content="firewall:123查看防火墙状态：firewall-cmd --state关闭：systemctl stop firewalld.service禁止开机自启：systemctl disable firewalld.service selinux:12临时关闭：setenforce 0永久关闭：vi /etc/selinux/config，将SELINUX=enforcing改为SELINUX">
+<meta name="description" content="MongoDB是一个基于分布式文件存储的数据库，其目的在于为WEB应用提供可扩展的高性能数据存储解决方案。此为单机部署mongodb, 直接操作此文档命令即可………………………软件下载https://fastdl.mongodb.org/linux/安装过程如下：12345678cd /usr/localwget https://fastdl.mongodb.org/linux/mongodb-l">
 <meta property="og:type" content="article">
-<meta property="og:title" content="centos7 zabbix安装">
-<meta property="og:url" content="http://yoursite.com/2018/12/19/centos7-zabbix安装/index.html">
+<meta property="og:title" content="mongodb 单机安装">
+<meta property="og:url" content="http://yoursite.com/2018/12/22/mongodb单机安装/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="firewall:123查看防火墙状态：firewall-cmd --state关闭：systemctl stop firewalld.service禁止开机自启：systemctl disable firewalld.service selinux:12临时关闭：setenforce 0永久关闭：vi /etc/selinux/config，将SELINUX=enforcing改为SELINUX">
+<meta property="og:description" content="MongoDB是一个基于分布式文件存储的数据库，其目的在于为WEB应用提供可扩展的高性能数据存储解决方案。此为单机部署mongodb, 直接操作此文档命令即可………………………软件下载https://fastdl.mongodb.org/linux/安装过程如下：12345678cd /usr/localwget https://fastdl.mongodb.org/linux/mongodb-l">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-12-20T02:29:18.667Z">
+<meta property="og:image" content="http://i2.bvimg.com/672478/3550c15acffc670b.png">
+<meta property="og:image" content="http://i1.bvimg.com/672478/ea189dd2c7364aa4.png">
+<meta property="og:updated_time" content="2018-12-22T10:52:59.609Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="centos7 zabbix安装">
-<meta name="twitter:description" content="firewall:123查看防火墙状态：firewall-cmd --state关闭：systemctl stop firewalld.service禁止开机自启：systemctl disable firewalld.service selinux:12临时关闭：setenforce 0永久关闭：vi /etc/selinux/config，将SELINUX=enforcing改为SELINUX">
+<meta name="twitter:title" content="mongodb 单机安装">
+<meta name="twitter:description" content="MongoDB是一个基于分布式文件存储的数据库，其目的在于为WEB应用提供可扩展的高性能数据存储解决方案。此为单机部署mongodb, 直接操作此文档命令即可………………………软件下载https://fastdl.mongodb.org/linux/安装过程如下：12345678cd /usr/localwget https://fastdl.mongodb.org/linux/mongodb-l">
+<meta name="twitter:image" content="http://i2.bvimg.com/672478/3550c15acffc670b.png">
 
 
 
@@ -119,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/12/19/centos7-zabbix安装/">
+  <link rel="canonical" href="http://yoursite.com/2018/12/22/mongodb单机安装/">
 
 
 
 
 
-  <title>centos7 zabbix安装 | Hexo</title>
+  <title>mongodb 单机安装 | Hexo</title>
   
 
 
@@ -232,7 +235,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/19/centos7-zabbix安装/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/22/mongodb单机安装/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John Doe">
@@ -249,7 +252,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">centos7 zabbix安装</h1>
+          <h1 class="post-title" itemprop="name headline">mongodb 单机安装</h1>
         
 
         <div class="post-meta">
@@ -261,8 +264,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-19T16:29:11+08:00">
-                2018-12-19
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-22T18:32:21+08:00">
+                2018-12-22
               </time>
             
 
@@ -299,21 +302,10 @@
       
 
       
-        <p>firewall:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">查看防火墙状态：firewall-cmd --state</span><br><span class="line">关闭：systemctl stop firewalld.service</span><br><span class="line">禁止开机自启：systemctl disable firewalld.service</span><br></pre></td></tr></table></figure></p>
-<p>selinux:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">临时关闭：setenforce 0</span><br><span class="line">永久关闭：vi /etc/selinux/config，将SELINUX=enforcing改为SELINUX=disabled;重启生效</span><br></pre></td></tr></table></figure></p>
-<p>Zabbix安装<br>1.下载yum源: #查看具体版本<a href="http://repo.zabbix.com/zabbix/" target="_blank" rel="noopener">http://repo.zabbix.com/zabbix/</a><br>rpm -ivh <a href="http://repo.zabbix.com/zabbix/4.0/rhel/7/x86_64/zabbix-release-4.0-1.el7.noarch.rpm" target="_blank" rel="noopener">http://repo.zabbix.com/zabbix/4.0/rhel/7/x86_64/zabbix-release-4.0-1.el7.noarch.rpm</a><br>2.安装：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y zabbix-server-mysql zabbix-web-mysql zabbix-agent mariadb mariadb-server</span><br></pre></td></tr></table></figure></p>
-<p>3.启动mysql并设置开机启动<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl start mariadb</span><br><span class="line">systemctl enable mariadb</span><br></pre></td></tr></table></figure></p>
-<p>4.进入mysql创建实例并授权<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">MariaDB [(none)]&gt; create database zabbix character set utf8 collate utf8_bin;   #创建数据库实例</span><br><span class="line">MariaDB [(none)]&gt; grant all privileges on zabbix.* to zabbix@&apos;%&apos; identified by &apos;zabbix&apos;;  #授权所有主机访问数据库实例zabbix</span><br><span class="line">MariaDB [(none)]&gt; flush privileges;    #刷新保存</span><br></pre></td></tr></table></figure></p>
-<p>5.导入出始表数据<br>cd /usr/share/doc/zabbix-server-mysql-4.0.1/<br>zcat create.sql.gz |mysql -uroot zabbix             #导入</p>
-<p>6.修改zabbix的配置<br>vi /etc/zabbix/zabbix_server.conf<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">DBHost=localhost          # 数据库主机名</span><br><span class="line">DBName=zabbix            # 数据库实例</span><br><span class="line">DBUser=zabbix            # 用户名</span><br><span class="line">DBPassword=zabbix      # 密码</span><br></pre></td></tr></table></figure></p>
-<p>启动：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl start zabbix-server           #启动zabbix-server服务</span><br><span class="line">systemctl enable zabbix-server       #设置zabbix-server服务开机自启动</span><br></pre></td></tr></table></figure></p>
-<p>7.安装apache：  yum -y install httpd<br>编辑Apache的配置文件<br>vi /etc/httpd/conf.d/zabbix.conf<br>修改为：hp_value date.timezone Asia/Shanghai</p>
-<p>启动httpd服务 ，设置开机启动httpd服务<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl start httpd</span><br><span class="line">systemctl enable httpd</span><br></pre></td></tr></table></figure></p>
-<p>启动zabbix-agent并设置开机自启动<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl start zabbix-agent</span><br><span class="line">systemctl enable zabbix-agent</span><br></pre></td></tr></table></figure></p>
-<p>在浏览器输入地址<a href="http://172.20.100.115/zabbix/setup.php" target="_blank" rel="noopener">http://172.20.100.115/zabbix/setup.php</a></p>
-<p>管理员用户名Admin(区分大小写)，默认密码zabbix<br>默认页面为英文，点击右上角头像，将语言改为中文，主题Theme改为黑色，修改完成以后退出登录重进即可。</p>
-<p><strong>客户端安装：</strong>  <font color="#FF0000"><em>注意master-slave版本要一致</em> </font><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">rpm -ivh http://repo.zabbix.com/zabbix/4.0/rhel/7/x86_64/zabbix-release-4.0-1.el7.noarch.rpm</span><br><span class="line">yum install zabbix-agent -y</span><br><span class="line">sed -i &apos;s/Server=127.0.0.1/Server=172.20.100.115/&apos; /etc/zabbix/zabbix_agentd.conf   #服务端ip</span><br><span class="line">sed -i &apos;s/ServerActive=127.0.0.1/ServerActive=172.20.100.115/&apos; /etc/zabbix/zabbix_agentd.conf     #服务端IP</span><br><span class="line">sed -i &apos;s/Hostname=Zabbix server/Hostname=172.20.100.124/&apos; /etc/zabbix/zabbix_agentd.conf         #本机IP</span><br><span class="line">systemctl enable zabbix-agent.service</span><br><span class="line">systemctl start zabbix-agent.service</span><br></pre></td></tr></table></figure></p>
-<p>然后就可以在服务器添加主机IP了…..</p>
+        <p><strong>MongoDB是一个基于分布式文件存储的数据库，其目的在于为WEB应用提供可扩展的高性能数据存储解决方案。</strong><br>此为单机部署mongodb, 直接操作此文档命令即可………………………<br>软件下载<a href="https://fastdl.mongodb.org/linux/" target="_blank" rel="noopener">https://fastdl.mongodb.org/linux/</a><br><img src="http://i2.bvimg.com/672478/3550c15acffc670b.png" alt="http://i2.bvimg.com/672478/3550c15acffc670b.png"><br>安装过程如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local</span><br><span class="line">wget https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-rhel70-4.0.4.tgz</span><br><span class="line">tar xvf mongodb-linux-x86_64-rhel70-4.0.4.tgz</span><br><span class="line">mkdir mongodb</span><br><span class="line">mv mongodb-linux-x86_64-rhel70-4.0.4 mongodb/mongodb4.0.4</span><br><span class="line">cd mongodb/mongodb4.0.4</span><br><span class="line">mkdir conf logs</span><br><span class="line">mkdir -p data/db</span><br></pre></td></tr></table></figure></p>
+<p><strong>conf 存放配置文件的目录  logs 存放日志的目录   data/db存放数据文件的目录 </strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">cd conf/</span><br><span class="line">vi mongodb.conf （复制下列内容即可）</span><br><span class="line">#idae - MongoDB config start - 2018-11-27</span><br><span class="line">#设置数据文件的存放目录</span><br><span class="line">dbpath = /usr/local/mongodb/mongodb4.0.4/data/db</span><br><span class="line">#设置日志文件的存放目录及其日志文件名</span><br><span class="line">logpath = /usr/local/mongodb/mongodb4.0.4/logs/mongodb.log</span><br><span class="line"># 设置端口号</span><br><span class="line">port = 27017</span><br><span class="line">#设置运行任意ip连接</span><br><span class="line">bind_ip = 0.0.0.0</span><br><span class="line"># 设置为以守护进程的方式运行，即在后台运行</span><br><span class="line">fork = true</span><br><span class="line">保存退出</span><br></pre></td></tr></table></figure></p>
+<p>#启动<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ../bin</span><br><span class="line">./mongod --config ../conf/mongodb.conf</span><br></pre></td></tr></table></figure></p>
+<p>启动完毕后，用客户端连接，没有用户名密码<br><img src="http://i1.bvimg.com/672478/ea189dd2c7364aa4.png" alt="http://i1.bvimg.com/672478/ea189dd2c7364aa4.png"></p>
 
       
     </div>
@@ -338,8 +330,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/12/19/在线web日志finder部署/" rel="next" title="在线web日志finder部署">
-                <i class="fa fa-chevron-left"></i> 在线web日志finder部署
+              <a href="/2018/12/22/鸡毛蒜皮/" rel="next" title="鸡毛蒜皮">
+                <i class="fa fa-chevron-left"></i> 鸡毛蒜皮
               </a>
             
           </div>
@@ -347,10 +339,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/12/22/Jenkins通过gradle构建项目/" rel="prev" title="Jenkins通过gradle构建项目">
-                Jenkins通过gradle构建项目 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
