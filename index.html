@@ -229,6 +229,133 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/22/Jenkins通过gradle构建项目/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/12/22/Jenkins通过gradle构建项目/" itemprop="url">Jenkins通过gradle构建项目</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-22T16:22:48+08:00">
+                2018-12-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>之前都是用maven来构建项目的，这次研发给了个新服务，要通过gradle构建。刚开始还挺茫的，但网上资料挺多的……<br>过程如下：<br>先在jenkins所在的服务器安装好java、git和gradle<br>我刚开始安装的是gradle5版本的，可后来一直构建失败，研发那边用的是4版本的，本地测试可以。于是我又装了个低版本的。</p>
+<p>Git安装：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum –y install git</span><br></pre></td></tr></table></figure></p>
+<p>Gradle安装：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local</span><br><span class="line">wget http://services.gradle.org/distributions/gradle-4.10.3-bin.zip </span><br><span class="line">unzip gradle-4.10.3-bin.zip</span><br></pre></td></tr></table></figure></p>
+<p>配置环境变量<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Vi /etc/profile</span><br><span class="line">export GRADLE_HOME=/usr/local/gradle-4.10.3</span><br><span class="line">export PATH=$&#123;JAVA_HOME&#125;/bin:$&#123;JRE_HOME&#125;/bin:$&#123;GRADLE_HOME&#125;/bin:$&#123;JAVA_HOME&#125;:$&#123;PATH&#125;</span><br><span class="line">source /etc/profile    #配置生效</span><br></pre></td></tr></table></figure></p>
+<p>配置jenkins:<br>系统管理—全局工具配置—Gradle：<br>gradle-4.10.3<br>/usr/local/gradle-4.10.3<br><img src="http://i1.bvimg.com/672478/e89a864c6ebc6b49.png" alt="http://i1.bvimg.com/672478/e89a864c6ebc6b49.png"></p>
+<p>配置好后，开始创建任务：创建一个自由风格的任务<br>构建这里选择我们在jenkins中安装的gradle并在gradle全局工具配置中配置好的gradle，执行的tasks是clean build<br><img src="http://i1.bvimg.com/672478/5e13496214851989.png" alt="http://i1.bvimg.com/672478/5e13496214851989.png"></p>
+<p>配置SSH发布<br><img src="http://i1.bvimg.com/672478/f27f150dddb96488.png" alt="http://i1.bvimg.com/672478/f27f150dddb96488.png"></p>
+<p>执行命令如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">pid=`ps -ef|grep pay|grep -v grep|awk &apos;&#123;print $2&#125;&apos;`</span><br><span class="line">if [ -n &quot;$pid&quot; ]</span><br><span class="line">then</span><br><span class="line">    kill -9 $pid</span><br><span class="line">fi</span><br><span class="line">cd /home/wwwroot/</span><br><span class="line">nohup /usr/local/java/jdk1.8.0_171/bin/java -jar pay-1.0.0.jar --spring.profiles.active=test &gt;/dev/null 2&gt;&amp;1 &amp;</span><br><span class="line">if [ $? -eq 0 ]; then </span><br><span class="line">echo &quot;pay server is Start.....&quot; </span><br><span class="line">fi </span><br><span class="line">exit 0</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/19/centos7-zabbix安装/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1358,156 +1485,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/12/redis集群-cluster模式/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/12/redis集群-cluster模式/" itemprop="url">redis集群-cluster模式</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-12T08:18:08+08:00">
-                2018-12-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>之前应开发要求，真真切切的搭建了一次redis集群。特根据查阅相关资源的内容以及具体实现做一个笔记。</p>
-<p>集群一、 6台服务器，每台起一个7000端口 </p>
-<p>集群二、 3台云服务器，每台起3个端口（7000,7001,7002，7003,7004,7005，7006,7007,7008）<br>（3台云服务器，每台启动3个redis节点，一共9个。并让它们按照Cluster模式工作起来。每台开启了3个redis监听实例，就等于3个redis了但在生产环境中并不建议在一台机器上部署多个Redis节点，因为这样会增加了多个Redis节点同时不可用的风险。）</p>
-<p>Redis，非关系数据库，运行在内存拥有更快的读写。性能极高，数据类型丰富。redis是一种典型的no-sql 即非关系数据库 像python的字典一样 存储key-value键值对 工作在memory中。</p>
-<p>作用：减轻db的压力</p>
-<p>memcache和redis都工作在memory中，但memcache重启或者宕机memory中的数据就全没了，数据的一致性的不到保障. 但是redis不同,redis有相对的数据持久化的方案 </p>
-<p>redis集群实现方案： </p>
-<p>1、豌豆荚开发的codis<br>2、redis官方的redis-cluster</p>
-<p>redis-cluster是三个里性能最强大的 因为他使用去中心化的思想。<br>codis使用的也是proxy思路。是这两种之间的一个中间级 而且支持redis命令是最多的 有图形化GUI管理和监控工具，运维友好。</p>
-<p>Redis 集群是一个可以在多个 Redis 节点之间进行数据共享的设施<br>Redis集群提供了以下两个好处：<br>将数据自动切分split到多个节点的能力。<br>当集群中的一部分节点失效或者无法进行通讯时， 仍然可以继续处理命令请求的能力。</p>
-<p>redis-cluster：<br>所有的redis节点彼此互联<br>客户端与redis节点直连,不需要中间proxy层.客户端不需要连接集群所有节点,连接集群中任何一个可用节点即可。</p>
-<p>什么时候整个集群不可用？<br>如果集群任意master挂掉,且当前master没有slave.集群进入fail状态<br>如果集群超过半数以上master挂掉，无论是否有slave，集群进入fail状态.</p>
-<p>——————————具体实现</p>
-<p>检查Java<br>java -version<br>没有的话下载，U盘里有包，直接解压，然后配置环境变量<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/profile</span><br><span class="line">export JAVA_HOME=/usr/local/java/jdk1.8.0_171</span><br><span class="line">export CLASSPATH=.:$JAVA_HOME/jre/lib/rt.jar:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar</span><br><span class="line">export PATH=$PATH:$JAVA_HOME/bin</span><br><span class="line">source /etc/profile</span><br></pre></td></tr></table></figure></p>
-<p>安装redis<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/src</span><br><span class="line">yum -y install gcc-c++</span><br><span class="line">wget http://download.redis.io/releases/redis-4.0.8.tar.gz</span><br><span class="line">tar zxvf redis-4.0.8.tar.gz -C /usr/local/</span><br><span class="line">cd /usr/local/redis-4.0.8</span><br><span class="line">mkdir redis_cluster</span><br><span class="line">cd redis_cluster</span><br><span class="line">mkdir 7003 7004 7005   （在集群所在的服务器创建）</span><br></pre></td></tr></table></figure></p>
-<p>#把redis文件分别复制到创建的目录下，然后更改配置文件中的内容<br>cp /usr/local/redis-4.0.8/redis.conf /usr/local/redis-4.0.8/redis_cluster/7003<br>cp /usr/local/redis-4.0.8/redis.conf /usr/local/redis-4.0.8/redis_cluster/7004<br>cp /usr/local/redis-4.0.8/redis.conf /usr/local/redis-4.0.8/redis_cluster/7005 </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">daemonize yes</span><br><span class="line">port 7003 （对应文件夹）</span><br><span class="line">cluster-enabled yes</span><br><span class="line">bind 0.0.0.0</span><br><span class="line">cluster-config-file nodes.conf</span><br><span class="line">cluster-node-timeout 5000</span><br><span class="line">appendonly yes</span><br></pre></td></tr></table></figure>
-<p>通过端口启动多个redis实例…启动103上的三个redis节点<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/usr/local/redis-4.0.8/src/redis-server /usr/local/redis-4.0.8/redis_cluster/7000/redis.conf</span><br><span class="line">/usr/local/redis-4.0.8/src/redis-server /usr/local/redis-4.0.8/redis_cluster/7001/redis.conf</span><br><span class="line">/usr/local/redis-4.0.8/src/redis-server /usr/local/redis-4.0.8/redis_cluster/7002/redis.conf</span><br></pre></td></tr></table></figure></p>
-<p>下载ruby-2.3.7.tar.gz<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">tar zxvf ruby-2.3.7.tar.gz -C /usr/loacl</span><br><span class="line">cd ruby-2.3.7</span><br><span class="line">./configure</span><br><span class="line">make &amp;&amp; make install</span><br><span class="line"> </span><br><span class="line">ln -s /usr/local/bin/ruby /usr/bin/ruby</span><br><span class="line">ln -s /usr/local/bin/gem /usr/bin/gem</span><br></pre></td></tr></table></figure></p>
-<p>安装gem redis接口<br>gem install redis</p>
-<p>——报错1<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@izj6cac2xjnladms506dsxz src]# gem install redis</span><br><span class="line">ERROR:  Loading command: install (LoadError)</span><br><span class="line">        cannot load such file -- zlib</span><br><span class="line">ERROR:  While executing gem ... (NoMethodError)</span><br><span class="line">    undefined method `invoke_with_build_args&apos; for nil:NilClass</span><br><span class="line">#解决</span><br><span class="line">yum -y install gcc zlib-devel</span><br><span class="line">cd /usr/local/ruby-2.3.7/ext/zlib</span><br><span class="line">ruby ./extconf.rb</span><br><span class="line">make &amp;&amp;make install</span><br></pre></td></tr></table></figure></p>
-<p>——-报错2<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@izj6cac2xjnladms506dsxz zlib]# gem install redis</span><br><span class="line">ERROR:  While executing gem ... (Gem::Exception)</span><br><span class="line">    Unable to require openssl, install OpenSSL and rebuild ruby (preferred) or use non-HTTPS sources</span><br><span class="line">#解决：		</span><br><span class="line">cd ruby-2.3.7/</span><br><span class="line">./configure  --with-openssl-dir=/usr/local/ssl</span><br><span class="line">make &amp;&amp;make install</span><br></pre></td></tr></table></figure></p>
-<p>执行创建集群命令（也就是把集群中所有节点的ip:port串联起来）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/local/redis-4.0.8/src/redis-trib.rb create --replicas 1 47.244.31.250:7000 47.244.31.250:7001 47.244.31.250:7002 47.244.7.22:7003 47.244.7.22:7004 47.244.7.22:7005 47.90.122.138:7006 47.90.122.138:7007 47.90.122.138:7008</span><br></pre></td></tr></table></figure></p>
-<p>检查集群状态<br>./redis-trib.rb check 172.31.245.103:7002</p>
-<p>./redis-cli -c -h 47.90.122.138 -p 7000</p>
-<p>集群创建成功登陆任意redis结点查询集群中的节点情况。(随便一个ip对应的端口都可以登陆)<br>客户端以集群方式登陆：<br>[root@izj6cac2xjnladms506dsuz src]# ./redis-cli -c -h 47.244.31.250 -p 7000<br>172.31.245.103:7000&gt; cluster nodes</p>
-<p>其中-c表示以集群方式连接redis，-h指定ip地址，-p指定端口号<br>cluster nodes 查询集群结点信息<br>cluster info 查询集群状态信息</p>
-<p>添加节点：<a href="https://blog.csdn.net/truelove12358/article/details/79612954" target="_blank" rel="noopener">https://blog.csdn.net/truelove12358/article/details/79612954</a></p>
-<p>#单个端口启动不了，然后进入配置文件注释掉这两行<br>slave-serve-stale-data yes<br>slave-read-only yes</p>
-<p>使用：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:7000&gt;set name aa1</span><br><span class="line"></span><br><span class="line">127.0.0.1:7000&gt;get name               (去哪个redis里取都可以)</span><br></pre></td></tr></table></figure></p>
-<p>删除节点<br><code>127.0.0.1:7000&gt; cluster forget 930daea84150b5fabd32a95592781b27ceab1b71</code></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1558,7 +1535,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">13</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

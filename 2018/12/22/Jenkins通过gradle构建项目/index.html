@@ -79,17 +79,21 @@
 
 
 
-<meta name="description" content="rabbitmq 安装  //172.20.100.2071234567891011yum -y install gcc glibc-devel make ncurses-devel openssl-devel xmlto perl wgetwget http://www.rabbitmq.com/releases/erlang/erlang-19.0.4-1.el6.x86_64.rpmrpm">
+<meta name="description" content="之前都是用maven来构建项目的，这次研发给了个新服务，要通过gradle构建。刚开始还挺茫的，但网上资料挺多的……过程如下：先在jenkins所在的服务器安装好java、git和gradle我刚开始安装的是gradle5版本的，可后来一直构建失败，研发那边用的是4版本的，本地测试可以。于是我又装了个低版本的。 Git安装：1yum –y install git Gradle安装：123cd /u">
 <meta property="og:type" content="article">
-<meta property="og:title" content="rabbitMQ单机">
-<meta property="og:url" content="http://yoursite.com/2018/12/14/rabbitMQ单机/index.html">
+<meta property="og:title" content="Jenkins通过gradle构建项目">
+<meta property="og:url" content="http://yoursite.com/2018/12/22/Jenkins通过gradle构建项目/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="rabbitmq 安装  //172.20.100.2071234567891011yum -y install gcc glibc-devel make ncurses-devel openssl-devel xmlto perl wgetwget http://www.rabbitmq.com/releases/erlang/erlang-19.0.4-1.el6.x86_64.rpmrpm">
+<meta property="og:description" content="之前都是用maven来构建项目的，这次研发给了个新服务，要通过gradle构建。刚开始还挺茫的，但网上资料挺多的……过程如下：先在jenkins所在的服务器安装好java、git和gradle我刚开始安装的是gradle5版本的，可后来一直构建失败，研发那边用的是4版本的，本地测试可以。于是我又装了个低版本的。 Git安装：1yum –y install git Gradle安装：123cd /u">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-12-19T10:35:32.760Z">
+<meta property="og:image" content="http://i1.bvimg.com/672478/e89a864c6ebc6b49.png">
+<meta property="og:image" content="http://i1.bvimg.com/672478/5e13496214851989.png">
+<meta property="og:image" content="http://i1.bvimg.com/672478/f27f150dddb96488.png">
+<meta property="og:updated_time" content="2018-12-22T08:43:25.690Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="rabbitMQ单机">
-<meta name="twitter:description" content="rabbitmq 安装  //172.20.100.2071234567891011yum -y install gcc glibc-devel make ncurses-devel openssl-devel xmlto perl wgetwget http://www.rabbitmq.com/releases/erlang/erlang-19.0.4-1.el6.x86_64.rpmrpm">
+<meta name="twitter:title" content="Jenkins通过gradle构建项目">
+<meta name="twitter:description" content="之前都是用maven来构建项目的，这次研发给了个新服务，要通过gradle构建。刚开始还挺茫的，但网上资料挺多的……过程如下：先在jenkins所在的服务器安装好java、git和gradle我刚开始安装的是gradle5版本的，可后来一直构建失败，研发那边用的是4版本的，本地测试可以。于是我又装了个低版本的。 Git安装：1yum –y install git Gradle安装：123cd /u">
+<meta name="twitter:image" content="http://i1.bvimg.com/672478/e89a864c6ebc6b49.png">
 
 
 
@@ -119,13 +123,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/12/14/rabbitMQ单机/">
+  <link rel="canonical" href="http://yoursite.com/2018/12/22/Jenkins通过gradle构建项目/">
 
 
 
 
 
-  <title>rabbitMQ单机 | Hexo</title>
+  <title>Jenkins通过gradle构建项目 | Hexo</title>
   
 
 
@@ -232,7 +236,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/14/rabbitMQ单机/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/22/Jenkins通过gradle构建项目/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John Doe">
@@ -249,7 +253,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">rabbitMQ单机</h1>
+          <h1 class="post-title" itemprop="name headline">Jenkins通过gradle构建项目</h1>
         
 
         <div class="post-meta">
@@ -261,8 +265,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-14T10:24:33+08:00">
-                2018-12-14
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-22T16:22:48+08:00">
+                2018-12-22
               </time>
             
 
@@ -299,10 +303,14 @@
       
 
       
-        <p>rabbitmq 安装  //172.20.100.207<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">yum -y install gcc glibc-devel make ncurses-devel openssl-devel xmlto perl wget</span><br><span class="line">wget http://www.rabbitmq.com/releases/erlang/erlang-19.0.4-1.el6.x86_64.rpm</span><br><span class="line">rpm -ivh erlang-19.0.4-1.el6.x86_64.rpm</span><br><span class="line">wget https://dl.bintray.com/rabbitmq/rabbitmq-server-rpm/rabbitmq-server-3.6.12-1.el6.noarch.rpm</span><br><span class="line">rpm --import https://www.rabbitmq.com/rabbitmq-release-signing-key.asc</span><br><span class="line">yum -y makecache</span><br><span class="line">yum -y install socat</span><br><span class="line">rpm -ivh rabbitmq-server-3.6.12-1.el6.noarch.rpm</span><br><span class="line"></span><br><span class="line">systemctl start rabbitmq-server.service</span><br><span class="line">systemctl status rabbitmq-server.service</span><br></pre></td></tr></table></figure></p>
-<p>#开启网页管理插件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rabbitmq-plugins enable rabbitmq_management</span><br><span class="line">systemctl restart rabbitmq-server.service</span><br></pre></td></tr></table></figure></p>
-<p>#默认网页是不允许访问的，需要增加一个用户修改一下权限，代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rabbitmqctl add_user admin admin123  //添加用户</span><br><span class="line">rabbitmqctl set_permissions -p / admin &quot;.*&quot;  &quot;.*&quot;  &quot;.*&quot;           //添加权限</span><br><span class="line">rabbitmqctl set_user_tags admin administrator                  //修改用户角色</span><br></pre></td></tr></table></figure></p>
-<p>浏览器访问：<br><a href="http://172.20.100.207:15672" target="_blank" rel="noopener">http://172.20.100.207:15672</a></p>
+        <p>之前都是用maven来构建项目的，这次研发给了个新服务，要通过gradle构建。刚开始还挺茫的，但网上资料挺多的……<br>过程如下：<br>先在jenkins所在的服务器安装好java、git和gradle<br>我刚开始安装的是gradle5版本的，可后来一直构建失败，研发那边用的是4版本的，本地测试可以。于是我又装了个低版本的。</p>
+<p>Git安装：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum –y install git</span><br></pre></td></tr></table></figure></p>
+<p>Gradle安装：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local</span><br><span class="line">wget http://services.gradle.org/distributions/gradle-4.10.3-bin.zip </span><br><span class="line">unzip gradle-4.10.3-bin.zip</span><br></pre></td></tr></table></figure></p>
+<p>配置环境变量<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Vi /etc/profile</span><br><span class="line">export GRADLE_HOME=/usr/local/gradle-4.10.3</span><br><span class="line">export PATH=$&#123;JAVA_HOME&#125;/bin:$&#123;JRE_HOME&#125;/bin:$&#123;GRADLE_HOME&#125;/bin:$&#123;JAVA_HOME&#125;:$&#123;PATH&#125;</span><br><span class="line">source /etc/profile    #配置生效</span><br></pre></td></tr></table></figure></p>
+<p>配置jenkins:<br>系统管理—全局工具配置—Gradle：<br>gradle-4.10.3<br>/usr/local/gradle-4.10.3<br><img src="http://i1.bvimg.com/672478/e89a864c6ebc6b49.png" alt="http://i1.bvimg.com/672478/e89a864c6ebc6b49.png"></p>
+<p>配置好后，开始创建任务：创建一个自由风格的任务<br>构建这里选择我们在jenkins中安装的gradle并在gradle全局工具配置中配置好的gradle，执行的tasks是clean build<br><img src="http://i1.bvimg.com/672478/5e13496214851989.png" alt="http://i1.bvimg.com/672478/5e13496214851989.png"></p>
+<p>配置SSH发布<br><img src="http://i1.bvimg.com/672478/f27f150dddb96488.png" alt="http://i1.bvimg.com/672478/f27f150dddb96488.png"></p>
+<p>执行命令如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">pid=`ps -ef|grep pay|grep -v grep|awk &apos;&#123;print $2&#125;&apos;`</span><br><span class="line">if [ -n &quot;$pid&quot; ]</span><br><span class="line">then</span><br><span class="line">    kill -9 $pid</span><br><span class="line">fi</span><br><span class="line">cd /home/wwwroot/</span><br><span class="line">nohup /usr/local/java/jdk1.8.0_171/bin/java -jar pay-1.0.0.jar --spring.profiles.active=test &gt;/dev/null 2&gt;&amp;1 &amp;</span><br><span class="line">if [ $? -eq 0 ]; then </span><br><span class="line">echo &quot;pay server is Start.....&quot; </span><br><span class="line">fi </span><br><span class="line">exit 0</span><br></pre></td></tr></table></figure></p>
 
       
     </div>
@@ -327,8 +335,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/12/14/Linux截取某段时间日志/" rel="next" title="Linux截取某段时间日志">
-                <i class="fa fa-chevron-left"></i> Linux截取某段时间日志
+              <a href="/2018/12/19/centos7-zabbix安装/" rel="next" title="centos7 zabbix安装">
+                <i class="fa fa-chevron-left"></i> centos7 zabbix安装
               </a>
             
           </div>
@@ -336,10 +344,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/12/16/redis单机安装/" rel="prev" title="redis单机安装">
-                redis单机安装 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
