@@ -86,10 +86,15 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="由于架构体系的要求，已经部署过N多次jenkins了，部署完一次之后。后续不过都是基于现有的，直接把相关程序包拷贝到另一台新机器上即可。可能会提醒你有新版本了，这个更不更新无所谓的，看个人….现在把部署过程做个记录……先提一下jenkins是啥吧，害怕后面忘了…jenkins,一个用于持续集成的工具，可以在研发把代码提交gitlab，svn等代码仓库后，通过jenkins拿到最新的代码后进行自动化">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-12-23T15:35:06.320Z">
+<meta property="og:image" content="http://i2.bvimg.com/672478/0adb648d453eedad.png">
+<meta property="og:image" content="http://i2.bvimg.com/672478/6d969e4de5ef82d3.png">
+<meta property="og:image" content="http://i2.bvimg.com/672478/f82ad8942fabd4de.png">
+<meta property="og:image" content="http://i2.bvimg.com/672478/0b924076747cfd71.png">
+<meta property="og:updated_time" content="2018-12-23T15:53:08.781Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Jenkins部署">
 <meta name="twitter:description" content="由于架构体系的要求，已经部署过N多次jenkins了，部署完一次之后。后续不过都是基于现有的，直接把相关程序包拷贝到另一台新机器上即可。可能会提醒你有新版本了，这个更不更新无所谓的，看个人….现在把部署过程做个记录……先提一下jenkins是啥吧，害怕后面忘了…jenkins,一个用于持续集成的工具，可以在研发把代码提交gitlab，svn等代码仓库后，通过jenkins拿到最新的代码后进行自动化">
+<meta name="twitter:image" content="http://i2.bvimg.com/672478/0adb648d453eedad.png">
 
 
 
@@ -314,7 +319,7 @@
 ./startup.sh 
 </code></pre><p><strong>访问：</strong><br><a href="http://172.20.100.176:83/jenkins/" target="_blank" rel="noopener">http://172.20.100.176:83/jenkins/</a></p>
 <p>现在！！  就可以登陆jenkins了，然后跟着提示一步步来就可以了。<br><strong>还有一种安装jenkins的方式是直接跑jenkins.war包</strong><br>1.安装java并配置<br>2.下载jenkins包并启动…..查看具体版本wget <a href="http://mirrors.jenkins-ci.org/war-stable/" target="_blank" rel="noopener">http://mirrors.jenkins-ci.org/war-stable/</a><br>mkdir /home/jenkins<br>cd /home/jenkins<br>wget <a href="http://mirrors.jenkins-ci.org/war-stable/2.121.3/jenkins.war" target="_blank" rel="noopener">http://mirrors.jenkins-ci.org/war-stable/2.121.3/jenkins.war</a><br>nohup java -jar ./jenkins.war –httpPort=81 &gt;/dev/null 2&gt;&amp;1 &amp;        #后台启动并指定端口<br>访问：<a href="http://47.90.122.91:81/" target="_blank" rel="noopener">http://47.90.122.91:81/</a></p>
-<p>安装插件： 系统管理–安装插件–可选插件中搜索maven      选择Maven Integration 和 Pipeline Maven Integration 安装即可。</p>
+<p>安装插件： 系统管理–安装插件–可选插件中搜索maven      选择Maven Integration 和 Pipeline Maven Integration 安装即可。<br>一些需要配置的截图,其中maven的配置文件后续会有说明<br><img src="http://i2.bvimg.com/672478/0adb648d453eedad.png" alt="http://i2.bvimg.com/672478/0adb648d453eedad.png"><br><img src="http://i2.bvimg.com/672478/6d969e4de5ef82d3.png" alt="http://i2.bvimg.com/672478/6d969e4de5ef82d3.png"><br><img src="http://i2.bvimg.com/672478/f82ad8942fabd4de.png" alt="http://i2.bvimg.com/672478/f82ad8942fabd4de.png"><br><img src="http://i2.bvimg.com/672478/0b924076747cfd71.png" alt="http://i2.bvimg.com/672478/0b924076747cfd71.png"></p>
 
       
     </div>
