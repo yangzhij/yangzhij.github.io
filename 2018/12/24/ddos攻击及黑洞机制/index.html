@@ -79,17 +79,17 @@
 
 
 
-<meta name="description" content="啊啊啊…终于要开始写博客了，也没啥，就是想记录一些工作当中的笔记以及生活中的心情，方便以后查阅。本来还想多写点，一时词穷，才发现原来是肚子里墨水儿太少，好吧，看来我平时要多看看书了。唉、买书容易看书难，搬家还麻烦…（又在不经意间提醒自己还没房，仔细一想，哪是没房啊，还没车，没存款啊）。吓得我都不敢写了，赶快关了..最后呢，还是想感谢一个友人，帮我把这个地基搭起来。这个怎么缩进啊，好烦人~​">
+<meta name="description" content="DDOS攻击分为流量攻击和CC攻击。两者针对的对象不同；流量攻击主要针对服务器，也就是攻击IP; CC攻击主要针对的网站，攻击的是网页，服务器什么都可以连接，ping也没问题，但是网页就是访问不。CC攻击相对来说危害不是毁灭性的，但是持续时间长（攻击者控制某些主机不停地发大量数据包给对方服务器造成服务器资源耗尽，一直到宕机崩溃。）而ddos这种流量攻击的危害性较大，通过向目标服务器发送大量数据包，">
 <meta property="og:type" content="article">
-<meta property="og:title" content="伊始">
-<meta property="og:url" content="http://yoursite.com/2018/12/11/伊始/index.html">
+<meta property="og:title" content="ddos攻击及黑洞机制">
+<meta property="og:url" content="http://yoursite.com/2018/12/24/ddos攻击及黑洞机制/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="啊啊啊…终于要开始写博客了，也没啥，就是想记录一些工作当中的笔记以及生活中的心情，方便以后查阅。本来还想多写点，一时词穷，才发现原来是肚子里墨水儿太少，好吧，看来我平时要多看看书了。唉、买书容易看书难，搬家还麻烦…（又在不经意间提醒自己还没房，仔细一想，哪是没房啊，还没车，没存款啊）。吓得我都不敢写了，赶快关了..最后呢，还是想感谢一个友人，帮我把这个地基搭起来。这个怎么缩进啊，好烦人~​">
+<meta property="og:description" content="DDOS攻击分为流量攻击和CC攻击。两者针对的对象不同；流量攻击主要针对服务器，也就是攻击IP; CC攻击主要针对的网站，攻击的是网页，服务器什么都可以连接，ping也没问题，但是网页就是访问不。CC攻击相对来说危害不是毁灭性的，但是持续时间长（攻击者控制某些主机不停地发大量数据包给对方服务器造成服务器资源耗尽，一直到宕机崩溃。）而ddos这种流量攻击的危害性较大，通过向目标服务器发送大量数据包，">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-12-11T06:52:39.192Z">
+<meta property="og:updated_time" content="2018-12-23T16:06:46.116Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="伊始">
-<meta name="twitter:description" content="啊啊啊…终于要开始写博客了，也没啥，就是想记录一些工作当中的笔记以及生活中的心情，方便以后查阅。本来还想多写点，一时词穷，才发现原来是肚子里墨水儿太少，好吧，看来我平时要多看看书了。唉、买书容易看书难，搬家还麻烦…（又在不经意间提醒自己还没房，仔细一想，哪是没房啊，还没车，没存款啊）。吓得我都不敢写了，赶快关了..最后呢，还是想感谢一个友人，帮我把这个地基搭起来。这个怎么缩进啊，好烦人~​">
+<meta name="twitter:title" content="ddos攻击及黑洞机制">
+<meta name="twitter:description" content="DDOS攻击分为流量攻击和CC攻击。两者针对的对象不同；流量攻击主要针对服务器，也就是攻击IP; CC攻击主要针对的网站，攻击的是网页，服务器什么都可以连接，ping也没问题，但是网页就是访问不。CC攻击相对来说危害不是毁灭性的，但是持续时间长（攻击者控制某些主机不停地发大量数据包给对方服务器造成服务器资源耗尽，一直到宕机崩溃。）而ddos这种流量攻击的危害性较大，通过向目标服务器发送大量数据包，">
 
 
 
@@ -119,13 +119,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/12/11/伊始/">
+  <link rel="canonical" href="http://yoursite.com/2018/12/24/ddos攻击及黑洞机制/">
 
 
 
 
 
-  <title>伊始 | Hexo</title>
+  <title>ddos攻击及黑洞机制 | Hexo</title>
   
 
 
@@ -232,7 +232,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/11/伊始/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/24/ddos攻击及黑洞机制/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John Doe">
@@ -249,7 +249,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">伊始</h1>
+          <h1 class="post-title" itemprop="name headline">ddos攻击及黑洞机制</h1>
         
 
         <div class="post-meta">
@@ -261,8 +261,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-11T14:30:33+08:00">
-                2018-12-11
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-24T00:00:42+08:00">
+                2018-12-24
               </time>
             
 
@@ -299,7 +299,7 @@
       
 
       
-        <p>啊啊啊…<br>终于要开始写博客了，也没啥，就是想记录一些工作当中的笔记以及生活中的心情，方便以后查阅。本来还想多写点，一时词穷，才发现原来是肚子里墨水儿太少，好吧，看来我平时要多看看书了。唉、买书容易看书难，搬家还麻烦…（又在不经意间提醒自己还没房，仔细一想，哪是没房啊，还没车，没存款啊）。吓得我都不敢写了，赶快关了..<br>最后呢，还是想感谢一个友人，帮我把这个地基搭起来。<br>这个怎么缩进啊，好烦人~<br>​    </p>
+        <p><strong>DDOS攻击分为流量攻击和CC攻击。</strong>两者针对的对象不同；流量攻击主要针对服务器，也就是攻击IP; CC攻击主要针对的网站，攻击的是网页，服务器什么都可以连接，ping也没问题，但是网页就是访问不。<br>CC攻击相对来说危害不是毁灭性的，但是持续时间长（攻击者控制某些主机不停地发大量数据包给对方服务器造成服务器资源耗尽，一直到宕机崩溃。）而ddos这种流量攻击的危害性较大，通过向目标服务器发送大量数据包，耗尽其带宽（利用合理的服务请求来占用过多的服务资源，从而使合法用户无法得到服务的响应。）<br>CC防护上，经济实力好的可以选择购买DDOS高防设备，因为CC攻击也属于DDOS攻击的一种。经济实力一般，可以考虑安装防护软件，如安全狗。<br><strong>高防黑洞机制：</strong>服务器受到攻击时的一种防护策略。<br>阿里云服务器黑洞是指服务器受攻击流量超过本机房黑洞阈值时，阿里云会自动屏蔽服务器的外网访问（ip被黑洞）。当服务器进入黑洞一段时间后，如果系统监控到攻击流量已经停止，黑洞就会自动解封。<br>当用户的服务器受到DDoS 攻击时，机房会分别分摊攻击流量，一旦攻击影响到某个机房的业务流量了，就会进行黑洞来保证机房的稳定性。因为大的DDos攻击不仅会影响用户的服务器，同时也会对整个云网络造成非常严重影响。</p>
 
       
     </div>
@@ -324,15 +324,15 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2018/12/22/mongodb单机安装/" rel="next" title="mongodb 单机安装">
+                <i class="fa fa-chevron-left"></i> mongodb 单机安装
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/12/12/redis主从-keepalived/" rel="prev" title="redis主从+keepalived">
-                redis主从+keepalived <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
