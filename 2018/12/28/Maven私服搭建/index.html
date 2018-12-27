@@ -79,17 +79,20 @@
 
 
 
-<meta name="description" content="Docker三要素：镜像 image容器仓库 centos7安装docker12345yum -y updateyum install -y yum-utils device-mapper-persistent-data lvm2yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo">
+<meta name="description" content="Maven：服务于java平台的自动化构建工具。构建工具演变：make–ant–Maven–GradleMaven采用了一种被称之为Project Object Model(POM)概念来管理项目。pom.xml对于maven工程是核心配置文件，所有的项目配置信息都在这个文件中进行配置。作用：1.管理jar包    2.将项目拆分成若干个模块Maven会将打包得到的文件复制到仓库中的指定位置tar">
 <meta property="og:type" content="article">
-<meta property="og:title" content="centos7安装docker">
-<meta property="og:url" content="http://yoursite.com/2018/12/26/centos7安装docker/index.html">
+<meta property="og:title" content="Maven私服搭建">
+<meta property="og:url" content="http://yoursite.com/2018/12/28/Maven私服搭建/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="Docker三要素：镜像 image容器仓库 centos7安装docker12345yum -y updateyum install -y yum-utils device-mapper-persistent-data lvm2yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo">
+<meta property="og:description" content="Maven：服务于java平台的自动化构建工具。构建工具演变：make–ant–Maven–GradleMaven采用了一种被称之为Project Object Model(POM)概念来管理项目。pom.xml对于maven工程是核心配置文件，所有的项目配置信息都在这个文件中进行配置。作用：1.管理jar包    2.将项目拆分成若干个模块Maven会将打包得到的文件复制到仓库中的指定位置tar">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-12-25T17:03:38.577Z">
+<meta property="og:image" content="http://i2.bvimg.com/672478/8576db2083192fa6.png">
+<meta property="og:image" content="http://i2.bvimg.com/672478/9c319c384e46f26e.png">
+<meta property="og:updated_time" content="2018-12-27T16:20:50.780Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="centos7安装docker">
-<meta name="twitter:description" content="Docker三要素：镜像 image容器仓库 centos7安装docker12345yum -y updateyum install -y yum-utils device-mapper-persistent-data lvm2yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo">
+<meta name="twitter:title" content="Maven私服搭建">
+<meta name="twitter:description" content="Maven：服务于java平台的自动化构建工具。构建工具演变：make–ant–Maven–GradleMaven采用了一种被称之为Project Object Model(POM)概念来管理项目。pom.xml对于maven工程是核心配置文件，所有的项目配置信息都在这个文件中进行配置。作用：1.管理jar包    2.将项目拆分成若干个模块Maven会将打包得到的文件复制到仓库中的指定位置tar">
+<meta name="twitter:image" content="http://i2.bvimg.com/672478/8576db2083192fa6.png">
 
 
 
@@ -119,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/12/26/centos7安装docker/">
+  <link rel="canonical" href="http://yoursite.com/2018/12/28/Maven私服搭建/">
 
 
 
 
 
-  <title>centos7安装docker | Hexo</title>
+  <title>Maven私服搭建 | Hexo</title>
   
 
 
@@ -232,7 +235,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/26/centos7安装docker/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/28/Maven私服搭建/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John Doe">
@@ -249,7 +252,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">centos7安装docker</h1>
+          <h1 class="post-title" itemprop="name headline">Maven私服搭建</h1>
         
 
         <div class="post-meta">
@@ -261,8 +264,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-26T00:54:13+08:00">
-                2018-12-26
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-28T00:14:47+08:00">
+                2018-12-28
               </time>
             
 
@@ -299,9 +302,13 @@
       
 
       
-        <p><strong>Docker三要素：</strong><br>镜像 image<br>容器<br>仓库</p>
-<p><strong>centos7安装docker</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">yum -y update</span><br><span class="line">yum install -y yum-utils device-mapper-persistent-data lvm2</span><br><span class="line">yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo</span><br><span class="line">yum list docker-ce --showduplicates | sort -r              #查看所有仓库中所有docker版本，并选择特定版本安装</span><br><span class="line">yum -y install docker-ce-17.12.1.ce                        #安装所选版本</span><br></pre></td></tr></table></figure></p>
-<p><strong>docker基本信息查看</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">docker version          #版本号</span><br><span class="line">docker info             # 查看系统(docker)层面信息</span><br><span class="line">docker search 镜像名    #搜索镜像</span><br><span class="line">docker pull 镜像名      #下载镜像</span><br><span class="line">docker images           #列出本地有的镜像</span><br><span class="line">docker images -a        #列出所有的images（包含历史）</span><br></pre></td></tr></table></figure></p>
+        <p>Maven：服务于java平台的自动化构建工具。构建工具演变：make–ant–Maven–Gradle<br>Maven采用了一种被称之为Project Object Model(POM)概念来管理项目。pom.xml对于maven工程是核心配置文件，所有的项目配置信息都在这个文件中进行配置。<br>作用：1.管理jar包    2.将项目拆分成若干个模块<br>Maven会将打包得到的文件复制到仓库中的指定位置target目录下。</p>
+<p>maven仓库： 用来管理依赖，仓库保存的内容是maven工程。当 Maven 需要下载构件时，直接请求私服，私服上存在则下载到本地仓库；否则，私服请求外部的远程仓库，将构件下载到私服，再提供给本地仓库下载。<br>1.本地仓库：当前电脑上部署的仓库目录，为当前电脑上所有的maven工程服务<br>2.远程仓库<br>    a.中央仓库：架设在Internet上，为全世界所有的maven工程服务<br>    b.私服：搭建在局域网内，供局域网内的maven用户使用  （私服节省带宽，稳定性好，配置私服也可降低中央仓库的压力）</p>
+<p><strong>搭建Maven私服的过程记录</strong><br><strong>一、安装java及maven</strong><br>1.java及环境变量，这个不说了<br>2.下载Maven包<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local</span><br><span class="line">wget https://mirrors.cnnic.cn/apache/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.tar.gz</span><br><span class="line">tar -zxvf  apache-maven-3.5.4-bin.tar.gz</span><br></pre></td></tr></table></figure></p>
+<p>3.配置环境变量 vi /etc/profile<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export MAVEN_HOME=/usr/local/apache-maven-3.5.4</span><br><span class="line">export PATH=&quot;$JAVA_HOME/bin:$MAVEN_HOME/bin:$PATH&quot;</span><br></pre></td></tr></table></figure></p>
+<p><strong>二、部署nexus</strong><br>1.下载<br>方法一：<a href="https://www.sonatype.com/download-oss-sonatype" target="_blank" rel="noopener">https://www.sonatype.com/download-oss-sonatype</a><br><img src="http://i2.bvimg.com/672478/8576db2083192fa6.png" alt="http://i2.bvimg.com/672478/8576db2083192fa6.png"><br>方法二：wget <a href="https://download.sonatype.com/nexus/3/latest-unix.tar.gz" target="_blank" rel="noopener">https://download.sonatype.com/nexus/3/latest-unix.tar.gz</a><br>2.解压<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local</span><br><span class="line">wget https://download.sonatype.com/nexus/3/latest-unix.tar.gz</span><br><span class="line">tar zxvf latest-unix.tar.gz</span><br><span class="line">//修改默认端口(8081)和允许所有主机访问 </span><br><span class="line">vi nexus-3.14.0-04/etc/nexus-default.properties                 </span><br><span class="line">application-port=8081</span><br><span class="line">application-host=0.0.0.0</span><br></pre></td></tr></table></figure></p>
+<p>3.启动<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/nexus-3.14.0-04/bin</span><br><span class="line">./nexus start</span><br></pre></td></tr></table></figure></p>
+<p>4.访问<br><a href="http://ip:8081" target="_blank" rel="noopener">http://ip:8081</a><br>点击右上角的sign in登录，输入账户admin，密码admin123即可登录成功。<br><img src="http://i2.bvimg.com/672478/9c319c384e46f26e.png" alt="http://i2.bvimg.com/672478/9c319c384e46f26e.png"></p>
 
       
     </div>
@@ -326,8 +333,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/12/24/ddos攻击及黑洞机制/" rel="next" title="ddos攻击及黑洞机制">
-                <i class="fa fa-chevron-left"></i> ddos攻击及黑洞机制
+              <a href="/2018/12/27/centos7部署nginx+keepalived/" rel="next" title="centos7部署nginx+keepalived">
+                <i class="fa fa-chevron-left"></i> centos7部署nginx+keepalived
               </a>
             
           </div>
@@ -335,10 +342,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/12/26/Docker集中化web管理平台/" rel="prev" title="Docker集中化web管理平台">
-                Docker集中化web管理平台 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>

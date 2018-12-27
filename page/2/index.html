@@ -229,6 +229,128 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/19/在线web日志finder部署/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/12/19/在线web日志finder部署/" itemprop="url">在线web日志finder部署</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-19T13:23:23+08:00">
+                2018-12-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><font color="#FF0000">当时做的时候参考的这个：<a href="http://blog.51cto.com/superleedo/2135195" target="_blank" rel="noopener">http://blog.51cto.com/superleedo/2135195</a></font><br>之前都是用elk的，因为主要是让开发人员看嘛，所以感觉也还行。后来在网上看了个Finder的最后效果，感觉不错，于是呢，就在测试平台搭建了一把，也简单也麻烦……现在测试环境用的就是这一款日志查询系统。<br><strong><em>Finder</em></strong>：web方式的文件管理器，最主要的功能是web文件管理和日志文件的实时查看。<br><strong>部署：</strong><br><em>安装java，并配置环境变量</em><br>Master主机：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">mkdir /home/rishi</span><br><span class="line">cd /home/rishi</span><br><span class="line">wget http://mirrors.tuna.tsinghua.edu.cn/apache/tomcat/tomcat-9/v9.0.13/bin/apache-tomcat-9.0.13.tar.gz</span><br><span class="line">tar zxf apache-tomcat-9.0.13.tar.gz</span><br><span class="line">vi conf/server.xml   #更改端口为8186，随意不冲突即可</span><br><span class="line"> </span><br><span class="line">cd /home/rizhi/apache-tomcat-9.0.13/webapps/ROOT/</span><br><span class="line">rm -rf *</span><br><span class="line">wget http://www.finderweb.net/download.html/finder-web-2.4.9.war</span><br><span class="line">jar -xvf finder-web-2.4.9.war &amp;&amp; rm –rf finder-web-2.4.9.war</span><br><span class="line">cd /home/rizhi/apache-tomcat-9.0.13/bin/</span><br><span class="line">./ startup.sh</span><br></pre></td></tr></table></figure></p>
+<p>浏览器访问：<br><a href="http://172.20.100.191:8186/finder" target="_blank" rel="noopener">http://172.20.100.191:8186/finder</a><br>admin/1234</p>
+<p>Slave：<br>客户端按照上诉过程安装好即可（直接打包Master上的服务，拷贝到相应的slave上启动就行），端口看具体情况，和本地冲突的话换一个就行。然后在master的web界面添加主机，更改相关配置即可。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/18/jenkins的升级和迁移/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -436,7 +558,7 @@
 <p><strong>4.安装Tomcat+jenkins</strong><br><em>#查看Tomcat版本： <a href="http://mirrors.tuna.tsinghua.edu.cn/apache/tomcat/" target="_blank" rel="noopener">http://mirrors.tuna.tsinghua.edu.cn/apache/tomcat/</a></em><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">cd /home</span><br><span class="line">wget http://mirrors.tuna.tsinghua.edu.cn/apache/tomcat/tomcat-9/v9.0.14/bin/apache-tomcat-9.0.14.tar.gz</span><br><span class="line">tar zxvf apache-tomcat-9.0.14.tar.gz </span><br><span class="line">mv apache-tomcat-9.0.14 Jenkinstomcat</span><br><span class="line">cd Jenkinstomcat/conf/</span><br><span class="line">vi server.xml #有需要修改Tomcat端口,例如改为83端口   </span><br><span class="line">sed -i &apos;s/Connector port=&quot;8080&quot;/Connector port=&quot;83&quot;/&apos; /home/Jenkinstomcat/conf/server.xml  </span><br><span class="line">cd ../bin/</span><br><span class="line">./startup.sh    #启动  172.20.100.176:83</span><br><span class="line">cd ../webapps/</span><br></pre></td></tr></table></figure></p>
 <p>#将jenkins的war包放在Tomcat的webapps下，这里下载的是最新的,两个路径皆可<br>wget <a href="http://ftp.yz.yamagata-u.ac.jp/pub/misc/jenkins/war-stable/latest/jenkins.war" target="_blank" rel="noopener">http://ftp.yz.yamagata-u.ac.jp/pub/misc/jenkins/war-stable/latest/jenkins.war</a><br>wget <a href="http://mirrors.jenkins.io/war-stable/latest/jenkins.war" target="_blank" rel="noopener">http://mirrors.jenkins.io/war-stable/latest/jenkins.war</a><br><em>#具体版本可看<a href="http://ftp.yz.yamagata-u.ac.jp/pub/misc/jenkins/war-stable/" target="_blank" rel="noopener">http://ftp.yz.yamagata-u.ac.jp/pub/misc/jenkins/war-stable/</a></em> </p>
 <p><strong>5.安装maven(直接解压即可,环境变量有没有无所谓吧，反正我一般总不配置)</strong><br><em>#作用:负责java语言的编译和打包</em><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local</span><br><span class="line">wget https://mirrors.cnnic.cn/apache/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.tar.gz</span><br><span class="line">tar -zxvf  apache-maven-3.5.4-bin.tar.gz</span><br></pre></td></tr></table></figure></p>
-<p>—–当然了，安装完maven后是需要修改配置文件的，/usr/local/apache-maven-3.5.4/conf/settings.xml，这个里面需要修改maven私服的地址，以及登陆maven私服的用户名及密码，我现在还没有具体配置过，等下次再写一篇对maven的说明。</p>
+<p>—–当然了，安装完maven后是需要修改配置文件的，/usr/local/apache-maven-3.5.4/conf/settings.xml，这个里面需要修改maven私服的地址，以及登陆maven私服的用户名及密码。<br><img src="http://i1.bvimg.com/672478/f957860621ab9b65.png" alt="http://i1.bvimg.com/672478/f957860621ab9b65.png"><br><img src="http://i1.bvimg.com/672478/a53f18b2b693a8ba.png" alt="http://i1.bvimg.com/672478/a53f18b2b693a8ba.png"><br><img src="http://i1.bvimg.com/672478/1163e192845e2268.png" alt="http://i1.bvimg.com/672478/1163e192845e2268.png"><br><img src="http://i1.bvimg.com/672478/6be793e7fd0e1a1d.png" alt="http://i1.bvimg.com/672478/6be793e7fd0e1a1d.png"></p>
 <p><strong>#重启</strong>  </p>
 <pre><code>cd /home/Jenkinstomcat/bin
 ./startup.sh 
@@ -1410,131 +1532,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/11/伊始/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/11/伊始/" itemprop="url">伊始</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-11T14:30:33+08:00">
-                2018-12-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>啊啊啊…<br>终于要开始写博客了，也没啥，就是想记录一些工作当中的笔记以及生活中的心情，方便以后查阅。本来还想多写点，一时词穷，才发现原来是肚子里墨水儿太少，好吧，看来我平时要多看看书了。唉、买书容易看书难，搬家还麻烦…（又在不经意间提醒自己还没房，仔细一想，哪是没房啊，还没车，没存款啊）。吓得我都不敢写了，赶快关了..<br>最后呢，还是想感谢一个友人，帮我把这个地基搭起来。<br>这个怎么缩进啊，好烦人~<br>​    </p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1580,7 +1582,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-count">21</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
