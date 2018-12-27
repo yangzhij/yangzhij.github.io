@@ -94,7 +94,7 @@
 <meta property="og:image" content="http://i2.bvimg.com/672478/6d969e4de5ef82d3.png">
 <meta property="og:image" content="http://i2.bvimg.com/672478/f82ad8942fabd4de.png">
 <meta property="og:image" content="http://i2.bvimg.com/672478/0b924076747cfd71.png">
-<meta property="og:updated_time" content="2018-12-27T16:55:56.063Z">
+<meta property="og:updated_time" content="2018-12-27T17:48:33.532Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Jenkins部署">
 <meta name="twitter:description" content="由于架构体系的要求，已经部署过N多次jenkins了，部署完一次之后。后续不过都是基于现有的，直接把相关程序包拷贝到另一台新机器上即可。可能会提醒你有新版本了，这个更不更新无所谓的，看个人….现在把部署过程做个记录……先提一下jenkins是啥吧，害怕后面忘了…jenkins,一个用于持续集成的工具，可以在研发把代码提交gitlab，svn等代码仓库后，通过jenkins拿到最新的代码后进行自动化">
@@ -308,7 +308,7 @@
       
 
       
-        <p>由于架构体系的要求，已经部署过N多次jenkins了，部署完一次之后。后续不过都是基于现有的，直接把相关程序包拷贝到另一台新机器上即可。可能会提醒你有新版本了，这个更不更新无所谓的，看个人….<br>现在把部署过程做个记录……<br>先提一下jenkins是啥吧，害怕后面忘了…<br>jenkins,一个用于持续集成的工具，可以在研发把代码提交gitlab，svn等代码仓库后，通过jenkins拿到最新的代码后进行自动化编译，打包，上传服务器并部署。相对于原始的手动打包，上传等确实方便的多。简洁明了就一句话：持续集成即一个自动构建过程，包括自动编译，分发，部署和测试。<br>工作流程：在jenkins上点击某个按钮进行构建–jenkins收到命令后–从git或svn上把源码下载下来–根据设置的mvn命令进行打包–把打包好的jar包或者war包传到你的服务器上–启动服务</p>
+        <p>由于架构体系的要求，已经部署过N多次jenkins了，部署完一次之后。后续不过都是基于现有的，直接把相关程序包拷贝到另一台新机器上即可。可能会提醒你有新版本了，这个更不更新无所谓的，看个人….<br>现在把部署过程做个记录……<br>先提一下jenkins是啥吧，害怕后面忘了…<br>jenkins,一个用于持续集成的工具，可以在研发把代码提交gitlab，svn等代码仓库后，通过jenkins拿到最新的代码后进行自动化编译，打包，上传服务器并部署。相对于原始的手动打包，上传等确实方便的多。简洁明了就一句话：持续集成即一个自动构建过程，包括自动编译，分发，部署和测试。<br>工作流程：在jenkins上点击某个按钮进行构建–jenkins收到命令后–从git或svn上把源码下载下来–根据设置的mvn命令进行打包–把打包好的jar包或者war包传到你的服务器上–启动服务<br>jenkins构建后操作，就是把通过maven命令打好包然后copy到服务器上。动态web工程打war包，java工程打jar包    </p>
 <p>部署：  //172.20.100.176</p>
 <font color="#FF0000"><strong>#jenkins属于java代码，需要java才能运行jenkins，So need install JDK+Tomcat</strong></font>
 
