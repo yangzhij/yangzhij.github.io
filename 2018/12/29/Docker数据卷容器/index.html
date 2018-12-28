@@ -79,17 +79,19 @@
 
 
 
-<meta name="description" content="或许我们有时候都会犯一种错，总自以为是的把自以为好的建议给别人，说起来倒还有些道理，像那么回事儿。却忘了其实每个人都有自己的生活轨迹，有着习惯并喜欢的生活方式。所以呢、在别人没有提出困惑并要求建议的时候，我们大可闭嘴。haha……又给自己上了一课！若一辈子只满足于一个吃回锅肉的地方，那肉夹馍怎么办？红烧肉怎么办？还有各种粉怎么办？">
+<meta name="description" content="数据卷：可以完成容器到主机，主机到容器的数据共享.主要用于数据持久化docker容器产生的数据，如果不通过docker commit生成新的镜像，使得数据作为镜像的一部分保存下来，那么当容器删除后，数据就没了。所以为了能保存数据在docker中做数据持久化，我们使用数据卷。数据卷的添加：   直接用命令添加 12345docker run -it -v /宿主机绝对路径目录:/容器内目录 (--p">
 <meta property="og:type" content="article">
-<meta property="og:title" content="闲谈">
-<meta property="og:url" content="http://yoursite.com/2018/12/26/闲谈/index.html">
+<meta property="og:title" content="Docker数据卷容器">
+<meta property="og:url" content="http://yoursite.com/2018/12/29/Docker数据卷容器/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="或许我们有时候都会犯一种错，总自以为是的把自以为好的建议给别人，说起来倒还有些道理，像那么回事儿。却忘了其实每个人都有自己的生活轨迹，有着习惯并喜欢的生活方式。所以呢、在别人没有提出困惑并要求建议的时候，我们大可闭嘴。haha……又给自己上了一课！若一辈子只满足于一个吃回锅肉的地方，那肉夹馍怎么办？红烧肉怎么办？还有各种粉怎么办？">
+<meta property="og:description" content="数据卷：可以完成容器到主机，主机到容器的数据共享.主要用于数据持久化docker容器产生的数据，如果不通过docker commit生成新的镜像，使得数据作为镜像的一部分保存下来，那么当容器删除后，数据就没了。所以为了能保存数据在docker中做数据持久化，我们使用数据卷。数据卷的添加：   直接用命令添加 12345docker run -it -v /宿主机绝对路径目录:/容器内目录 (--p">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-12-25T21:48:57.096Z">
+<meta property="og:image" content="http://i2.bvimg.com/672478/2886926ad5f2bfdb.png">
+<meta property="og:updated_time" content="2018-12-28T22:49:35.793Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="闲谈">
-<meta name="twitter:description" content="或许我们有时候都会犯一种错，总自以为是的把自以为好的建议给别人，说起来倒还有些道理，像那么回事儿。却忘了其实每个人都有自己的生活轨迹，有着习惯并喜欢的生活方式。所以呢、在别人没有提出困惑并要求建议的时候，我们大可闭嘴。haha……又给自己上了一课！若一辈子只满足于一个吃回锅肉的地方，那肉夹馍怎么办？红烧肉怎么办？还有各种粉怎么办？">
+<meta name="twitter:title" content="Docker数据卷容器">
+<meta name="twitter:description" content="数据卷：可以完成容器到主机，主机到容器的数据共享.主要用于数据持久化docker容器产生的数据，如果不通过docker commit生成新的镜像，使得数据作为镜像的一部分保存下来，那么当容器删除后，数据就没了。所以为了能保存数据在docker中做数据持久化，我们使用数据卷。数据卷的添加：   直接用命令添加 12345docker run -it -v /宿主机绝对路径目录:/容器内目录 (--p">
+<meta name="twitter:image" content="http://i2.bvimg.com/672478/2886926ad5f2bfdb.png">
 
 
 
@@ -119,13 +121,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/12/26/闲谈/">
+  <link rel="canonical" href="http://yoursite.com/2018/12/29/Docker数据卷容器/">
 
 
 
 
 
-  <title>闲谈 | Hexo</title>
+  <title>Docker数据卷容器 | Hexo</title>
   
 
 
@@ -232,7 +234,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/26/闲谈/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/29/Docker数据卷容器/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John Doe">
@@ -249,7 +251,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">闲谈</h1>
+          <h1 class="post-title" itemprop="name headline">Docker数据卷容器</h1>
         
 
         <div class="post-meta">
@@ -261,8 +263,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-26T04:54:12+08:00">
-                2018-12-26
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-29T06:21:51+08:00">
+                2018-12-29
               </time>
             
 
@@ -299,7 +301,17 @@
       
 
       
-        <p>或许我们有时候都会犯一种错，总自以为是的把自以为好的建议给别人，说起来倒还有些道理，像那么回事儿。却忘了其实每个人都有自己的生活轨迹，有着习惯并喜欢的生活方式。所以呢、在别人没有提出困惑并要求建议的时候，我们大可闭嘴。haha……又给自己上了一课！<br>若一辈子只满足于一个吃回锅肉的地方，那肉夹馍怎么办？红烧肉怎么办？还有各种粉怎么办？</p>
+        <p><strong>数据卷：</strong>可以完成容器到主机，主机到容器的数据共享.主要用于数据持久化<br>docker容器产生的数据，如果不通过docker commit生成新的镜像，使得数据作为镜像的一部分保存下来，那么当容器删除后，数据就没了。所以为了能保存数据在docker中做数据持久化，我们使用数据卷。<br><strong>数据卷的添加：</strong> </p>
+<ol>
+<li><p>直接用命令添加</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker run -it -v /宿主机绝对路径目录:/容器内目录 (--privileged=true)  镜像名          //读写</span><br><span class="line">docker run -it -v /宿主机绝对路径目录:/容器内目录:ro  镜像名                 //容器内只读</span><br><span class="line"></span><br><span class="line">docker run -it -v /home/datahome:/datadocker centos</span><br><span class="line">docker run -it -v /home/datahome:/datadocker:ro centos</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>dockerfile添加</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">dockerfile是对镜像的一种源码描述。Dockerfile添加数据卷的简单操作：</span><br><span class="line"></span><br><span class="line">1.根目录下新建mydocker文件夹并进入     mkdir /mydocker</span><br><span class="line"></span><br><span class="line">2.编辑Dockerfile文件，使用VOLUME指令来给镜像添加一个或多个数据卷</span><br><span class="line">[root@localhost mydocker]# more Dockefile </span><br><span class="line">#volume test</span><br><span class="line">FROM centos</span><br><span class="line">VOLUME [&quot;/home/data1&quot;,&quot;/home/data2&quot;]          //此指令是在容器内新建两个数据目录来和外界交互</span><br><span class="line">CMD echo &quot;finshed,-------------success!&quot;</span><br><span class="line">CMD /bin/bash</span><br><span class="line"></span><br><span class="line">3.file构建---把dockerfile文件build成一个新镜像，build后生成一个新镜像remy/centos(镜像名随意)   . 表示在当前目录下面</span><br><span class="line">docker build -f /mydocker/Dockefile -t remy/centos .</span><br><span class="line"></span><br><span class="line">4.run容器     docker run -it remy/centos</span><br><span class="line">5.docker inspect 容器id      //查看对应的宿主机的目录</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>docker inspect 容器id      //查看，此时容器内目录就可以和宿主机对应的目录进行数据同步了，可以新建文件测试<br><img src="http://i2.bvimg.com/672478/2886926ad5f2bfdb.png" alt="http://i2.bvimg.com/672478/2886926ad5f2bfdb.png"></p>
+<p><strong>数据卷容器：通过挂载父容器来实现数据的传递依赖，相当于一条绳上的蚂蚱，容器之间、容器与宿主机之间数据同步共享</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">以之前的数据卷为基础</span><br><span class="line"></span><br><span class="line">docker run -it --name dc01 remy/centos        运行之前生成的一个镜像，该镜像本身自带数据卷         </span><br><span class="line"></span><br><span class="line">docker run -it --name dc02 --volumes-from dc01 remy/centos         --volumes-from  继承的容器名   镜像名</span><br><span class="line"></span><br><span class="line">docker run -it --name dc03 --volumes-from dc01 remy/centos</span><br><span class="line"></span><br><span class="line">现在的情况是：</span><br><span class="line">dc01容器上面本身有data1和data2目录，因为dc02和dc03都继承dc01，所以2和3上也有。</span><br><span class="line">如果把dc01的容器干掉，dc02和dc03的目录依然存在，在2或3上的数据卷目录下新建文件，彼此都会有。</span><br><span class="line">只要存在1个，那就会继承。</span><br><span class="line">如果新加一个dc04继承dc02，同样dc04也有，在dc04上新建文件，2和3也会有。</span><br></pre></td></tr></table></figure></p>
 
       
     </div>
@@ -324,8 +336,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/12/26/Docker集中化web管理平台/" rel="next" title="Docker集中化web管理平台">
-                <i class="fa fa-chevron-left"></i> Docker集中化web管理平台
+              <a href="/2018/12/29/Docker基本命令/" rel="next" title="Docker基本命令">
+                <i class="fa fa-chevron-left"></i> Docker基本命令
               </a>
             
           </div>
@@ -333,10 +345,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/12/27/centos7部署nginx+keepalived/" rel="prev" title="centos7部署nginx+keepalived">
-                centos7部署nginx+keepalived <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>

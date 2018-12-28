@@ -229,6 +229,135 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/16/redis单机安装/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/12/16/redis单机安装/" itemprop="url">redis单机安装</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-16T09:05:47+08:00">
+                2018-12-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>1.浏览器查看下载哪个版本<a href="http://download.redis.io/release" target="_blank" rel="noopener">http://download.redis.io/release</a><br>2.安装依赖 yum -y install gcc<br>3.安装<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local</span><br><span class="line">wget http://download.redis.io/releases/redis-5.0.1.tar.gz</span><br><span class="line">tar zxvf redis-5.0.1.tar.gz </span><br><span class="line">cd redis-5.0.1</span><br><span class="line">make MALLOC=libc</span><br><span class="line">cd src &amp;&amp; make install</span><br></pre></td></tr></table></figure></p>
+<p>4.更改配置： #以守护进程方式启动  #允许所有ip访问   #有必要的情况下修改默认端口<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sed -i &apos;s/daemonize no/daemonize yes/&apos; /usr/local/redis-5.0.1/redis.conf</span><br><span class="line">sed -i &apos;s/bind 127.0.0.1/#bind 127.0.0.1/&apos; /usr/local/redis-5.0.1/redis.conf</span><br><span class="line">sed -i &apos;s/port 6379/port 6377/&apos; /usr/local/redis-5.0.1/redis.conf</span><br></pre></td></tr></table></figure></p>
+<p>5.启动，两种方式，一般通过后台进程启动<br>1.直接启动redis<br>cd /usr/local/redis-5.0.1/src<br>./redis-server<br>该启动方式需要一直打开窗口，ctrl + c退出。</p>
+<p>2.后台进程方式启动,指定文件启动<br>./redis-server ../redis.conf</p>
+<p>测试连接：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost redis-5.0.1]# cd /root/redis-5.0.1/src/</span><br><span class="line">[root@localhost src]# redis-cli </span><br><span class="line">127.0.0.1:6379&gt;</span><br></pre></td></tr></table></figure></p>
+<p>设置软连接，让redis指令可以在任意目录下直接使用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ln -s /root/redis-5.0.1/src/redis-cli /usr/bin/redis</span><br><span class="line">[root@localhost ~]# redis</span><br><span class="line">127.0.0.1:6379&gt;</span><br></pre></td></tr></table></figure></p>
+<p>或者将redis-cli拷贝到/usr/bin/下，让redis-cli指令可以在任意目录下直接使用<br>cp /root/redis-5.0.1/src/redis-cli /usr/local/bin</p>
+<p>设置redis密码，一般也不设置吧，不清楚，反正我们公司总没有设置，具体看要求吧<br>cd /usr/local/redis-5.0.1/<br>打开redis.conf文件，搜索requirepass关键字，在#requirepass foobared下面添加一行<br>requirepass    123456         #设置redis密码为123456</p>
+<p>保存退出并重启redis</p>
+<p>通过客户端连接的话必须加上密码参数才能正常连接：<br><code>[root@localhost redis-5.0.1]# redis -a 123456</code></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/14/rabbitMQ单机/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1190,7 +1319,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-count">28</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
