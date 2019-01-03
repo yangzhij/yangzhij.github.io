@@ -229,6 +229,271 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/18/jenkins的升级和迁移/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/12/18/jenkins的升级和迁移/" itemprop="url">jenkins的升级和迁移</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-18T17:15:46+08:00">
+                2018-12-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><strong>先说jenkins的迁移吧……</strong><br>比如想把一台A虚拟机上的jenkins迁移到另一台B上面：<br>首先在B机器上搭好Jenkins，然后启动jenkins，安装插件，该配置的都配好。然后进行如下操作：</p>
+<p>1、首先确认Jenkins的job存放目录。</p>
+<p><font color="#FF0000"> 注意：jenkins默认的主目录存放在当前用户家目录路径下的.jenkins目录中。如jenkins使用root用户启动，则主目录为/root/.jenkins</font><br>本例中Jenkins A的工作目录为/root/.jenkins，Jenkins B的工作目录为/root/.jenkins。</p>
+<p>2、接下来迁移jobs目录，压缩A机器上Jenkins工作目录下的jobs目录，并拷贝到B：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd  /root/.jenkins</span><br><span class="line">tar  -czvf  jobs.tar.gz  jobs</span><br><span class="line">scp  jobs.tar  172.20.100.115:/root/.jenkins/</span><br></pre></td></tr></table></figure></p>
+<p>3、然后在B服务器上解压jobs.tar.gz，解压完后最好重启下B上的jenkins服务<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf  jobs.tar.gz</span><br></pre></td></tr></table></figure></p>
+<p>当时做迁移查阅资料时，网上说迁移的时候可以直接把老服务器jenkins主目录数据整个拷贝过去，也可以单独拷贝jenkins主目录下的config.xml文件以及jobs、users、workspace、plugins四个目录（这是主要的迁移数据）,但是我做的时候就只拷贝了下jobs目录，当然也只是需要拷贝项目，拷贝过来后，在新的jenkins上就可以看到所有原来A上的服务了，然后再手动创建视图，把对应的服务勾选到相应的视图即可。（还有一种是拆分，就是把A上的部分服务拆分到B上，一样的做法，就是把jobs里面你要拆分出去的服务打包，传到B上就可以。）</p>
+<p>迁移注意事项：迁移可能会对版本有要求，我记得当时B上安装的是最新版的jenkins，然后A上的服务迁移过来后，点击构建总是报错，但是如果自己新创建一个任务后，构建是没问题的。  好在当时服务少，我就用了半小时把这几个服务新建了一下，测试没问题…如果多的话怎么办呀，一来是可以安装原来的版本，二来呢把A上的jenkins升级到和B一个版本，然后再拷贝，就没问题了。亲自测试过的。</p>
+<p><strong>再说jenkins的升级……</strong><font color="#FF0000"> 真的是so esay!</font><br>1.停掉jenkins<br>2.备份webapp下的jenkins包， 然后删除rm jenkins.war<br>3.下载最新的：wget <a href="http://mirrors.jenkins.io/war-stable/latest/jenkins.war" target="_blank" rel="noopener">http://mirrors.jenkins.io/war-stable/latest/jenkins.war</a><br>4.重新启动jenkins</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/16/Jenkins部署/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/12/16/Jenkins部署/" itemprop="url">Jenkins部署</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-16T12:08:08+08:00">
+                2018-12-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>由于架构体系的要求，已经部署过N多次jenkins了，部署完一次之后。后续不过都是基于现有的，直接把相关程序包拷贝到另一台新机器上即可。可能会提醒你有新版本了，这个更不更新无所谓的，看个人….<br>现在把部署过程做个记录……<br>先提一下jenkins是啥吧，害怕后面忘了…<br>jenkins,一个用于持续集成的工具，可以在研发把代码提交gitlab，svn等代码仓库后，通过jenkins拿到最新的代码后进行自动化编译，打包，上传服务器并部署。相对于原始的手动打包，上传等确实方便的多。简洁明了就一句话：持续集成即一个自动构建过程，包括自动编译，分发，部署和测试。<br>工作流程：在jenkins上点击某个按钮进行构建–jenkins收到命令后–从git或svn上把源码下载下来–根据设置的mvn命令进行打包–把打包好的jar包或者war包传到你的服务器上–启动服务<br>jenkins构建后操作，就是把通过maven命令打好包然后copy到服务器上。动态web工程打war包，java工程打jar包    </p>
+<p>部署：  //172.20.100.176</p>
+<font color="#FF0000"><strong>#jenkins属于java代码，需要java才能运行jenkins，So need install JDK+Tomcat</strong></font>
+
+<p><strong>1.查看java：</strong>   java -version<br><strong>2.如果没有, oracle官网下载JDK,解压</strong><br><a href="https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html" target="_blank" rel="noopener">https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/</span><br><span class="line">tar -zxvf jdk-8u171-linux-x64.tar.gz</span><br></pre></td></tr></table></figure></p>
+<p><strong>3.配置环境变量</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/profile</span><br><span class="line">export JAVA_HOME=/usr/local/java/jdk1.8.0_171</span><br><span class="line">export CLASSPATH=.:$JAVA_HOME/jre/lib/rt.jar:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar</span><br><span class="line">export PATH=$PATH:$JAVA_HOME/bin</span><br><span class="line">source /etc/profile</span><br></pre></td></tr></table></figure></p>
+<p><strong>4.安装Tomcat+jenkins</strong><br><em>#查看Tomcat版本： <a href="http://mirrors.tuna.tsinghua.edu.cn/apache/tomcat/" target="_blank" rel="noopener">http://mirrors.tuna.tsinghua.edu.cn/apache/tomcat/</a></em><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">cd /home</span><br><span class="line">wget http://mirrors.tuna.tsinghua.edu.cn/apache/tomcat/tomcat-9/v9.0.14/bin/apache-tomcat-9.0.14.tar.gz</span><br><span class="line">tar zxvf apache-tomcat-9.0.14.tar.gz </span><br><span class="line">mv apache-tomcat-9.0.14 Jenkinstomcat</span><br><span class="line">cd Jenkinstomcat/conf/</span><br><span class="line">vi server.xml #有需要修改Tomcat端口,例如改为83端口   </span><br><span class="line">sed -i &apos;s/Connector port=&quot;8080&quot;/Connector port=&quot;83&quot;/&apos; /home/Jenkinstomcat/conf/server.xml  </span><br><span class="line">cd ../bin/</span><br><span class="line">./startup.sh    #启动  172.20.100.176:83</span><br><span class="line">cd ../webapps/</span><br></pre></td></tr></table></figure></p>
+<p>#将jenkins的war包放在Tomcat的webapps下，这里下载的是最新的,两个路径皆可<br>wget <a href="http://ftp.yz.yamagata-u.ac.jp/pub/misc/jenkins/war-stable/latest/jenkins.war" target="_blank" rel="noopener">http://ftp.yz.yamagata-u.ac.jp/pub/misc/jenkins/war-stable/latest/jenkins.war</a><br>wget <a href="http://mirrors.jenkins.io/war-stable/latest/jenkins.war" target="_blank" rel="noopener">http://mirrors.jenkins.io/war-stable/latest/jenkins.war</a><br><em>#具体版本可看<a href="http://ftp.yz.yamagata-u.ac.jp/pub/misc/jenkins/war-stable/" target="_blank" rel="noopener">http://ftp.yz.yamagata-u.ac.jp/pub/misc/jenkins/war-stable/</a></em> </p>
+<p><strong>5.安装maven(直接解压即可,环境变量有没有无所谓吧，反正我一般总不配置)</strong><br><em>#作用:负责java语言的编译和打包</em><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local</span><br><span class="line">wget https://mirrors.cnnic.cn/apache/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.tar.gz</span><br><span class="line">tar -zxvf  apache-maven-3.5.4-bin.tar.gz</span><br></pre></td></tr></table></figure></p>
+<p>—–当然了，安装完maven后是需要修改配置文件的，/usr/local/apache-maven-3.5.4/conf/settings.xml，这个里面需要修改maven私服的地址，以及登陆maven私服的用户名及密码。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;server&gt;</span><br><span class="line">  &lt;id&gt;nexus&lt;/id&gt;</span><br><span class="line">  &lt;username&gt;admin&lt;/username&gt;</span><br><span class="line">  &lt;password&gt;admin123&lt;/password&gt;</span><br><span class="line"> &lt;/server&gt;</span><br></pre></td></tr></table></figure></p>
+<p><img src="http://i1.bvimg.com/672478/f957860621ab9b65.png" alt="http://i1.bvimg.com/672478/f957860621ab9b65.png"><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;mirror&gt;</span><br><span class="line">  &lt;id&gt;nexus&lt;/id&gt;</span><br><span class="line">  &lt;mirrorOf&gt;*&lt;/mirrorOf&gt;</span><br><span class="line">  &lt;name&gt;nexus&lt;/name&gt;</span><br><span class="line">  &lt;url&gt;http://172.20.100.202:8084/repository/maven-public/&lt;/url&gt;</span><br><span class="line">&lt;/mirror&gt;</span><br></pre></td></tr></table></figure></p>
+<p><img src="http://i1.bvimg.com/672478/a53f18b2b693a8ba.png" alt="http://i1.bvimg.com/672478/a53f18b2b693a8ba.png"><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"> &lt;profile&gt;</span><br><span class="line"> &lt;id&gt;nexus&lt;/id&gt;</span><br><span class="line"> &lt;repositories&gt;</span><br><span class="line">   &lt;repository&gt;</span><br><span class="line">     &lt;id&gt;nexus&lt;/id&gt;</span><br><span class="line">     &lt;name&gt;Nexus&lt;/name&gt;</span><br><span class="line">     &lt;url&gt;http://172.20.100.202:8084/repository/maven-public/&lt;/url&gt;</span><br><span class="line">     &lt;releases&gt;</span><br><span class="line">       &lt;enabled&gt;true&lt;/enabled&gt;</span><br><span class="line">     &lt;/releases&gt;</span><br><span class="line">     &lt;snapshots&gt;</span><br><span class="line">       &lt;enabled&gt;true&lt;/enabled&gt;</span><br><span class="line">     &lt;/snapshots&gt;</span><br><span class="line">   &lt;/repository&gt;</span><br><span class="line">  &lt;/repositories&gt;</span><br><span class="line">&lt;/profile&gt;</span><br></pre></td></tr></table></figure></p>
+<p><img src="http://i1.bvimg.com/672478/1163e192845e2268.png" alt="http://i1.bvimg.com/672478/1163e192845e2268.png"><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;activeProfiles&gt;</span><br><span class="line">  &lt;activeProfile&gt;nexus&lt;/activeProfile&gt;</span><br><span class="line">&lt;/activeProfiles&gt;</span><br></pre></td></tr></table></figure></p>
+<p><img src="http://i1.bvimg.com/672478/6be793e7fd0e1a1d.png" alt="http://i1.bvimg.com/672478/6be793e7fd0e1a1d.png"></p>
+<p><strong>#重启</strong>  </p>
+<pre><code>cd /home/Jenkinstomcat/bin
+./startup.sh 
+</code></pre><p><strong>访问：</strong><br><a href="http://172.20.100.176:83/jenkins/" target="_blank" rel="noopener">http://172.20.100.176:83/jenkins/</a></p>
+<p>现在！！  就可以登陆jenkins了，然后跟着提示一步步来就可以了。<br><strong>还有一种安装jenkins的方式是直接跑jenkins.war包</strong><br>1.安装java并配置<br>2.下载jenkins包并启动…..查看具体版本wget <a href="http://mirrors.jenkins-ci.org/war-stable/" target="_blank" rel="noopener">http://mirrors.jenkins-ci.org/war-stable/</a><br>mkdir /home/jenkins<br>cd /home/jenkins<br>wget <a href="http://mirrors.jenkins-ci.org/war-stable/2.121.3/jenkins.war" target="_blank" rel="noopener">http://mirrors.jenkins-ci.org/war-stable/2.121.3/jenkins.war</a><br>nohup java -jar ./jenkins.war –httpPort=81 &gt;/dev/null 2&gt;&amp;1 &amp;        #后台启动并指定端口<br>访问：<a href="http://47.90.122.91:81/" target="_blank" rel="noopener">http://47.90.122.91:81/</a><br>安装插件： 系统管理–安装插件–可选插件中搜索maven      选择Maven Integration 和 Pipeline Maven Integration 安装即可。<br>一些需要配置的截图,其中maven的配置文件后续会有说明<br><img src="http://i2.bvimg.com/672478/0adb648d453eedad.png" alt="http://i2.bvimg.com/672478/0adb648d453eedad.png"><br><img src="http://i2.bvimg.com/672478/6d969e4de5ef82d3.png" alt="http://i2.bvimg.com/672478/6d969e4de5ef82d3.png"><br><img src="http://i2.bvimg.com/672478/f82ad8942fabd4de.png" alt="http://i2.bvimg.com/672478/f82ad8942fabd4de.png"><br><img src="http://i2.bvimg.com/672478/0b924076747cfd71.png" alt="http://i2.bvimg.com/672478/0b924076747cfd71.png"></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/16/redis单机安装/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -552,7 +817,7 @@
       
         
           
-            <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sed -n &apos;/2018-11-03 09:30:[0-9][0-9].[0-9][0-9][0-9]/,/2018-11-03 09:40:[0-9][0-9].[0-9][0-9][0-9]/&apos;p  filename.log</span><br><span class="line"></span><br><span class="line">sed -n &apos;/2018-11-19 20:43:29/,/2018-11-19 20:47:47/&apos;p  account-service-info.log</span><br><span class="line"></span><br><span class="line">#这个是8:54-55的数据</span><br><span class="line">grep &apos;Sep 14 08:5[4-5]&apos; /var/log/messages</span><br></pre></td></tr></table></figure>
+            <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sed -n &apos;/2018-11-03 09:30:[0-9][0-9].[0-9][0-9][0-9]/,/2018-11-03 09:40:[0-9][0-9].[0-9][0-9][0-9]/&apos;p  filename.log</span><br><span class="line"></span><br><span class="line">sed -n &apos;/2018-11-19 20:43/,/2018-11-19 20:47/&apos;p  account-service-info.log</span><br><span class="line"></span><br><span class="line">#这个是8:54-55的数据</span><br><span class="line">grep &apos;Sep 14 08:5[4-5]&apos; /var/log/messages</span><br></pre></td></tr></table></figure>
 
           
         
@@ -1319,7 +1584,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-count">30</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -1360,7 +1625,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
