@@ -86,13 +86,13 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="Ansible:用于配置管理的自动化工具，基于python开发，分布式，使用ssh来管理客户端。ansible不需要启动服务，批量管理远程主机，执行结果会在本地返回。 //ansible 使用依赖于 ssh123//在管理端输入此命令，直接回车，生成密钥对，在/root/.ssh/下有两个文件。一个公钥，一个私钥。然后把公钥分发至被管理主机上。ssh-keygen     //连续回车生成密钥ss">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="http://i2.bvimg.com/672478/6caa4372699d5088.png">
-<meta property="og:image" content="http://i1.bvimg.com/672478/a927f41374c75a32.png">
-<meta property="og:updated_time" content="2018-12-27T20:19:00.335Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/yangzhij/myself-images/master/yaml.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yangzhij/myself-images/master/jenk-ssh.png">
+<meta property="og:updated_time" content="2019-01-06T11:14:14.886Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ansible记录">
 <meta name="twitter:description" content="Ansible:用于配置管理的自动化工具，基于python开发，分布式，使用ssh来管理客户端。ansible不需要启动服务，批量管理远程主机，执行结果会在本地返回。 //ansible 使用依赖于 ssh123//在管理端输入此命令，直接回车，生成密钥对，在/root/.ssh/下有两个文件。一个公钥，一个私钥。然后把公钥分发至被管理主机上。ssh-keygen     //连续回车生成密钥ss">
-<meta name="twitter:image" content="http://i2.bvimg.com/672478/6caa4372699d5088.png">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/yangzhij/myself-images/master/yaml.png">
 
 
 
@@ -317,7 +317,7 @@
 <p><strong>playbook基础组件</strong><br>•    Hosts：运行执行任务（task）的目标主机，可以是单个ip，也可是定义的主机组<br>•    remote_user：在远程主机上执行任务的用户<br>•    tasks：任务列表<br>•    handlers：任务，与tasks不同的是只有在接受到通知时才会被触发</p>
 <p>playbook由YMAL语言编写，整个playbook是以task为中心，表明要执行的任务。hosts和remote_user表明在哪些远程主机以何种身份执行.<br>Name: 每一个task都有一个名称，用于标记此任务。</p>
 <p>文件名以yaml结尾，如a.yaml   执行命令为ansible-playbook a.yml<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost yamls]# more a.yaml </span><br><span class="line">- hosts: 172.20.100.68</span><br><span class="line">  remote_user: root</span><br><span class="line">  </span><br><span class="line">  tasks:</span><br><span class="line">    - name: copy jar to remote</span><br><span class="line">      copy: src=/home/pay-1.0.0.jar  dest=/home/pay-1.0.0.jar  owner=root  group=root  mode=0644</span><br><span class="line"></span><br><span class="line">    - name: copy shell to remote</span><br><span class="line">      copy: src=/home/shell/pay-service.sh  dest=/home/wwwroot/pay-service.sh  owner=root group=root mode=0755</span><br><span class="line">    </span><br><span class="line">    - name: execute shell </span><br><span class="line">      shell: /bin/bash /home/wwwroot/pay-service.sh</span><br><span class="line"></span><br><span class="line">[root@localhost yamls]#</span><br></pre></td></tr></table></figure></p>
-<p><img src="http://i2.bvimg.com/672478/6caa4372699d5088.png" alt="http://i2.bvimg.com/672478/6caa4372699d5088.png"><br><img src="http://i1.bvimg.com/672478/a927f41374c75a32.png" alt="http://i1.bvimg.com/672478/a927f41374c75a32.png"></p>
+<p><img src="https://raw.githubusercontent.com/yangzhij/myself-images/master/yaml.png" alt="https://raw.githubusercontent.com/yangzhij/myself-images/master/yaml.png"><br><img src="https://raw.githubusercontent.com/yangzhij/myself-images/master/jenk-ssh.png" alt="https://raw.githubusercontent.com/yangzhij/myself-images/master/jenk-ssh.png"></p>
 
       
     </div>
