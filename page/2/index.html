@@ -229,6 +229,388 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/29/Docker简介及安装/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/12/29/Docker简介及安装/" itemprop="url">Docker简介及安装</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-29T00:47:02+08:00">
+                2018-12-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>devops：开发自运维。  这应该是你的方向。<br>docker基于Go语言实现的云开源项目。可以让程序带环境安装：通过docker封装好原始环境（代码，配置，数据，系统…….）<br><strong>docker中文网站： <a href="https://docker-cn.com" target="_blank" rel="noopener">https://docker-cn.com</a></strong><br><strong>docker出现：</strong><br>经常性的运维开发扯皮。部署开发提交的代码（jar包/war包），开发本地可以，运维部署出现问题：环境和配置。<br>之前，开发交代码—有了docker以后，开发可以交镜像（把环境打包成镜像，一次封装，处处运行）</p>
+<p><strong>为什么docker比虚拟机快呢？</strong><br>虚拟机模拟的是整套操作系统（软件+硬件）。对于底层系统而言，虚拟机就是一个文件。不用了就删除。不影响别的。分钟级启动。<br>Linux容器模拟的不是一整套操作系统，只对进程进行隔离。容器没有内核，也不虚拟硬件，共用宿主机的，运行速度快（秒级启动）。可以理解为高度浓缩版的liunx系统。系统上只有一个docker引擎，没有硬件资源，不加载内核，宿主机的资源统一用（与宿主机共享OS）。  干掉了操作系统和硬件虚拟资源。</p>
+<p><strong>安装前提：  centos6.5以上版本，64位版本</strong><br>Client端(shell终端，也叫docker客户端)：  docker build;    docker pull;   docker run;<br>Docker_Host:  装docker的主机<br>Registry: 注册仓库， 需要运行什么，直接从仓库拉取镜像，镜像即容器实例。仓库注册服务器上会存放多个仓库。 </p>
+<p>docker: 容器运行的载体，是一个管理引擎。  只有通过镜像文件才能生成docker容器。<br>ocker原理： c/s结构。  dockers守护进程运行在主机上，通过socket连接从客户端访问。守护进程从客户端接收命令并管理运行在主机上的机器，容器是一个运行时的环境，即集装箱。<br><strong>docker三要素：</strong><br>镜像： 模板，容器实例.<br>容器： 独立运行的一个或一组应用。  容器是用镜像创建的运行实例。容器间相互隔离。<br>仓库： 存放镜像文件。<br>仓库分公开库和私有库。有名的公开库docker hub： 放容器的仓库，国内基本用不到，因为是国外的网站，太慢。国内用阿里云和网易云。</p>
+<p><strong>安装：</strong><br>centos6.8安装<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">yum install -y epel-release    #依赖库</span><br><span class="line">yum -y install docker-io</span><br><span class="line">安装后的配置文件：  vi /etc/sysconfig/docker</span><br><span class="line">other_args=&quot;--registry-mirror=自己账号的加速信息&quot;   #指定从国内阿里云下载镜像</span><br><span class="line">启动docker后台服务： service docker start</span><br><span class="line">验证： docker version</span><br><span class="line">启动测试：docker run hello-world</span><br></pre></td></tr></table></figure></p>
+<p><strong>run干了什么?</strong><br>先会在本机找镜像，如果本地有，以镜像为模板生成容器实例运行，没有，就去仓库查找该镜像，能找到，先下载到本地，以镜像为模板生成容器实例运行，没有则返回错误信息–查不到该镜像。</p>
+<p>centos7安装docker<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">yum -y update</span><br><span class="line">yum install -y yum-utils device-mapper-persistent-data lvm2</span><br><span class="line">yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo  (国外用dockerhub)</span><br><span class="line">yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo (国内用阿里云)</span><br><span class="line">yum list docker-ce --showduplicates | sort -r              #查看所有仓库中所有docker版本，并选择特定版本安装</span><br><span class="line">yum -y install docker-ce-17.12.1.ce                        #安装所选版本</span><br><span class="line">yum -y install docker-ce            #直接安装最新版本，可忽略上两行命令                        </span><br><span class="line">systemctl start docker              //启动docker</span><br></pre></td></tr></table></figure></p>
+<p>卸载docker<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">systemctl stop docker</span><br><span class="line">yum remove docker-ce -y</span><br><span class="line">rm -rf /var/lib/docker</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/28/Ansible记录/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/12/28/Ansible记录/" itemprop="url">Ansible记录</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-28T03:21:11+08:00">
+                2018-12-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Ansible:用于配置管理的自动化工具，基于python开发，分布式，使用ssh来管理客户端。<br>ansible不需要启动服务，批量管理远程主机，执行结果会在本地返回。</p>
+<p><em>//ansible 使用依赖于 ssh</em><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">//在管理端输入此命令，直接回车，生成密钥对，在/root/.ssh/下有两个文件。一个公钥，一个私钥。然后把公钥分发至被管理主机上。</span><br><span class="line">ssh-keygen     //连续回车生成密钥</span><br><span class="line">ssh-copy-id root@10.0.0.1            //推送公钥到远程主机</span><br></pre></td></tr></table></figure></p>
+<p>开始安装ansible<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">//管理端</span><br><span class="line">yum install epel-release  -y</span><br><span class="line">yum install ansible -y</span><br><span class="line"></span><br><span class="line">//若客户端缺少插件则安装</span><br><span class="line">yum install libselinux-python  -y	</span><br><span class="line">yum -y install python-devel</span><br></pre></td></tr></table></figure></p>
+<p>主机管理端配置文件 vim /etc/ansible/hosts   //在此配置文件中如下定义主机组，文件末尾追加即可。如下默认端口是22，特殊端口需指定<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[db-test]</span><br><span class="line">10.0.0.1</span><br><span class="line">10.0.0.2  ansible_ssh_port=9999</span><br><span class="line">[mq-test]</span><br><span class="line">10.0.0.32          </span><br><span class="line">10.0.0.33</span><br><span class="line">10.0.0.3[2:3]   //也可这样写，和上面一样</span><br></pre></td></tr></table></figure></p>
+<p>//command模块功能：在指定节点上运行linux命令<br>//可指定当个远程IP或者整个主机组<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# ansible 10.0.0.1 -m command -a &apos;bash /root/a.sh&apos;</span><br><span class="line">[root@localhost ~]# ansible db-test -m command -a &apos;bash /root/a.sh&apos;</span><br></pre></td></tr></table></figure></p>
+<p>//creates：一个文件名，当该文件存在，则该命令不执行。如运行脚本，当远程主机上/home/ip存在，则不执行该脚本<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# ansible db-test -m command -a &apos;bash /root/a.sh creates=/home/ip&apos;</span><br></pre></td></tr></table></figure></p>
+<p>//removes：指定一个文件名，当远程主机上该文件不存在，则该命令不执行,存在则执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# ansible db-test -m command -a &apos;bash /root/a.sh removes=/home/ip&apos;</span><br></pre></td></tr></table></figure></p>
+<p>//copy模块：把server端某一文件拷贝到指定节点上。若指定节点上有该文件，则覆盖，文件属性不变。<br>//src原文件路径<br>//dest目标文件路径， 可在路径中指定文件名，如果不指定则默认使用原文件名<br>//owner 指定属主<br>//group 指定属组<br>//backup=yes    在覆盖之前将远程主机的原文件备份，当文件内容不变时，使用backup，则不会进行备份<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ansible 172.20.100.162 -m copy &quot;src=/home/wwwroot/hello.jar dest=/home/wwwroot/hello.jar owner=root group=root mode=0644 backup=yes&quot;</span><br></pre></td></tr></table></figure></p>
+<p>//fetch模块功能：将远程主机中的文件拷贝到本机中<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ansible 172.20.100.162 -m fetch -a &apos;src=/root/www.html dest=/home/remy/&apos;</span><br></pre></td></tr></table></figure></p>
+<p>一些相关的基础用法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ansible db-test -m command -a &quot;ls -l /server/scripts&quot;            //查看远程主机文件</span><br><span class="line"></span><br><span class="line">ansible db-test -m command -a &quot;rpm -qa iotop&quot;              //查看有没有某个安装包</span><br><span class="line"></span><br><span class="line">ansible db-test -m shell -a &quot;/server/scripts/a.sh&quot;           //批量执行分发在被管理机上的脚本</span><br><span class="line">ansible db-test -m command -a &apos;bash /root/a.sh&apos;</span><br><span class="line"></span><br><span class="line">ansible liantong –m copy -a &quot;src=/server/scripts/yum.sh dest=/server/scripts/ mode=0755“     //复制文件到远程主机</span><br></pre></td></tr></table></figure></p>
+<font color="#FF0000"><strong>！！！重点来了—playbook</strong></font> 
+
+<p><strong>playbook基础组件</strong><br>•    Hosts：运行执行任务（task）的目标主机，可以是单个ip，也可是定义的主机组<br>•    remote_user：在远程主机上执行任务的用户<br>•    tasks：任务列表<br>•    handlers：任务，与tasks不同的是只有在接受到通知时才会被触发</p>
+<p>playbook由YMAL语言编写，整个playbook是以task为中心，表明要执行的任务。hosts和remote_user表明在哪些远程主机以何种身份执行.<br>Name: 每一个task都有一个名称，用于标记此任务。</p>
+<p>文件名以yaml结尾，如a.yaml   执行命令为ansible-playbook a.yml<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost yamls]# more a.yaml </span><br><span class="line">- hosts: 172.20.100.68</span><br><span class="line">  remote_user: root</span><br><span class="line">  </span><br><span class="line">  tasks:</span><br><span class="line">    - name: copy jar to remote</span><br><span class="line">      copy: src=/home/pay-1.0.0.jar  dest=/home/pay-1.0.0.jar  owner=root  group=root  mode=0644</span><br><span class="line"></span><br><span class="line">    - name: copy shell to remote</span><br><span class="line">      copy: src=/home/shell/pay-service.sh  dest=/home/wwwroot/pay-service.sh  owner=root group=root mode=0755</span><br><span class="line">    </span><br><span class="line">    - name: execute shell </span><br><span class="line">      shell: /bin/bash /home/wwwroot/pay-service.sh</span><br><span class="line"></span><br><span class="line">[root@localhost yamls]#</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://raw.githubusercontent.com/yangzhij/myself-images/master/yaml.png" alt="https://raw.githubusercontent.com/yangzhij/myself-images/master/yaml.png"><br><img src="https://raw.githubusercontent.com/yangzhij/myself-images/master/jenk-ssh.png" alt="https://raw.githubusercontent.com/yangzhij/myself-images/master/jenk-ssh.png"></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/28/SVN客户端安装/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/12/28/SVN客户端安装/" itemprop="url">SVN客户端安装</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-28T01:56:21+08:00">
+                2018-12-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>svn客户端下载地址<br><a href="https://tortoisesvn.net/downloads.zh.html" target="_blank" rel="noopener">https://tortoisesvn.net/downloads.zh.html</a><br>下载完毕后，直接下一步安装。安装后，右键SVN Checkout<br>如果服务端IP为172.20.100.115，那么如下设置的game的访问目录就为：svn://172.20.100.115/game<br>点击ok后，会提示你输入用户名及密码。验证通过后，即可将项目下载到本地</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/28/mysql基础/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -421,7 +803,7 @@
       
         
           
-            <p>//java<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//下载</span><br><span class="line">wget http://download.oracle.com/otn-pub/java/jdk/8u171-b13/e9e7ea248e2c4826b92b3f075a80e441/jdk-8u171-linux-x64.tar.gz</span><br><span class="line">//环境变量</span><br><span class="line">vi /etc/profile</span><br><span class="line">export JAVA_HOME=/usr/local/java/jdk1.8.0_171</span><br><span class="line">export CLASSPATH=.:$JAVA_HOME/jre/lib/rt.jar:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar</span><br><span class="line">export PATH=$PATH:$JAVA_HOME/bin</span><br><span class="line">source /etc/profile</span><br></pre></td></tr></table></figure></p>
+            <p>//java<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//环境变量</span><br><span class="line">vi /etc/profile</span><br><span class="line">export JAVA_HOME=/usr/local/java/jdk1.8.0_171</span><br><span class="line">export CLASSPATH=.:$JAVA_HOME/jre/lib/rt.jar:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar</span><br><span class="line">export PATH=$PATH:$JAVA_HOME/bin</span><br><span class="line">source /etc/profile</span><br></pre></td></tr></table></figure></p>
 <p>//查询端口是否被占用，被哪个进程占用有两种方式：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1、netstat -anl | grep &quot;80&quot; </span><br><span class="line">2、lsof -i:80</span><br><span class="line">终止进程的方式：kill -9 pid</span><br></pre></td></tr></table></figure></p>
 <p>//用tomcat进行http传输：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">如在172.20.101.225上：</span><br><span class="line">1、下载安装启动Tomcat (必要时修改端口server.xml）</span><br><span class="line">2、把要传输的文件放入tomcat目录的webapps\ROOT下(可以在该目录创建新的目录，便于区分文件)</span><br><span class="line"></span><br><span class="line">下载方执行如下命令即可：</span><br><span class="line">cd /home  （进哪个目录按需求来定）</span><br><span class="line">wget 172.20.101.225:8080/wget/no_queue.conf</span><br></pre></td></tr></table></figure></p>
 <p>//centos7.0 没有netstat 和 ifconfig命令问题<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">运行yum install net-tools 就OK了</span><br></pre></td></tr></table></figure></p>
@@ -1101,371 +1483,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/24/ddos攻击及黑洞机制/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/24/ddos攻击及黑洞机制/" itemprop="url">ddos攻击及黑洞机制</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-24T00:00:42+08:00">
-                2018-12-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><strong>DDOS攻击分为流量攻击和CC攻击。</strong>两者针对的对象不同；流量攻击主要针对服务器，也就是攻击IP; CC攻击主要针对的网站，攻击的是网页，服务器什么都可以连接，ping也没问题，但是网页就是访问不。<br>CC攻击相对来说危害不是毁灭性的，但是持续时间长（攻击者控制某些主机不停地发大量数据包给对方服务器造成服务器资源耗尽，一直到宕机崩溃。）而ddos这种流量攻击的危害性较大，通过向目标服务器发送大量数据包，耗尽其带宽（利用合理的服务请求来占用过多的服务资源，从而使合法用户无法得到服务的响应）。在防护上可以选择购买DDOS高防设备。<br><strong>高防黑洞机制：</strong>服务器受到攻击时的一种防护策略。<br>阿里云服务器黑洞是指服务器受攻击流量超过本机房黑洞阈值时，阿里云会自动屏蔽服务器的外网访问（ip被黑洞）。当服务器进入黑洞一段时间后，如果系统监控到攻击流量已经停止，黑洞就会自动解封。<br>当用户的服务器受到DDoS 攻击时，机房会分别分摊攻击流量，一旦攻击影响到某个机房的业务流量了，就会进行黑洞来保证机房的稳定性。因为大的DDos攻击不仅会影响用户的服务器，同时也会对整个云网络造成非常严重影响。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/22/mongodb单机安装/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/22/mongodb单机安装/" itemprop="url">mongodb 单机安装</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-22T18:32:21+08:00">
-                2018-12-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><strong>MongoDB是一个基于分布式文件存储的数据库，其目的在于为WEB应用提供可扩展的高性能数据存储解决方案。</strong><br>此为单机部署mongodb, 直接操作此文档命令即可………………………<br>软件下载<a href="https://fastdl.mongodb.org/linux/" target="_blank" rel="noopener">https://fastdl.mongodb.org/linux/</a><br>安装过程如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local</span><br><span class="line">wget https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-rhel70-4.0.4.tgz</span><br><span class="line">tar xvf mongodb-linux-x86_64-rhel70-4.0.4.tgz</span><br><span class="line">mkdir mongodb</span><br><span class="line">mv mongodb-linux-x86_64-rhel70-4.0.4 mongodb/mongodb4.0.4</span><br><span class="line">cd mongodb/mongodb4.0.4</span><br><span class="line">mkdir conf logs</span><br><span class="line">mkdir -p data/db</span><br></pre></td></tr></table></figure></p>
-<p><strong>conf 存放配置文件的目录  logs 存放日志的目录   data/db存放数据文件的目录 </strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">cd conf/</span><br><span class="line">vi mongodb.conf （复制下列内容即可）</span><br><span class="line">#idae - MongoDB config start - 2018-11-27</span><br><span class="line">#设置数据文件的存放目录</span><br><span class="line">dbpath = /usr/local/mongodb/mongodb4.0.4/data/db</span><br><span class="line">#设置日志文件的存放目录及其日志文件名</span><br><span class="line">logpath = /usr/local/mongodb/mongodb4.0.4/logs/mongodb.log</span><br><span class="line"># 设置端口号</span><br><span class="line">port = 27017</span><br><span class="line">#设置运行任意ip连接</span><br><span class="line">bind_ip = 0.0.0.0</span><br><span class="line"># 设置为以守护进程的方式运行，即在后台运行</span><br><span class="line">fork = true</span><br><span class="line">保存退出</span><br></pre></td></tr></table></figure></p>
-<p>#启动<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ../bin</span><br><span class="line">./mongod --config ../conf/mongodb.conf</span><br></pre></td></tr></table></figure></p>
-<p>启动完毕后，用客户端连接，没有用户名密码</p>
-<p><strong>加入开机自启动..将 mongodb 服务加入到自启动文件中,即在文件末尾追加如下命令:</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/rc.local </span><br><span class="line">/usr/local/mongodb/mongodb4.0.4/bin/mongod --config /usr/local/mongodb/mongodb4.0.4/conf/mongodb.conf</span><br><span class="line">chmod +x /etc/rc.local   #执行权限</span><br></pre></td></tr></table></figure></p>
-<p>如下一行命令搞定<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">echo /usr/local/mongodb/mongodb4.0.4/bin/mongod --config /usr/local/mongodb/mongodb4.0.4/conf/mongodb.conf &gt;&gt;/etc/rc.local</span><br><span class="line">chmod +x /etc/rc.local</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/22/鸡毛蒜皮/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/22/鸡毛蒜皮/" itemprop="url">鸡毛蒜皮</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-22T17:37:02+08:00">
-                2018-12-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>昨天出去溜达了一圈，还见了几个之前认识的同事，尽管笑在脸上肆意蔓延，却相谈不欢。倒也不是生疏，可能就是差点儿意思。回家的路上，审视了一下自己，想起了一句话：打铁还需自身硬。刚才吃完饭上楼，有人说，哎呦，你比之前都胖了两圈了……然后不喜欢自己胖的我又一次把健身计划在大脑里回滚了一遍。哈，既然没有把路走好，也别怪别人不客气。<br>…<br>另…冬至安康！</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1516,7 +1533,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-count">36</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
