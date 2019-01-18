@@ -79,17 +79,17 @@
 
 
 
-<meta name="description" content="devops：开发自运维。  这应该是你的方向。docker基于Go语言实现的云开源项目。可以让程序带环境安装：通过docker封装好原始环境（代码，配置，数据，系统…….）docker中文网站： https://docker-cn.comdocker出现：经常性的运维开发扯皮。部署开发提交的代码（jar包/war包），开发本地可以，运维部署出现问题：环境和配置。之前，开发交代码—有了docker">
+<meta name="description" content="//之前做es的配置，其余节点只需改node.name即可，剩下的都一样1234567cluster.name: my-elknode.name: node-2path.data: /data/es-datapath.logs: /var/log/es-lognetwork.host: 0.0.0.0http.port: 9200discovery.zen.ping.unicast.hosts:">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Docker简介及安装">
-<meta property="og:url" content="http://yoursite.com/2018/12/29/Docker简介及安装/index.html">
+<meta property="og:title" content="ELK相关">
+<meta property="og:url" content="http://yoursite.com/2019/01/18/ELK相关/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="devops：开发自运维。  这应该是你的方向。docker基于Go语言实现的云开源项目。可以让程序带环境安装：通过docker封装好原始环境（代码，配置，数据，系统…….）docker中文网站： https://docker-cn.comdocker出现：经常性的运维开发扯皮。部署开发提交的代码（jar包/war包），开发本地可以，运维部署出现问题：环境和配置。之前，开发交代码—有了docker">
+<meta property="og:description" content="//之前做es的配置，其余节点只需改node.name即可，剩下的都一样1234567cluster.name: my-elknode.name: node-2path.data: /data/es-datapath.logs: /var/log/es-lognetwork.host: 0.0.0.0http.port: 9200discovery.zen.ping.unicast.hosts:">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-01-06T13:55:39.225Z">
+<meta property="og:updated_time" content="2019-01-18T06:04:18.632Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Docker简介及安装">
-<meta name="twitter:description" content="devops：开发自运维。  这应该是你的方向。docker基于Go语言实现的云开源项目。可以让程序带环境安装：通过docker封装好原始环境（代码，配置，数据，系统…….）docker中文网站： https://docker-cn.comdocker出现：经常性的运维开发扯皮。部署开发提交的代码（jar包/war包），开发本地可以，运维部署出现问题：环境和配置。之前，开发交代码—有了docker">
+<meta name="twitter:title" content="ELK相关">
+<meta name="twitter:description" content="//之前做es的配置，其余节点只需改node.name即可，剩下的都一样1234567cluster.name: my-elknode.name: node-2path.data: /data/es-datapath.logs: /var/log/es-lognetwork.host: 0.0.0.0http.port: 9200discovery.zen.ping.unicast.hosts:">
 
 
 
@@ -119,13 +119,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/12/29/Docker简介及安装/">
+  <link rel="canonical" href="http://yoursite.com/2019/01/18/ELK相关/">
 
 
 
 
 
-  <title>Docker简介及安装 | Hexo</title>
+  <title>ELK相关 | Hexo</title>
   
 
 
@@ -232,7 +232,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/29/Docker简介及安装/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/18/ELK相关/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John Doe">
@@ -249,7 +249,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Docker简介及安装</h1>
+          <h1 class="post-title" itemprop="name headline">ELK相关</h1>
         
 
         <div class="post-meta">
@@ -261,8 +261,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-29T00:47:02+08:00">
-                2018-12-29
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-18T13:59:07+08:00">
+                2019-01-18
               </time>
             
 
@@ -299,14 +299,8 @@
       
 
       
-        <p>devops：开发自运维。  这应该是你的方向。<br>docker基于Go语言实现的云开源项目。可以让程序带环境安装：通过docker封装好原始环境（代码，配置，数据，系统…….）<br><strong>docker中文网站： <a href="https://docker-cn.com" target="_blank" rel="noopener">https://docker-cn.com</a></strong><br><strong>docker出现：</strong><br>经常性的运维开发扯皮。部署开发提交的代码（jar包/war包），开发本地可以，运维部署出现问题：环境和配置。<br>之前，开发交代码—有了docker以后，开发可以交镜像（把环境打包成镜像，一次封装，处处运行）</p>
-<p><strong>为什么docker比虚拟机快呢？</strong><br>虚拟机模拟的是整套操作系统（软件+硬件）。对于底层系统而言，虚拟机就是一个文件。不用了就删除。不影响别的。分钟级启动。<br>Linux容器模拟的不是一整套操作系统，只对进程进行隔离。容器没有内核，也不虚拟硬件，共用宿主机的，运行速度快（秒级启动）。可以理解为高度浓缩版的liunx系统。系统上只有一个docker引擎，没有硬件资源，不加载内核，宿主机的资源统一用（与宿主机共享OS）。  干掉了操作系统和硬件虚拟资源。</p>
-<p><strong>安装前提：  centos6.5以上版本，64位版本</strong><br>Client端(shell终端，也叫docker客户端)：  docker build;    docker pull;   docker run;<br>Docker_Host:  装docker的主机<br>Registry: 注册仓库， 需要运行什么，直接从仓库拉取镜像，镜像即容器实例。仓库注册服务器上会存放多个仓库。 </p>
-<p>docker: 容器运行的载体，是一个管理引擎。  只有通过镜像文件才能生成docker容器。<br>ocker原理： c/s结构。  dockers守护进程运行在主机上，通过socket连接从客户端访问。守护进程从客户端接收命令并管理运行在主机上的机器，容器是一个运行时的环境，即集装箱。<br><strong>docker三要素：</strong><br>镜像： 模板，容器实例.<br>容器： 独立运行的一个或一组应用。  容器是用镜像创建的运行实例。容器间相互隔离。<br>仓库： 存放镜像文件。<br>仓库分公开库和私有库。有名的公开库docker hub： 放容器的仓库，国内基本用不到，因为是国外的网站，太慢。国内用阿里云和网易云。</p>
-<p><strong>安装：</strong><br>centos6.8安装<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">yum install -y epel-release    #依赖库</span><br><span class="line">yum -y install docker-io</span><br><span class="line">安装后的配置文件：  vi /etc/sysconfig/docker</span><br><span class="line">other_args=&quot;--registry-mirror=自己账号的加速信息&quot;   #指定从国内阿里云下载镜像</span><br><span class="line">启动docker后台服务： service docker start</span><br><span class="line">验证： docker version</span><br><span class="line">启动测试：docker run hello-world</span><br></pre></td></tr></table></figure></p>
-<p><strong>run干了什么?</strong><br>先会在本机找镜像，如果本地有，以镜像为模板生成容器实例运行，没有，就去仓库查找该镜像，能找到，先下载到本地，以镜像为模板生成容器实例运行，没有则返回错误信息–查不到该镜像。</p>
-<p>centos7安装docker<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">yum -y update</span><br><span class="line">yum install -y yum-utils device-mapper-persistent-data lvm2</span><br><span class="line">yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo  (国外用dockerhub)</span><br><span class="line">yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo (国内用阿里云)</span><br><span class="line">yum list docker-ce --showduplicates | sort -r              #查看所有仓库中所有docker版本，并选择特定版本安装</span><br><span class="line">yum -y install docker-ce-17.12.1.ce                        #安装所选版本</span><br><span class="line">yum -y install docker-ce            #直接安装最新版本，可忽略上两行命令                        </span><br><span class="line">systemctl start docker              //启动docker</span><br></pre></td></tr></table></figure></p>
-<p>卸载docker<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">systemctl stop docker</span><br><span class="line">yum remove docker-ce -y</span><br><span class="line">rm -rf /var/lib/docker</span><br></pre></td></tr></table></figure></p>
+        <p>//之前做es的配置，其余节点只需改node.name即可，剩下的都一样<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cluster.name: my-elk</span><br><span class="line">node.name: node-2</span><br><span class="line">path.data: /data/es-data</span><br><span class="line">path.logs: /var/log/es-log</span><br><span class="line">network.host: 0.0.0.0</span><br><span class="line">http.port: 9200</span><br><span class="line">discovery.zen.ping.unicast.hosts: [&quot;172.20.100.219&quot;,&quot;172.20.100.135&quot;,&quot;172.20.100.136&quot;]</span><br></pre></td></tr></table></figure></p>
+<p>//es配置参考<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">[root@host1 ~]# vim /etc/elasticsearch/elasticsearch.yml </span><br><span class="line">cluster.name: my-elk</span><br><span class="line">node.name: node-1</span><br><span class="line">node.master: true    ##做master角色</span><br><span class="line">node.data: false     ##不做数据节点</span><br><span class="line">path.data: /var/data/es-data</span><br><span class="line">bootstrap.mlockall: true</span><br><span class="line">network.host: 0.0.0.0</span><br><span class="line">http.port: 9200</span><br><span class="line">discovery.zen.ping.unicast.hosts: [&quot;172.20.100.219&quot;,&quot;172.20.100.135&quot;,&quot;172.20.100.136&quot;]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[root@host2 ~]# vim /etc/elasticsearch/elasticsearch.yml </span><br><span class="line"></span><br><span class="line">cluster.name: my-elk</span><br><span class="line">node.name: node-2</span><br><span class="line">node.master: false   #不做master节点</span><br><span class="line">node.data: true      #只做数据节点，只负责存储数据，后期提供存储和查询服务</span><br><span class="line">path.data: /var/data/es-data</span><br><span class="line">path.logs: /var/log/es-log</span><br><span class="line">bootstrap.mlockall: true      //添加此选项，防止在内存不够用的时候，elasticsearch的内存被交换至交换区，导致性能骤降。保证了节点加入集群后的稳定性。</span><br><span class="line">network.host: 0.0.0.0</span><br><span class="line">http.port: 9200</span><br><span class="line">discovery.zen.ping.unicast.hosts: [&quot;172.20.100.219&quot;,&quot;172.20.100.135&quot;,&quot;172.20.100.136&quot;]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[root@host3 ~]# vim /etc/elasticsearch/elasticsearch.yml</span><br><span class="line">cluster.name: my-elk</span><br><span class="line">node.name: node-3</span><br><span class="line">node.master: false      ##表示host3本节点不充当，精选master角色</span><br><span class="line">node.data: true         ##表示host3节点充当数据节点</span><br><span class="line">path.data: /var/data/es-data</span><br><span class="line">bootstrap.mlockall: true</span><br><span class="line">network.host: 0.0.0.0</span><br><span class="line">http.port: 9200</span><br><span class="line">discovery.zen.ping.unicast.hosts: [&quot;172.20.100.219&quot;,&quot;172.20.100.135&quot;,&quot;172.20.100.136&quot;]</span><br></pre></td></tr></table></figure></p>
 
       
     </div>
@@ -331,8 +325,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/12/28/Ansible记录/" rel="next" title="Ansible记录">
-                <i class="fa fa-chevron-left"></i> Ansible记录
+              <a href="/2019/01/18/ELK部署/" rel="next" title="ELK部署">
+                <i class="fa fa-chevron-left"></i> ELK部署
               </a>
             
           </div>
@@ -340,10 +334,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/12/29/Docker基本命令/" rel="prev" title="Docker基本命令">
-                Docker基本命令 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
