@@ -86,7 +86,7 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="//java123456//环境变量vi /etc/profileexport JAVA_HOME=/usr/local/java/jdk1.8.0_171export CLASSPATH=.:$JAVA_HOME/jre/lib/rt.jar:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jarexport PATH=$PATH:$JAVA_HOME/bi">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-01-23T02:50:04.636Z">
+<meta property="og:updated_time" content="2019-02-04T05:09:33.913Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="linux一些基础">
 <meta name="twitter:description" content="//java123456//环境变量vi /etc/profileexport JAVA_HOME=/usr/local/java/jdk1.8.0_171export CLASSPATH=.:$JAVA_HOME/jre/lib/rt.jar:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jarexport PATH=$PATH:$JAVA_HOME/bi">
@@ -310,6 +310,7 @@
 <p>//查看程序占用内存<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">查看某一个进程所占用的内存，先通过ps命令找到进程id</span><br><span class="line">top -p 2913</span><br><span class="line"></span><br><span class="line">查看内存占用前10名的程序</span><br><span class="line">ps aux | sort -k4,4nr | head -n 10</span><br></pre></td></tr></table></figure></p>
 <p>//安装npm和nodejs<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl -sL https://rpm.nodesource.com/setup_8.x | bash -</span><br><span class="line">yum -y install nodejs</span><br><span class="line">npm install gulp -g</span><br></pre></td></tr></table></figure></p>
 <p>//安装Gtop<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">yum -y install git</span><br><span class="line">git clone https://github.com/aksakalli/gtop.git</span><br><span class="line">curl -sL https://rpm.nodesource.com/setup_8.x | bash -</span><br><span class="line">yum -y install nodejs</span><br><span class="line">npm install gtop -g</span><br><span class="line">#使用：命令行输入gtop即可</span><br></pre></td></tr></table></figure></p>
+<p>//清除系统缓存<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sync 同步缓存信息，把缓存的信息保存到磁盘</span><br><span class="line">echo 3 &gt; /proc/sys/vm/drop_caches 清空缓存</span><br><span class="line"></span><br><span class="line">如果是程序占用的资源过多，不行就重启一下程序</span><br></pre></td></tr></table></figure></p>
 
       
     </div>
@@ -414,7 +415,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">40</span>
+                  <span class="site-state-item-count">41</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

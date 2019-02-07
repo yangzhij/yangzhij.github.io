@@ -229,6 +229,128 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/19/在线web日志finder部署/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/12/19/在线web日志finder部署/" itemprop="url">在线web日志finder部署</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-19T13:23:23+08:00">
+                2018-12-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><font color="#FF0000">当时做的时候参考的这个：<a href="http://blog.51cto.com/superleedo/2135195" target="_blank" rel="noopener">http://blog.51cto.com/superleedo/2135195</a></font><br>之前都是用elk的，因为主要是让开发人员看嘛，所以感觉也还行。后来在网上看了个Finder的最后效果，感觉不错，于是呢，就在测试平台搭建了一把，也简单也麻烦……现在测试环境用的就是这一款日志查询系统。<br><strong><em>Finder</em></strong>：web方式的文件管理器，最主要的功能是web文件管理和日志文件的实时查看。<br><strong>部署：</strong><br><em>安装java，并配置环境变量</em><br>Master主机：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">mkdir /home/rishi</span><br><span class="line">cd /home/rishi</span><br><span class="line">wget http://mirrors.tuna.tsinghua.edu.cn/apache/tomcat/tomcat-9/v9.0.13/bin/apache-tomcat-9.0.13.tar.gz</span><br><span class="line">tar zxf apache-tomcat-9.0.13.tar.gz</span><br><span class="line">vi conf/server.xml   #更改端口为8186，随意不冲突即可</span><br><span class="line"> </span><br><span class="line">cd /home/rizhi/apache-tomcat-9.0.13/webapps/ROOT/</span><br><span class="line">rm -rf *</span><br><span class="line">wget http://www.finderweb.net/download.html/finder-web-2.4.9.war</span><br><span class="line">jar -xvf finder-web-2.4.9.war &amp;&amp; rm –rf finder-web-2.4.9.war</span><br><span class="line">cd /home/rizhi/apache-tomcat-9.0.13/bin/</span><br><span class="line">./ startup.sh</span><br></pre></td></tr></table></figure></p>
+<p>浏览器访问：<br><a href="http://172.20.100.191:8186/finder" target="_blank" rel="noopener">http://172.20.100.191:8186/finder</a><br>admin/1234</p>
+<p>Slave：<br>客户端按照上诉过程安装好即可（直接打包Master上的服务，拷贝到相应的slave上启动就行），端口看具体情况，和本地冲突的话换一个就行。然后在master的web界面添加主机，更改相关配置即可。<br><img src="https://raw.githubusercontent.com/yangzhij/myself-images/master/finder1.png" alt="https://raw.githubusercontent.com/yangzhij/myself-images/master/finder1.png"></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/18/jenkins的升级和迁移/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -694,12 +816,15 @@
       
         
           
-            <p>rabbitmq 安装  //172.20.100.207<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">//安装</span><br><span class="line">yum -y install gcc glibc-devel make ncurses-devel openssl-devel xmlto perl wget</span><br><span class="line">wget http://www.rabbitmq.com/releases/erlang/erlang-19.0.4-1.el6.x86_64.rpm</span><br><span class="line">rpm -ivh erlang-19.0.4-1.el6.x86_64.rpm</span><br><span class="line">wget https://dl.bintray.com/rabbitmq/rabbitmq-server-rpm/rabbitmq-server-3.6.12-1.el6.noarch.rpm</span><br><span class="line">rpm --import https://www.rabbitmq.com/rabbitmq-release-signing-key.asc</span><br><span class="line">yum -y makecache</span><br><span class="line">yum -y install socat</span><br><span class="line">rpm -ivh rabbitmq-server-3.6.12-1.el6.noarch.rpm</span><br><span class="line"></span><br><span class="line">//系统调优</span><br><span class="line">文件末尾添加下面4行</span><br><span class="line">vi /etc/security/limits.conf</span><br><span class="line">* soft nofile 102400</span><br><span class="line">* hard nofile 102400</span><br><span class="line"></span><br><span class="line">* soft nproc 102400</span><br><span class="line">* hard nproc 102400</span><br><span class="line"></span><br><span class="line">//文件末未添加</span><br><span class="line">vi /etc/sysctl.conf</span><br><span class="line">fs.file-max=102400</span><br><span class="line"></span><br><span class="line">//可以打开的最大文件数量及用户最大可用的进程数</span><br><span class="line">ulimit -n 65000</span><br><span class="line">ulimit -u 65000</span><br><span class="line"></span><br><span class="line">//启动并查看状态</span><br><span class="line">systemctl start rabbitmq-server.service</span><br><span class="line">systemctl status rabbitmq-server.service</span><br></pre></td></tr></table></figure></p>
+            <p>rabbitmq 安装  //172.20.100.207<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">//安装</span><br><span class="line">yum -y install gcc glibc-devel make ncurses-devel openssl-devel xmlto perl wget</span><br><span class="line">wget http://www.rabbitmq.com/releases/erlang/erlang-19.0.4-1.el6.x86_64.rpm</span><br><span class="line">rpm -ivh erlang-19.0.4-1.el6.x86_64.rpm</span><br><span class="line">wget https://dl.bintray.com/rabbitmq/rabbitmq-server-rpm/rabbitmq-server-3.6.12-1.el6.noarch.rpm</span><br><span class="line">rpm --import https://www.rabbitmq.com/rabbitmq-release-signing-key.asc</span><br><span class="line">yum -y makecache</span><br><span class="line">yum -y install socat</span><br><span class="line">rpm -ivh rabbitmq-server-3.6.12-1.el6.noarch.rpm</span><br><span class="line"></span><br><span class="line">//系统调优</span><br><span class="line">文件末尾添加下面4行</span><br><span class="line">vi /etc/security/limits.conf</span><br><span class="line">* soft nofile 102400</span><br><span class="line">* hard nofile 102400</span><br><span class="line"></span><br><span class="line">* soft nproc 102400</span><br><span class="line">* hard nproc 102400</span><br><span class="line"></span><br><span class="line">//文件末未添加</span><br><span class="line">vi /etc/sysctl.conf</span><br><span class="line">fs.file-max=102400   #保存退出</span><br><span class="line">sysctl -p  生效配置</span><br><span class="line">//可以打开的最大文件数量及用户最大可用的进程数</span><br><span class="line">ulimit -n 65000</span><br><span class="line">ulimit -u 65000</span><br><span class="line"></span><br><span class="line">//启动并查看状态</span><br><span class="line">systemctl start rabbitmq-server.service</span><br><span class="line">systemctl status rabbitmq-server.service</span><br><span class="line">chkconfig rabbitmq-server on</span><br></pre></td></tr></table></figure></p>
 <p>//开启网页管理插件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rabbitmq-plugins enable rabbitmq_management</span><br><span class="line">systemctl restart rabbitmq-server.service</span><br></pre></td></tr></table></figure></p>
-<p>//默认网页是不允许访问的，需要增加一个用户修改一下权限，代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rabbitmqctl add_user admin admin123  //添加用户</span><br><span class="line">rabbitmqctl set_permissions -p / admin &quot;.*&quot;  &quot;.*&quot;  &quot;.*&quot;           //添加权限</span><br><span class="line">rabbitmqctl set_user_tags admin administrator                  //修改用户角色</span><br></pre></td></tr></table></figure></p>
+<p>//默认网页是不允许访问的，需要增加一个用户修改一下权限，代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">rabbitmqctl add_user admin admin123  //添加用户</span><br><span class="line">rabbitmqctl set_permissions -p / admin &quot;.*&quot;  &quot;.*&quot;  &quot;.*&quot;           //添加权限</span><br><span class="line">rabbitmqctl set_user_tags admin administrator                  //修改用户角色</span><br><span class="line">rabbitmqctl delete_user guest            //删除guest用户</span><br></pre></td></tr></table></figure></p>
 <p>浏览器访问：<br><a href="http://172.20.100.207:15672" target="_blank" rel="noopener">http://172.20.100.207:15672</a></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//查看mq状态</span><br><span class="line">rabbitmqctl status</span><br></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">程序配置文件配置mq接口：172.20.100.207:5672</span><br></pre></td></tr></table></figure>
+<p>//防火墙:开通防火墙上Web UI访问端口<br><code>firewall-cmd --permanent --add-port=15672/tcp
+firewall-cmd –-reload
+``</code></p>
 
           
         
@@ -1225,6 +1350,7 @@
 <p>从一个节点将哈希槽移到另一节点，不会停止服务，所以添加、删除、改变某节点的哈希槽数量，不会造成集群不可用。</p>
 <p>6379  客户端通讯端口<br>16379  集群总线端口</p>
 <p>//redis集群不可用的情况<br>1.集群半数以上的master挂掉，会造成集群不可用<br>2.集群任意一个master节点挂掉，且当前master没有slave，会造成redis集群不可用</p>
+<p>以下内容参考：<a href="https://blog.csdn.net/it_hejinrong/article/details/79205528" target="_blank" rel="noopener">https://blog.csdn.net/it_hejinrong/article/details/79205528</a></p>
 <p>//添加一个master主节点：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">1.安装好新的redis节点，然后修改配置，启动该节点</span><br><span class="line"></span><br><span class="line">2.执行，前者是新加的节点     后者是原集群的myself节点</span><br><span class="line">./redis-trib.rb add-node 10.0.0.7:7007 10.0.0.1:7001</span><br><span class="line"></span><br><span class="line">执行完成后，可以通过cluster nodes 查看下</span><br><span class="line"></span><br><span class="line">3.添加完主节点需要对主节点进行hash槽分配，这样该主节才可以存储数据。</span><br><span class="line"></span><br><span class="line">redis集群有16384个槽，集群中的每个master结点分配一些槽，通过查看集群结点可以看到槽占用情况。</span><br><span class="line"></span><br><span class="line">第一步：连接上集群 </span><br><span class="line">./redis-trib.rb reshard 10.0.0.1:7001  （连接集群中任意一个可用节点都行）</span><br><span class="line"></span><br><span class="line">第二步：输入要分配的槽数量</span><br><span class="line">How many slots do you want to move (from 1 to 16384)? 1000             输入1000表示要分配1000个槽</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">第三步：输入接收槽的结点id</span><br><span class="line"></span><br><span class="line">准备给7007分配槽，通过cluster nodes查看7007结点id为5d6c61ecff23bff3b0fb01a86c66d882f2d402a0</span><br><span class="line"></span><br><span class="line">What is the receiving node ID? 5d6c61ecff23bff3b0fb01a86c66d882f2d402a0</span><br><span class="line"></span><br><span class="line">第四步：输入源结点id </span><br><span class="line">输入源结点id，槽将从源结点中拿，分配后的槽在源结点中就不存在了。 </span><br><span class="line">输入all表示从所有源结点中获取槽。 </span><br><span class="line">输入done取消分配。</span><br><span class="line"></span><br><span class="line">Source node #1:all</span><br><span class="line"></span><br><span class="line">第五步：输入yes开始移动槽到目标结点id</span><br><span class="line"></span><br><span class="line">Do you want to proceed with the proposed reshard plan (yes/no)?</span><br></pre></td></tr></table></figure></p>
 <p>//添加一个slave从节点<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">集群创建成功后可以向集群中添加节点，下面是添加一个slave从节点</span><br><span class="line"></span><br><span class="line">添加7008从结点，将7008作为7007的从节点。</span><br><span class="line">1.安装好新的redis节点，然后修改配置，启动该节点</span><br><span class="line"></span><br><span class="line">2.</span><br><span class="line">./redis-trib.rb add-node --slave --master-id 主节点id 添加节点的ip和端口 集群中已存在节点ip和端口</span><br><span class="line"></span><br><span class="line">[root@localhost redis-cluster]# ./redis-trib.rb add-node --slave --master-id 5d6c61ecff23bff3b0fb01a86c66d882f2d402a0 192.168.37.131:7008 192.168.37.131:7001</span><br></pre></td></tr></table></figure></p>
 <p>//删除集群节点中的某一个节点<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">想要删除集群节点中的某一个节点，需要严格执行2步：</span><br><span class="line">1、 将这个节点上的所有插槽转移到其他节点上；</span><br><span class="line">a) 假设我们想要删除6380这个节点</span><br><span class="line">b) 执行脚本：./redis-trib.rb reshard 192.168.56.102:6380</span><br><span class="line">c) 选择需要转移的插槽的数量，因为3380有5128个，所以转移5128个</span><br><span class="line">d) 输入转移的节点的id，我们转移到6382节点：82ed0d63cfa6d19956dca833930977a87d6ddf7</span><br><span class="line">e) 输入插槽来源id，也就是6380的id</span><br><span class="line">f) 输入done，开始转移</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">2、 使用redis-trib.rb删除节点</span><br><span class="line">./redis-trib.rb del-node 192.168.56.102:6380 4a9b8886ba5261e82597f5590fcdb49ea47c4c6c</span><br></pre></td></tr></table></figure></p>
@@ -1421,131 +1547,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/11/伊始/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/11/伊始/" itemprop="url">伊始</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-11T14:30:33+08:00">
-                2018-12-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>啊啊啊…<br>终于要开始写博客了，也没啥，就是想记录一些工作当中的笔记以及生活中的心情，方便以后查阅。本来还想多写点，一时词穷，才发现原来是肚子里墨水儿太少，好吧，看来我平时要多看看书了。唉、买书容易看书难，搬家还麻烦…（又在不经意间提醒自己还没房，仔细一想，哪是没房啊，还没车，没存款啊）。吓得我都不敢写了，赶快关了..<br>最后呢，还是想感谢一个友人，帮我把这个地基搭起来。<br>这个怎么缩进啊，好烦人~<br>​    </p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span>
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1591,7 +1597,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">40</span>
+                  <span class="site-state-item-count">41</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

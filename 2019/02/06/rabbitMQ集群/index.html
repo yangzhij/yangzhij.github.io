@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="rabbitmq：消息队列。作为消息中间件，一般以集群方式部署，主要提供消息的接受和发送，实现各服务之间的消息异步。 原理：RabbitMQ底层是通过Erlang架构来实现的。RabbitMQ底层是通过Erlang架构来实现的，所以rabbitmqctl会启动Erlang节点，并基于Erlang节点来使用Erlang系统连接RabbitMQ节点，在连接过程中需要正确的Erlang Cookie和节">
+<meta property="og:type" content="article">
+<meta property="og:title" content="rabbitMQ集群">
+<meta property="og:url" content="http://yoursite.com/2019/02/06/rabbitMQ集群/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="rabbitmq：消息队列。作为消息中间件，一般以集群方式部署，主要提供消息的接受和发送，实现各服务之间的消息异步。 原理：RabbitMQ底层是通过Erlang架构来实现的。RabbitMQ底层是通过Erlang架构来实现的，所以rabbitmqctl会启动Erlang节点，并基于Erlang节点来使用Erlang系统连接RabbitMQ节点，在连接过程中需要正确的Erlang Cookie和节">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-02-07T01:59:39.227Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="rabbitMQ集群">
+<meta name="twitter:description" content="rabbitmq：消息队列。作为消息中间件，一般以集群方式部署，主要提供消息的接受和发送，实现各服务之间的消息异步。 原理：RabbitMQ底层是通过Erlang架构来实现的。RabbitMQ底层是通过Erlang架构来实现的，所以rabbitmqctl会启动Erlang节点，并基于Erlang节点来使用Erlang系统连接RabbitMQ节点，在连接过程中需要正确的Erlang Cookie和节">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/02/06/rabbitMQ集群/">
+
+
+
+
+
+  <title>rabbitMQ集群 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/06/rabbitMQ集群/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">rabbitMQ集群</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-06T11:43:16+08:00">
+                2019-02-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>rabbitmq：消息队列。作为消息中间件，一般以集群方式部署，主要提供消息的接受和发送，实现各服务之间的消息异步。</p>
+<p>原理：<br>RabbitMQ底层是通过Erlang架构来实现的。RabbitMQ底层是通过Erlang架构来实现的，所以rabbitmqctl会启动Erlang节点，并基于Erlang节点来使用Erlang系统连接RabbitMQ节点，在连接过程中需要正确的Erlang Cookie和节点名称，<br>Erlang节点通过交换Erlang Cookie以获得认证。<br>所以部署rabbitmq分布式集群时要先安装erlang，并把其中一个服务的cookie复制到另外的节点。</p>
+<p>rabbitmq集群中，各个rabbitmq为对等节点，即每个节点均提供给客户端连接，进行消息的接收和发送。<br>节点分为内存节点和磁盘节点，一般的，为了防止机器重启后的消息消失，均应建立为磁盘节点；</p>
+<p>RabbitMQ的Cluster集群模式一般分为两种，普通模式和镜像模式。</p>
+<p>1.必备工具安装<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install vim wget ntp lrzsz</span><br></pre></td></tr></table></figure></p>
+<p>2.确定3台主机的时间同步<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">yum -y install chrony</span><br><span class="line">timedatectl set-timezone Asia/Shanghai</span><br><span class="line">systemctl enable chronyd.service</span><br><span class="line">systemctl start chronyd.service</span><br><span class="line">hwclock --systohc</span><br></pre></td></tr></table></figure></p>
+<p>3.配置3台机器的/etc/hosts文件: 在/etc/hosts中，绑定三台机器的ip和主机名（erlang是通过主机名来连接服务，必须保证各个主机名之间可以ping通。如果主机名ping不通，rabbitmq服务启动会失败。）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/hosts 添加（注意中间空格为tab符号）</span><br><span class="line">192.168.0.101 rabbitmq-1</span><br><span class="line">192.168.0.102 rabbitmq-2</span><br><span class="line">192.168.0.103 rabbitmq-3</span><br><span class="line">scp /etc/hosts root@192.168.0.102:/etc/hosts      拷贝到其他机器</span><br><span class="line">scp /etc/hosts root@192.168.0.103:/etc/hosts</span><br></pre></td></tr></table></figure></p>
+<p>4.分别在3台上面执行安装<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">yum -y install gcc glibc-devel make ncurses-devel openssl-devel xmlto perl wget</span><br><span class="line">wget http://www.rabbitmq.com/releases/erlang/erlang-19.0.4-1.el6.x86_64.rpm</span><br><span class="line">rpm -ivh erlang-19.0.4-1.el6.x86_64.rpm</span><br><span class="line">wget https://dl.bintray.com/rabbitmq/rabbitmq-server-rpm/rabbitmq-server-3.6.12-1.el6.noarch.rpm</span><br><span class="line">rpm --import https://www.rabbitmq.com/rabbitmq-release-signing-key.asc</span><br><span class="line">yum -y makecache</span><br><span class="line">yum -y install socat</span><br><span class="line">rpm -ivh rabbitmq-server-3.6.12-1.el6.noarch.rpm</span><br></pre></td></tr></table></figure></p>
+<p>5.<strong>erlang.cookie是erlang实现分布式的必要文件，erlang分布式的每个节点上要保持相同的。</strong>同时要保证cookie文件的权限是400,不然节点之间就无法通信。打开rabbitmq-1服务器的/var/lib/rabbitmq/.erlang.cookie中的内容,复制到其他节点上。</p>
+<p>6.系统调优<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">文件末尾添加下面4行</span><br><span class="line">vi /etc/security/limits.conf</span><br><span class="line">* soft nofile 102400</span><br><span class="line">* hard nofile 102400</span><br><span class="line"></span><br><span class="line">* soft nproc 102400</span><br><span class="line">* hard nproc 102400</span><br><span class="line"></span><br><span class="line">//文件末未添加</span><br><span class="line">vi /etc/sysctl.conf</span><br><span class="line">fs.file-max=102400</span><br><span class="line"></span><br><span class="line">//可以打开的最大文件数量及用户最大可用的进程数</span><br><span class="line">ulimit -n 65000</span><br><span class="line">ulimit -u 65000</span><br></pre></td></tr></table></figure></p>
+<p>7.分别启动<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">//启动并查看状态</span><br><span class="line">systemctl start rabbitmq-server.service</span><br><span class="line">systemctl status rabbitmq-server.service</span><br><span class="line"></span><br><span class="line">//开启网页管理插件</span><br><span class="line">rabbitmq-plugins enable rabbitmq_management</span><br><span class="line">systemctl restart rabbitmq-server.service</span><br></pre></td></tr></table></figure></p>
+<p>8.集群节点添加（添加新节点）<br>将rabbit@rabbitmq-1作为集群主节点，在其他节点上分别执行如下命令，以加入集群中.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">rabbitmqctl stop_app                            # 仅停止应用</span><br><span class="line">rabbitmqctl reset                                # 重置应用</span><br><span class="line">rabbitmqctl join_cluster rabbit@rabbitmq-1           # 加入rabbit@rabbitmq-1集群</span><br><span class="line">rabbitmqctl start_app                            # 开启应用</span><br><span class="line">rabbitmqctl cluster_status                        # 都查看集群状态</span><br></pre></td></tr></table></figure></p>
+<p>9.账号管理<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">rabbitmqctl add_user admin admin                # 添加账号</span><br><span class="line">rabbitmqctl set_user_tags admin administrator    # 添加权限</span><br><span class="line">rabbitmqctl delete_user guest                    # 删除用户</span><br><span class="line">rabbitmqctl change_password 用户名 密码            # 修改用户的密码</span><br><span class="line">rabbitmqctl list_users                            # 查看当前用户列表</span><br><span class="line"></span><br><span class="line">//vhost管理</span><br><span class="line">rabbitmqctl add_vhost vhostname        # 创建vhost</span><br><span class="line">rabbitmqctl delete_vhost vhostname     # 删除vhost</span><br><span class="line">rabbitmqctl list_vhosts                # 查看所有虚拟主机信息</span><br><span class="line">rabbitmqctl set_permissions -p v_host user  &quot;.*&quot;  &quot;.*&quot;  &quot;.*&quot;   ##绑定权限，并且具备读写的权限</span><br><span class="line">rabbitmqctl list_queues                # 显示所有队列</span><br></pre></td></tr></table></figure></p>
+<p>10.分别在3台主机上查看连接的状态<br>rabbitmqctl cluster_status</p>
+<p>–第一行是集群中的节点成员，disc表示这些都是磁盘节点。<br>–第二行是正在运行的节点成员</p>
+<p>11.节点退出集群(从集群中移除节点)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">假设要把rabbitmq-2退出集群，在rabbitmq2上执行</span><br><span class="line">#rabbitmqctl stop_app</span><br><span class="line">#rabbitmqctl reset</span><br><span class="line">#rabbitmqctl start_app</span><br><span class="line"></span><br><span class="line">然后在集群主节点上执行</span><br><span class="line"># rabbitmqctl forget_cluster_rabbitmq rabbit@rabbitmq-2</span><br></pre></td></tr></table></figure></p>
+<p>12.可以删除默认guest用户<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rabbitmqctl delete_user guest</span><br></pre></td></tr></table></figure></p>
+<p>haproxy 对mq进行负载<br>keepalive    提供统一入口，防止单点故障</p>
+<p><strong>安装keepalived，提供一个入口</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yum -y install keepalived </span><br><span class="line">systemctl enable keepalived</span><br><span class="line">systemctl start keepalived</span><br></pre></td></tr></table></figure></p>
+<p>分别编辑三台的配置文件vim /etc/keepalived/keepalived.conf，内容如下：priority 分别为101,102,103<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">vrrp_script chk_haproxy &#123;</span><br><span class="line">    script &quot;/usr/sbin/pidof haproxy&quot;</span><br><span class="line">    interval 2</span><br><span class="line">&#125;</span><br><span class="line">vrrp_instance VI_1 &#123;</span><br><span class="line">    interface eth0</span><br><span class="line">    state BACKUP</span><br><span class="line">    nopreempt</span><br><span class="line">    priority 101</span><br><span class="line">    virtual_router_id 10</span><br><span class="line">    authentication &#123;</span><br><span class="line">        auth_type PASS</span><br><span class="line">        auth_pass password</span><br><span class="line">    &#125;</span><br><span class="line">    virtual_ipaddress &#123;</span><br><span class="line">        172.20.100.30</span><br><span class="line">    &#125;</span><br><span class="line">    track_script &#123;</span><br><span class="line">        chk_haproxy</span><br><span class="line">    &#125;</span><br><span class="line">    notify_master /etc/keepalived/check_haproxy.sh</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>//编辑检测脚本，为了防止haproxy服务关闭导致keepalived不自动切换<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/keepalived/check_haproxy.sh</span><br><span class="line">#!/bin/bash</span><br><span class="line">if [ $(ps -C haproxy --no-header | wc -l) -eq 0 ]; then</span><br><span class="line">       systemctl start haproxy</span><br><span class="line">fi</span><br><span class="line">sleep 2</span><br><span class="line">if [ $(ps -C haproxy --no-header | wc -l) -eq 0 ]; then</span><br><span class="line">       systemctl stop keepalived</span><br><span class="line">fi</span><br></pre></td></tr></table></figure></p>
+<p>//重启启动<br>systemctl restart keepalived</p>
+<p><strong>haproxy搭建</strong><br>//安装<br>yum -y install haproxy</p>
+<p>//配置haproxy<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">#vim /etc/haproxy/haproxy.cfg       //在末尾添加以下内容</span><br><span class="line"></span><br><span class="line">#---------------------------------------------------------------------</span><br><span class="line">listen rabbitmq_admin</span><br><span class="line">    bind 0.0.0.0:15673</span><br><span class="line">    mode tcp</span><br><span class="line">    balance roundrobin</span><br><span class="line">    option tcpka</span><br><span class="line">    option tcplog</span><br><span class="line">    timeout client 3h</span><br><span class="line">    timeout server 3h</span><br><span class="line">    timeout connect 3h</span><br><span class="line">    server mqnode1 192.168.0.101:15672</span><br><span class="line">    server mqnode2 192.168.0.102:15672</span><br><span class="line">    server mqnode3 192.168.0.103:15672</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">listen rabbitmq_cluster 0.0.0.0:5673</span><br><span class="line">    mode tcp</span><br><span class="line"></span><br><span class="line">    balance roundrobin</span><br><span class="line">    option tcpka</span><br><span class="line">    option tcplog</span><br><span class="line">    timeout client 3h</span><br><span class="line">    timeout server 3h</span><br><span class="line">    timeout connect 3h</span><br><span class="line"></span><br><span class="line">    server   mqnode1 192.168.0.101:5672 check inter 5s rise 2 fall 3</span><br><span class="line">    server   mqnode2 192.168.0.102:5672 check inter 5s rise 2 fall 3</span><br><span class="line">    server   mqnode3 192.168.0.103:5672 check inter 5s rise 2 fall 3</span><br></pre></td></tr></table></figure></p>
+<p>//启动<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl start haproxy</span><br></pre></td></tr></table></figure></p>
+<p><strong>镜像模式</strong>：把需要的队列做成镜像队列，存在于多个节点，属于RabbitMQ的HA方案，在任意节点上执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rabbitmqctl set_policy ha-all &quot;hello&quot; &apos;&#123;&quot;ha-mode&quot;:&quot;all&quot;&#125;&apos;</span><br></pre></td></tr></table></figure></p>
+<p>hello 是同步的队列名，可以用正则表达式匹配；<br>{“ha-mode”:”all”} 表示同步给所有</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/01/20/wahaha/" rel="next" title="wahaha-----">
+                <i class="fa fa-chevron-left"></i> wahaha-----
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">John Doe</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -229,6 +229,133 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/28/Maven私服搭建/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/12/28/Maven私服搭建/" itemprop="url">Maven私服搭建</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-28T00:14:47+08:00">
+                2018-12-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><em>参考<a href="https://www.cnblogs.com/2YSP/p/9533506.html" target="_blank" rel="noopener">https://www.cnblogs.com/2YSP/p/9533506.html</a></em></p>
+<p>Maven：服务于java平台的自动化构建工具。构建工具演变：make–ant–Maven–Gradle<br>Maven采用了一种被称之为Project Object Model(POM)概念来管理项目。pom.xml对于maven工程是核心配置文件，所有的项目配置信息都在这个文件中进行配置。<br>作用：1.管理jar包    2.将项目拆分成若干个模块<br>Maven会将打包得到的文件复制到仓库中的指定位置target目录下。</p>
+<p>maven仓库： 用来管理依赖，仓库保存的内容是maven工程。当 Maven 需要下载构件时，直接请求私服，私服上存在则下载到本地仓库；否则，私服请求外部的远程仓库，将构件下载到私服，再提供给本地仓库下载。<br>1.本地仓库：当前电脑上部署的仓库目录，为当前电脑上所有的maven工程服务<br>2.远程仓库<br>    a.中央仓库：架设在Internet上，为全世界所有的maven工程服务<br>    b.私服：搭建在局域网内，供局域网内的maven用户使用  （私服节省带宽，稳定性好，配置私服也可降低中央仓库的压力）</p>
+<p><strong>搭建Maven私服的过程记录</strong><br><strong>一、安装java及maven</strong><br>1.java及环境变量，这个不说了<br>2.下载Maven包<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local</span><br><span class="line">wget https://mirrors.cnnic.cn/apache/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.tar.gz</span><br><span class="line">tar -zxvf  apache-maven-3.5.4-bin.tar.gz</span><br></pre></td></tr></table></figure></p>
+<p>3.配置环境变量 vi /etc/profile<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export MAVEN_HOME=/usr/local/apache-maven-3.5.4</span><br><span class="line">export PATH=&quot;$JAVA_HOME/bin:$MAVEN_HOME/bin:$PATH&quot;</span><br></pre></td></tr></table></figure></p>
+<p><strong>二、部署nexus</strong><br>1.下载<br>方法一：<a href="https://www.sonatype.com/download-oss-sonatype" target="_blank" rel="noopener">https://www.sonatype.com/download-oss-sonatype</a><br><img src="http://i2.bvimg.com/672478/8576db2083192fa6.png" alt="http://i2.bvimg.com/672478/8576db2083192fa6.png"><br>方法二：wget <a href="https://download.sonatype.com/nexus/3/latest-unix.tar.gz" target="_blank" rel="noopener">https://download.sonatype.com/nexus/3/latest-unix.tar.gz</a><br>2.解压<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local</span><br><span class="line">wget https://download.sonatype.com/nexus/3/latest-unix.tar.gz</span><br><span class="line">tar zxvf latest-unix.tar.gz</span><br><span class="line">//修改默认端口(8081)和允许所有主机访问 </span><br><span class="line">vi nexus-3.14.0-04/etc/nexus-default.properties                 </span><br><span class="line">application-port=8081</span><br><span class="line">application-host=0.0.0.0</span><br></pre></td></tr></table></figure></p>
+<p>3.启动<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/nexus-3.14.0-04/bin</span><br><span class="line">./nexus start</span><br></pre></td></tr></table></figure></p>
+<p>4.访问<br><a href="http://ip:8081" target="_blank" rel="noopener">http://ip:8081</a><br>点击右上角的sign in登录，输入账户admin，密码admin123即可登录成功。<br><img src="http://i2.bvimg.com/672478/9c319c384e46f26e.png" alt="http://i2.bvimg.com/672478/9c319c384e46f26e.png"></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/27/centos7部署nginx+keepalived/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1352,133 +1479,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/19/在线web日志finder部署/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/19/在线web日志finder部署/" itemprop="url">在线web日志finder部署</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-19T13:23:23+08:00">
-                2018-12-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><font color="#FF0000">当时做的时候参考的这个：<a href="http://blog.51cto.com/superleedo/2135195" target="_blank" rel="noopener">http://blog.51cto.com/superleedo/2135195</a></font><br>之前都是用elk的，因为主要是让开发人员看嘛，所以感觉也还行。后来在网上看了个Finder的最后效果，感觉不错，于是呢，就在测试平台搭建了一把，也简单也麻烦……现在测试环境用的就是这一款日志查询系统。<br><strong><em>Finder</em></strong>：web方式的文件管理器，最主要的功能是web文件管理和日志文件的实时查看。<br><strong>部署：</strong><br><em>安装java，并配置环境变量</em><br>Master主机：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">mkdir /home/rishi</span><br><span class="line">cd /home/rishi</span><br><span class="line">wget http://mirrors.tuna.tsinghua.edu.cn/apache/tomcat/tomcat-9/v9.0.13/bin/apache-tomcat-9.0.13.tar.gz</span><br><span class="line">tar zxf apache-tomcat-9.0.13.tar.gz</span><br><span class="line">vi conf/server.xml   #更改端口为8186，随意不冲突即可</span><br><span class="line"> </span><br><span class="line">cd /home/rizhi/apache-tomcat-9.0.13/webapps/ROOT/</span><br><span class="line">rm -rf *</span><br><span class="line">wget http://www.finderweb.net/download.html/finder-web-2.4.9.war</span><br><span class="line">jar -xvf finder-web-2.4.9.war &amp;&amp; rm –rf finder-web-2.4.9.war</span><br><span class="line">cd /home/rizhi/apache-tomcat-9.0.13/bin/</span><br><span class="line">./ startup.sh</span><br></pre></td></tr></table></figure></p>
-<p>浏览器访问：<br><a href="http://172.20.100.191:8186/finder" target="_blank" rel="noopener">http://172.20.100.191:8186/finder</a><br>admin/1234</p>
-<p>Slave：<br>客户端按照上诉过程安装好即可（直接打包Master上的服务，拷贝到相应的slave上启动就行），端口看具体情况，和本地冲突的话换一个就行。然后在master的web界面添加主机，更改相关配置即可。<br><img src="https://raw.githubusercontent.com/yangzhij/myself-images/master/finder1.png" alt="https://raw.githubusercontent.com/yangzhij/myself-images/master/finder1.png"></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1524,7 +1529,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">40</span>
+                  <span class="site-state-item-count">41</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
