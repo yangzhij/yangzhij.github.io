@@ -229,6 +229,135 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/06/Oracle备份相关sql/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/01/06/Oracle备份相关sql/" itemprop="url">Oracle备份相关sql</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-06T16:56:18+08:00">
+                2019-01-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">select * from dba_directories;   --查看数据库备份路径</span><br><span class="line">--Oracle备份文件是以dmp结尾，这种文件是oracle的逻辑备份文件</span><br><span class="line"></span><br><span class="line">grant create any directory to scott;   --给scott用户创建目录的权限</span><br><span class="line"></span><br><span class="line">create directory dmp(目录名随意)  as &apos;/data/dmp&apos;;  --创建备份目(linux)，create不进行判断，若存在，则报错说对象已存在。</span><br><span class="line"></span><br><span class="line">create or replace directory dmp as &apos;/data/dmp&apos;; --创建(备份)目录，若已存在，则替代，没有则创建.</span><br><span class="line"></span><br><span class="line">create directory dmp as &apos;D:\temp\dmp&apos;;   --创建备份目录(Windows)</span><br></pre></td></tr></table></figure>
+<p>数据备份,通过df –lh查看剩余空间，<br>空间不够的话可以将历史备份数据挪走或者删除上次备份的数据。<br>然后看看归档日志是否需要清理。 最后进行备份。   </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">expdp domain/domain TABLES=dn_whois  dumpfile=dn_whois.dmp logfile=dn_whois.log directory=dmp </span><br><span class="line">impdp bims/bims123  dumpfile=dn_whois.dmp logfile=dn_whois201803.log  directory=dmp  REMAP_SCHEMA=domain:bims</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">expdp 用户名/密码@库名(数据库实例名称)</span><br><span class="line"></span><br><span class="line">remap_schema当你从A用户导出的数据，想要导入到B用户中去，就使用这个：remap_schema=A:B</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">expdp 用户名/密码 [tables = 表名] directory指定备份目录  dmpfile备份文件名称   logfile日志文件名称  schema数据库对象</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">expdp ngoss2/asp_186tc2we </span><br><span class="line">directory=dmp dumpfile=ngoss20180126_%U.dmp logfile=ngoss20180126.log </span><br><span class="line">schemas=ngoss2,terminal,domain,ns     --用户名（导出用户及其对象） </span><br><span class="line">parallel=8        --使用并行模式来执行当前sql，按理是数字越大，执行效率越高，但要考虑服务器CPU个数</span><br><span class="line">cluster=no        --只在单实例上导出。只让它备份到一台服务器上。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">命令行输入：lscpu</span><br><span class="line">Core(s) per socket:    8            #每个cpu，有8个核</span><br><span class="line">Socket(s):             2      #总共有2个cpu  </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">expdp henan/henan@orcl    ---用户名/密码@库名</span><br><span class="line">dumpfile=henan20170825_%U.dmp    --备份文件</span><br><span class="line">logfile=henan20170825.log    --备份日志</span><br><span class="line">schemas=henan    --用户名（导出用户及其对象）</span><br><span class="line">parallel=4    --并行执行   4个文件  </span><br><span class="line">CLUSTER=N    -单点备份</span><br><span class="line">directory=hndb_bak    --备份目录</span><br><span class="line">EXCLUDE=TABLE:\&quot;IN\(\&apos;T_PERF_RTT\&apos;,\&apos;T_PERF_WEBRTT\&apos;\)\&quot;        --导出不包含T_PERF_RTT, T_PERF_WEBRTT  的其它所有对象.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">expdp username/password </span><br><span class="line">dumpfile=$EXPFILE </span><br><span class="line">logfile=$EXPLOG </span><br><span class="line">directory=expdir </span><br><span class="line">exclude=TABLE:\&quot;LIKE \&apos;MV%\&apos;\&quot;    --排除以MV开头的表</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">expdp username/password </span><br><span class="line">dumpfile=$EXPFILE </span><br><span class="line">logfile=$EXPLOG </span><br><span class="line">directory=expdir </span><br><span class="line">exclude=TABLE:\&quot;LIKE \&apos;MV%\&apos;\&quot;, exclude=TABLE:\&quot;LIKE \&apos;TMP%\&apos;\&quot;     --排除以MV开头的表和以TMP开头的表</span><br></pre></td></tr></table></figure>
+<p>A库的数据导入到B库中？？？？？</p>
+<p>如果数据库B中已经存在了需要导入的用户且用户默认表空间不一致，那么需要指定表空间和指定用户导入。</p>
+<p><a href="https://jingyan.baidu.com/article/a3a3f811e8492c8da2eb8aad.html" target="_blank" rel="noopener">https://jingyan.baidu.com/article/a3a3f811e8492c8da2eb8aad.html</a></p>
+<p>group by     分组<br>having    筛选<br>select<br>distinct     去重<br>order by     排序<br>limit     限制条数</p>
+<p>Not null —不可空      null—-可空<br>Default  默认值<br>not null+unique:不为空且唯一  =======》 primary key主键</p>
+<p>inner join内连接，只连接匹配的行（找两张表共有的部分）<br>外链接之左连接：优先显示左表全部记录。以左表为准。</p>
+<p>数据库备份导入sql<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line">1. 先创建备份路径：</span><br><span class="line">create or replace directory dmp as &apos;/data/dmp&apos;;</span><br><span class="line">2. 整表备份：</span><br><span class="line">expdp ns/netspeed@netspeed schemas=ns,ls directory=data_bak_20140609 dumpfile =ns_20140609.dmp logfile=ns_20140609.log </span><br><span class="line">3. 整表恢复：</span><br><span class="line">impdp jiangsu/jiangsu directory=data_bak_20140609 dumpfile=20140604.dmp logfile=20140604.log  REMAP_SCHEMA=terminal:jiangsu (原表用户名---        目的表用户名)</span><br><span class="line">4.单表备份：</span><br><span class="line">expdp ns/netspeed tables=ns_monitorpoint_whwstar dumpfile=whw_20140609.dmp logfile=whw_20140609.log directory=data_bak_20140609</span><br><span class="line">5. 单表恢复：</span><br><span class="line">impdp ns/netspeed directory=data_bak_20140609 dumpfile=whw_20140609.dmp logfile=whw_20140609.dmp.log  tables=ns_monitorpoint_whwstar REMAP_SCHEMA=ns:ns</span><br><span class="line"></span><br><span class="line">--河南管局数据恢复</span><br><span class="line">impdp jiangsu/jiangsu     </span><br><span class="line">directory=dmp </span><br><span class="line">dumpfile=jiangsu20141029.dmp </span><br><span class="line">logfile=jiangsu20141029.log </span><br><span class="line">tables=t_perf_webrtt20141029pxb,t_perf_rtt20141029pxb,t_perf_dnsrtt20141029pxb </span><br><span class="line">REMAP_SCHEMA=jiangsu:jiangsu </span><br><span class="line">remap_tablespace=&apos;(JIANGSU_TBSPACE1:JIANGSU_TBSPACE1,HENAN_TBSPACE1:JIANGSU_TBSPACE1,NGOSS_TBSPACE2:JIANGSU_TBSPACE1,TERMINAL_TBSPACE1:JIANGSU_TBSPACE1,JIANGSU_TBSPACE:JIANGSU_TBSPACE1)&apos;</span><br><span class="line"></span><br><span class="line">--expdp henan/henan tables=ZXX2 dumpfile=ZXX2_20141029.dmp logfile=ZXX2_20141029.log directory=dmp</span><br><span class="line"></span><br><span class="line">--impdp henan/henan directory=dmp dumpfile=ZXX2_20141029.dmp logfile=ZXX2_20141029.log  tables=ZXX2  REMAP_SCHEMA=ngoss2:henan</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">exp userid=ngoss2/asp_186tc2we full=y file=exp20130923.dmp log=exp20141117.log tables=t_web_struc</span><br><span class="line"></span><br><span class="line">导入陕西库</span><br><span class="line">impdp shanxi/shanxi    --当前库的用户名密码（有多个用户名的话具体看是要导入到哪个用户下）</span><br><span class="line">directory=dmp </span><br><span class="line">dumpfile=jiangsu20140926.dmp </span><br><span class="line">logfile=impshanxi.log    </span><br><span class="line">REMAP_SCHEMA=jiangsu:shanxi     --当你从A用户导出的数据,想要导入到B用户中去,就使用这个:remap_schema=A:B </span><br><span class="line">REMAP_TABLESPACE=JIANGSU_TBSPACE:SHANXI_TBSPACE1,TERMINAL_TBSPACE1:SHANXI_TBSPACE1,HENAN_TBSPACE1:SHANXI_TBSPACE1  </span><br><span class="line"></span><br><span class="line">--remap_tablespace 与上面类似，数据库对象本来存在于tbs_a表空间，现在你不想放那儿了，想换到tbs_b，就用这个remap_tablespace=tbs_a:tbs_b  结果是所有tbs_a中的对象都会建在tbs_b表空间中。搜索</span><br><span class="line">--这样做的前提是目标用户B和目标表空间tbs_b存在</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">四川库部分表导入</span><br><span class="line">impdp sichuan/sichuan </span><br><span class="line">directory=dmp </span><br><span class="line">dumpfile=sichuan20151226.dmp </span><br><span class="line">logfile=sichuan20151227.log    </span><br><span class="line">REMAP_SCHEMA=sichuan:sichuan </span><br><span class="line">REMAP_TABLESPACE=JIANGSU_TBSPACE:SICHUAN_TBSPACE1,TERMINAL_TBSPACE1:SICHUAN_TBSPACE1,HENAN_TBSPACE1:SICHUAN_TBSPACE1,SICHUAN_TBSPACE1:SICHUAN_TBSPACE1</span><br><span class="line"></span><br><span class="line">---新建按天分区语句</span><br><span class="line">--时延表按天分区</span><br><span class="line">create table T_PERF_RTT</span><br><span class="line">(</span><br><span class="line">  ID             NUMBER not null,</span><br><span class="line">  MPID           NUMBER,</span><br><span class="line">  DBTIME         DATE,</span><br><span class="line">  PERIOD         NUMBER,</span><br><span class="line">  CMOIID         VARCHAR2(32),</span><br><span class="line">  VCMOINAME      VARCHAR2(255),</span><br><span class="line">  PERFID         NUMBER,</span><br><span class="line">  SYSTIME        DATE,</span><br><span class="line">  DTIME          DATE,</span><br><span class="line">  HOP            NUMBER,</span><br><span class="line">  P1             NUMBER,</span><br><span class="line">  P2             NUMBER,</span><br><span class="line">  P3             NUMBER,</span><br><span class="line">  MTU            NUMBER,</span><br><span class="line">  MEID           NUMBER,</span><br><span class="line">  IPID           NUMBER,</span><br><span class="line">  IP             VARCHAR2(64),</span><br><span class="line">  IMISSIONID     NUMBER,</span><br><span class="line">  IMISSIONTYPEID NUMBER,</span><br><span class="line">  IMISSIONFLAG   NUMBER,</span><br><span class="line">  IDEALFLAG      NUMBER default 0</span><br><span class="line">)</span><br><span class="line">partition by range (DTIME)</span><br><span class="line">INTERVAL (NUMTODSINTERVAL(1,’day’))(PARTITION p_first VALUES LESS THAN (to_date(&apos;2010-08-01&apos;,&apos;yyyy-mm-dd&apos;)));</span><br><span class="line"></span><br><span class="line">alter table T_PERF_RTT</span><br><span class="line">  add constraint PK_T_PERF_RTT primary key (ID);</span><br><span class="line">-- Create/Recreate indexes </span><br><span class="line">create index IDX_T_PERF_RTT_1 on T_PERF_RTT (DTIME, MPID, MEID);</span><br><span class="line">create index IDX_T_PERF_RTT_2 on T_PERF_RTT (MPID, MEID, IP);</span><br><span class="line">create index IDX_T_PERF_RTT_3 on T_PERF_RTT (MPID, IP);</span><br><span class="line">create index IDX_T_PERF_RTT_4 on T_PERF_RTT (DTIME);</span><br><span class="line">create index IDX_T_PERF_RTT_5 on T_PERF_RTT (MPID, MEID, IP, DTIME);</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/06/oracle表空间sql/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1371,137 +1500,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/28/linux一些基础/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/28/linux一些基础/" itemprop="url">linux一些基础</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-28T01:10:09+08:00">
-                2018-12-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>//java<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//环境变量</span><br><span class="line">vi /etc/profile</span><br><span class="line">export JAVA_HOME=/usr/local/java/jdk1.8.0_171</span><br><span class="line">export CLASSPATH=.:$JAVA_HOME/jre/lib/rt.jar:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar</span><br><span class="line">export PATH=$PATH:$JAVA_HOME/bin</span><br><span class="line">source /etc/profile</span><br></pre></td></tr></table></figure></p>
-<p>//查询端口是否被占用，被哪个进程占用有两种方式：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1、netstat -anl | grep &quot;80&quot; </span><br><span class="line">2、lsof -i:80</span><br><span class="line">终止进程的方式：kill -9 pid</span><br></pre></td></tr></table></figure></p>
-<p>//用tomcat进行http传输：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">如在172.20.101.225上：</span><br><span class="line">1、下载安装启动Tomcat (必要时修改端口server.xml）</span><br><span class="line">2、把要传输的文件放入tomcat目录的webapps\ROOT下(可以在该目录创建新的目录，便于区分文件)</span><br><span class="line"></span><br><span class="line">下载方执行如下命令即可：</span><br><span class="line">cd /home  （进哪个目录按需求来定）</span><br><span class="line">wget 172.20.101.225:8080/wget/no_queue.conf</span><br></pre></td></tr></table></figure></p>
-<p>//centos7.0 没有netstat 和 ifconfig命令问题<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">运行yum install net-tools 就OK了</span><br></pre></td></tr></table></figure></p>
-<p>//解压rar<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">wget http://www.rarlab.com/rar/rarlinux-3.8.0.tar.gz</span><br><span class="line">tar zxvf rarlinux-3.8.0.tar.gz -C /usr/local</span><br><span class="line">ln -s /usr/local/rar/rar /usr/local/bin/rar</span><br><span class="line">ln -s /usr/local/rar/unrar /usr/local/bin/unrar</span><br></pre></td></tr></table></figure></p>
-<p>//centos7改时间<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">timedatectl set-ntp no</span><br><span class="line">timedatectl set-time &quot;2018-10-18 09:32:25&quot;</span><br><span class="line">clock -w</span><br></pre></td></tr></table></figure></p>
-<p>//CPU<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">查看cpu个数：</span><br><span class="line"> cat /proc/cpuinfo | grep &quot;physical id&quot; |  uniq | wc -l  </span><br><span class="line">查看cpu核数</span><br><span class="line"> cat /proc/cpuinfo | grep &quot;cpu cores&quot; | uniq</span><br></pre></td></tr></table></figure></p>
-<p>//Pycharm和python安装教程<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">https://www.cnblogs.com/liyuspace/p/8033699.html</span><br><span class="line">https://blog.csdn.net/ziwuzhulin/article/details/81512788</span><br></pre></td></tr></table></figure></p>
-<p>//查看程序占用内存<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">查看某一个进程所占用的内存，先通过ps命令找到进程id</span><br><span class="line">top -p 2913</span><br><span class="line"></span><br><span class="line">查看内存占用前10名的程序</span><br><span class="line">ps aux | sort -k4,4nr | head -n 10</span><br></pre></td></tr></table></figure></p>
-<p>//安装npm和nodejs<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl -sL https://rpm.nodesource.com/setup_8.x | bash -</span><br><span class="line">yum -y install nodejs</span><br><span class="line">npm install gulp -g</span><br></pre></td></tr></table></figure></p>
-<p>//安装Gtop<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">yum -y install git</span><br><span class="line">git clone https://github.com/aksakalli/gtop.git</span><br><span class="line">curl -sL https://rpm.nodesource.com/setup_8.x | bash -</span><br><span class="line">yum -y install nodejs</span><br><span class="line">npm install gtop -g</span><br><span class="line">#使用：命令行输入gtop即可</span><br></pre></td></tr></table></figure></p>
-<p>//清除系统缓存<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sync 同步缓存信息，把缓存的信息保存到磁盘</span><br><span class="line">echo 3 &gt; /proc/sys/vm/drop_caches 清空缓存</span><br><span class="line"></span><br><span class="line">如果是程序占用的资源过多，不行就重启一下程序</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1552,7 +1550,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-count">42</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

@@ -229,6 +229,164 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/12/redis主从-keepalived/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/12/12/redis主从-keepalived/" itemprop="url">redis主从+keepalived</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-12T07:52:04+08:00">
+                2018-12-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>为保证redis在运行中应对宕机故障，采用Redis主从+KeepAlived实现高可用。此次试验事先关闭了防火墙和selinux，生产环境建议开启防火墙。</p>
+<p>172.20.100.189 主redis  主keepalived<br>172.20.100.191 从redis  从keepalived</p>
+<p>VIP   172.20.100.66 （随意，一般同网段只要没人在用即可） ————–应用（程序配置）通过VIP的6379端口访问redis数据库</p>
+<p>redis-4.0.8<br>Keepalived-2.0.8                    keepalived直接用yum装也可以</p>
+<p>原理（思路）：<br>正常运行下，主负责服务，从负责同步，应用通过vip的6379端口访问redis数据库，当主节点189宕机（或服务挂掉）后， vip漂到191上，191会接管189成为主节点，继续提供读写操作，同时关闭主从复制功能。<br>当主恢复后，主会和从进行一次数据同步（即从slave同步数据），同步完成后恢复master身份，而Slave等Master同步完数据后会再恢复到Slave身份，继续不间断的读写服务。</p>
+<p>有时候我们需要M服务器在恢复正常后不要重新接管VIP，让B服务器继续为主  让后来恢复正常的M服务器为备。如下处理：   </p>
+<p>修改Master配置， Backup服务器的配置不变。<br>state MASTER 修改为 state BACKUP<br>nopreempt  添加该参数，设置为不抢夺VIP</p>
+<p>主从都为slave类型，同时主设置不抢夺vip，然后先后启动主从，因为主的优先级高，所以从不会抢夺vip。当主挂掉后，从成为主，然后等原来主恢复后，由于设置了不抢夺vip，所以从继续为主。</p>
+<p>—————————–具体操作如下———————————–</p>
+<p>检查Java，没有的话进行安装<br>java -version<br>配置java环境变量vi /etc/profile<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export JAVA_HOME=/usr/local/java/jdk1.8.0_171</span><br><span class="line">export CLASSPATH=.:$JAVA_HOME/jre/lib/rt.jar:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar</span><br><span class="line">export PATH=$PATH:$JAVA_HOME/bin</span><br></pre></td></tr></table></figure></p>
+<p>#安装依赖<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install gcc-c++</span><br></pre></td></tr></table></figure></p>
+<p>#下载redis包，先浏览器访问<a href="http://download.redis.io/releases/" target="_blank" rel="noopener">http://download.redis.io/releases/</a> 看看用哪个，然后下载即可<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/src</span><br><span class="line">wget http://download.redis.io/releases/redis-4.0.8.tar.gz</span><br><span class="line">tar zxvf redis-4.0.8.tar.gz -C /usr/local/</span><br><span class="line">mv redis-4.0.8 redis</span><br><span class="line">cd /usr/local/redis</span><br><span class="line">#编译安装</span><br><span class="line">makeMALLOC=libc</span><br><span class="line">make PREFIX=/usr/local/redis install</span><br></pre></td></tr></table></figure></p>
+<p>#配置redis启动脚本<br>vi /etc/init.d/redis<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/sh</span><br><span class="line"># chkconfig:   2345 90 10</span><br><span class="line"># description:  Redis is a persistent key-value database</span><br><span class="line">#配置redis端口号</span><br><span class="line">REDISPORT=6379</span><br><span class="line">#配置redis启动命令路径</span><br><span class="line">EXE=/usr/local/redis/bin/redis-server</span><br><span class="line">#配置redis连接命令路径</span><br><span class="line">CLIEXE=/usr/local/redis/bin/redis-cli</span><br><span class="line">#配置redis运行PID路径</span><br><span class="line">PIDFILE=/var/run/redis_6379.pid</span><br><span class="line">#配置redis的配置文件路径</span><br><span class="line">CONF=&quot;/etc/redis/redis.conf&quot;</span><br><span class="line">#配置redis的连接认证密码</span><br><span class="line">REDISPASSWORD=123456</span><br><span class="line"></span><br><span class="line">function start () &#123;</span><br><span class="line">        if [ -f $PIDFILE ]</span><br><span class="line"></span><br><span class="line">        then</span><br><span class="line"></span><br><span class="line">                echo &quot;$PIDFILE exists,process is already running or crashed&quot;</span><br><span class="line"></span><br><span class="line">        else</span><br><span class="line"></span><br><span class="line">                echo &quot;Starting Redisserver...&quot;</span><br><span class="line"></span><br><span class="line">                $EXE $CONF &amp;</span><br><span class="line"></span><br><span class="line">        fi</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function stop () &#123;</span><br><span class="line">        if [ ! -f $PIDFILE ]</span><br><span class="line"></span><br><span class="line">        then</span><br><span class="line"></span><br><span class="line">                echo &quot;$PIDFILE does not exist, process is not running&quot;</span><br><span class="line"></span><br><span class="line">        else</span><br><span class="line"></span><br><span class="line">                PID=$(cat $PIDFILE)</span><br><span class="line"></span><br><span class="line">                echo &quot;Stopping ...&quot;</span><br><span class="line"></span><br><span class="line">                $CLIEXE -p $REDISPORT -a $REDISPASSWORD shutdown</span><br><span class="line"></span><br><span class="line">                while [ -x /proc/$&#123;PID&#125; ]</span><br><span class="line"></span><br><span class="line">                do</span><br><span class="line"></span><br><span class="line">                    echo &quot;Waiting forRedis to shutdown ...&quot;</span><br><span class="line"></span><br><span class="line">                    sleep 1</span><br><span class="line"></span><br><span class="line">                done</span><br><span class="line"></span><br><span class="line">                echo &quot;Redis stopped&quot;</span><br><span class="line"></span><br><span class="line">        fi</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function restart () &#123;</span><br><span class="line">        stop</span><br><span class="line">        </span><br><span class="line">        sleep 3</span><br><span class="line">        </span><br><span class="line">        start</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">case &quot;$1&quot; in</span><br><span class="line">    start)</span><br><span class="line">    start</span><br><span class="line">    ;;</span><br><span class="line">    stop)</span><br><span class="line">    stop</span><br><span class="line">    ;;</span><br><span class="line">    restart)</span><br><span class="line">    restart</span><br><span class="line">    ;;</span><br><span class="line">    *)</span><br><span class="line">    echo -e &quot;\e[31m Please use $0 [start|stop|restart] asfirst argument \e[0m&quot;</span><br><span class="line">    ;;</span><br><span class="line">esac</span><br></pre></td></tr></table></figure></p>
+<p>赋予权限并添加开机自启动<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">chmod +x /etc/init.d/redis</span><br><span class="line">chkconfig --add redis</span><br><span class="line">chkconfig redis on</span><br></pre></td></tr></table></figure></p>
+<p>#添加redis命令环境变量<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/profile</span><br><span class="line">export PATH=&quot;$PATH:/usr/local/redis/bin&quot;   #添加到末尾即可</span><br><span class="line">source /etc/profile  #配置生效</span><br></pre></td></tr></table></figure></p>
+<p>#配置redis的配置文件vim /etc/redis/redis.conf<br>master配置如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">bind 0.0.0.0</span><br><span class="line">port 6379</span><br><span class="line">daemonize yes</span><br><span class="line">requirepass 123456            #设置认证密码，如果无需要则取消</span><br><span class="line">slave-serve-stale-data yes</span><br><span class="line">slave-read-only no</span><br><span class="line">pidfile /var/run/redis_6379.pid</span><br><span class="line">logfile /var/log/redis.log</span><br></pre></td></tr></table></figure></p>
+<p>slave配置如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">bind 0.0.0.0</span><br><span class="line">port 6379</span><br><span class="line">daemonize yes</span><br><span class="line">slaveof 172.20.100.189 6379    #注意这里是主节点的ip</span><br><span class="line">masterauth 123456</span><br><span class="line">slave-serve-stale-data yes</span><br><span class="line">slave-read-only no</span><br><span class="line">pidfile /var/run/redis_6379.pid</span><br><span class="line">logfile /var/log/redis.log</span><br></pre></td></tr></table></figure></p>
+<p>配置完成后重启redis服务!!!</p>
+<p>验证主从是否正常：<br>主节点189终端登录测试：<br>[root@localhost ~]# redis-cli -a 123456<br>127.0.0.1:6379&gt; info</p>
+<p>主节点191终端登录测试：<br>[root@localhost ~]# redis-cli -a 123456<br>127.0.0.1:6379&gt; info</p>
+<p>然后再看看测试截图</p>
+<p>————————————-到此redis的主从已经完成！</p>
+<p>接下来！！！<br>开始配置KeepAlived实现双机热备</p>
+<p>#安装，有两种方式—–这里用的是yum安装<br>1.yum安装yum -y install keepalived</p>
+<p>默认安装有可能是没有配置文件的。新建一个 vi /etc/keepalived/keepalived.conf 注意主备</p>
+<p>—master配置如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">vrrp_script chk_redis &#123;</span><br><span class="line">    script &quot;/etc/keepalived/script/redis_check.sh&quot;     # 检查redis的脚本</span><br><span class="line">    interval 2                          # 每两秒检查一次</span><br><span class="line">    weight 2                            #每次检查的加权权重值</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">vrrp_instance VI_1 &#123;</span><br><span class="line">    state MASTER                #指定实例初始化的状态,如果都是backup，那么就按照priority的值来确定谁是master</span><br><span class="line">    interface eth0              #网卡</span><br><span class="line">    virtual_router_id 61        # VRID标记（0-255）</span><br><span class="line">    priority 101                #priority 高优先级的为master,最好相差大于50</span><br><span class="line">    nopreempt                   #设置不抢占  --如果这样的话，上面的state MASTER 也要修改为 state BACKUP </span><br><span class="line">    advert_int 1                # 检查间隔时间,默认1s</span><br><span class="line"></span><br><span class="line">    authentication &#123;                 #authentication 这一段设置认证</span><br><span class="line">        auth_type PASS               #认证方式，支持PASS和HA（据说HA有问题）</span><br><span class="line">        auth_pass 1111               #认证密码</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    virtual_ipaddress &#123;</span><br><span class="line">        172.20.100.66                    #VIP</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    track_script &#123;</span><br><span class="line">        chk_redis                     # 调用检查脚本</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    notify_master /etc/keepalived/script/redis_master.sh</span><br><span class="line">    notify_backup /etc/keepalived/script/redis_backup.sh</span><br><span class="line">    notify_fault  /etc/keepalived/script/redis_fault.sh  </span><br><span class="line">    notify_stop  /etc/keepalived/script/redis_stop.sh</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>—-slave配置如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">vrrp_script chk_redis &#123;</span><br><span class="line">    script &quot;/etc/keepalived/script/redis_check.sh&quot;     # 检查haproxy的脚本</span><br><span class="line">    interval 2                          # 每两秒检查一次</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">vrrp_instance VI_1 &#123;</span><br><span class="line">    state BACKUP                #指定实例初始化的状态,如果都是backup，那么就按照priority的值来确定谁是master</span><br><span class="line">    interface eth0              #网卡</span><br><span class="line">    virtual_router_id 61        # VRID标记（0-255）</span><br><span class="line">    priority 99                #priority 高优先级的为master,最好相差大于50</span><br><span class="line">    advert_int 1                # 检查间隔时间,默认1s</span><br><span class="line"></span><br><span class="line">    authentication &#123;                 #authentication 这一段设置认证</span><br><span class="line">        auth_type PASS               #认证方式，支持PASS和HA（据说HA有问题）</span><br><span class="line">        auth_pass 1111               #认证密码</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    virtual_ipaddress &#123;</span><br><span class="line">        172.20.100.66                  #VIP</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    track_script &#123;</span><br><span class="line">        chk_redis                     # 调用检查脚本</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    notify_master /etc/keepalived/script/redis_master.sh</span><br><span class="line">    notify_backup /etc/keepalived/script/redis_backup.sh</span><br><span class="line">    notify_fault  /etc/keepalived/script/redis_fault.sh  </span><br><span class="line">    notify_stop  /etc/keepalived/script/redis_stop.sh</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>########配置脚本–此为负责运作的关键脚本<br>Master KeepAlived—189</p>
+<p>#创建存放脚本目录：<br>mkdir -p /etc/keepalived/script<br>cd /etc/keepalived/script<br>编辑脚本，共5个<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br></pre></td><td class="code"><pre><span class="line">1.vi redis_backup.sh</span><br><span class="line"></span><br><span class="line">#!/bin/bash </span><br><span class="line"></span><br><span class="line">REDISCLI=&quot;/usr/local/redis/bin/redis-cli -a 123456&quot;</span><br><span class="line"></span><br><span class="line">LOGFILE=&quot;/var/log/keepalived-redis-state.log&quot;</span><br><span class="line"></span><br><span class="line">echo &quot;[backup]&quot; &gt;&gt; $LOGFILE</span><br><span class="line"></span><br><span class="line">date &gt;&gt; $LOGFILE</span><br><span class="line"></span><br><span class="line">echo &quot;Being slave....&quot; &gt;&gt;$LOGFILE 2&gt;&amp;1</span><br><span class="line"></span><br><span class="line">sleep 15 #延迟15秒待数据被对方同步完成之后再切换主从角色 </span><br><span class="line"></span><br><span class="line">echo &quot;Run SLAVEOF cmd ...&quot;&gt;&gt; $LOGFILE</span><br><span class="line"></span><br><span class="line">$REDISCLI SLAVEOF 172.20.100.191 6379 &gt;&gt;$LOGFILE  2&gt;&amp;1</span><br><span class="line"></span><br><span class="line">2. vi redis_check.sh</span><br><span class="line">#!/bin/bash </span><br><span class="line"></span><br><span class="line">ALIVE=`/usr/local/redis/bin/redis-cli -a 123456 PING` </span><br><span class="line"></span><br><span class="line">if [ &quot;$ALIVE&quot; == &quot;PONG&quot; ];then</span><br><span class="line"></span><br><span class="line">echo $ALIVE </span><br><span class="line"></span><br><span class="line">exit 0 </span><br><span class="line"></span><br><span class="line">else</span><br><span class="line"></span><br><span class="line">echo $ALIVE </span><br><span class="line"></span><br><span class="line">exit 1 </span><br><span class="line"></span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">3. vi redis_fault.sh</span><br><span class="line">#!/bin/bash </span><br><span class="line"></span><br><span class="line">ALIVE=`/usr/local/redis/bin/redis-cli -a 123456 PING` </span><br><span class="line"></span><br><span class="line">if [ &quot;$ALIVE&quot; == &quot;PONG&quot; ];then</span><br><span class="line"></span><br><span class="line">echo $ALIVE </span><br><span class="line"></span><br><span class="line">exit 0 </span><br><span class="line"></span><br><span class="line">else</span><br><span class="line"></span><br><span class="line">echo $ALIVE </span><br><span class="line"></span><br><span class="line">exit 1 </span><br><span class="line"></span><br><span class="line">fi</span><br><span class="line">[root@myself script]# more redis_fault.sh</span><br><span class="line">#!/bin/bash</span><br><span class="line"></span><br><span class="line">LOGFILE=/var/log/keepalived-redis-state.log</span><br><span class="line"></span><br><span class="line">echo &quot;[fault]&quot; &gt;&gt; $LOGFILE</span><br><span class="line"></span><br><span class="line">date &gt;&gt; $LOGFILE</span><br><span class="line"></span><br><span class="line">4. vi redis_master.sh</span><br><span class="line">#!/bin/bash</span><br><span class="line">REDISCLI=&quot;/usr/local/redis/bin/redis-cli -a 123456&quot;</span><br><span class="line">LOGFILE=&quot;/var/log/keepalived-redis-state.log&quot;</span><br><span class="line"></span><br><span class="line">sleep 15</span><br><span class="line"></span><br><span class="line">echo &quot;[master]&quot; &gt;&gt; $LOGFILE</span><br><span class="line"></span><br><span class="line">date &gt;&gt; $LOGFILE</span><br><span class="line"></span><br><span class="line">echo &quot;Being master....&quot; &gt;&gt;$LOGFILE 2&gt;&amp;1</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">echo &quot;Run SLAVEOF cmd ...&quot;&gt;&gt; $LOGFILE</span><br><span class="line"></span><br><span class="line">$REDISCLI SLAVEOF 172.20.100.191 6379 &gt;&gt;$LOGFILE  2&gt;&amp;1</span><br><span class="line">if [ $? -ne 0 ];then</span><br><span class="line">    echo &quot;data rsync fail.&quot; &gt;&gt;$LOGFILE 2&gt;&amp;1</span><br><span class="line">else</span><br><span class="line">    echo &quot;data rsync OK.&quot; &gt;&gt; $LOGFILE  2&gt;&amp;1</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">sleep 10 #延迟10秒以后待数据同步完成后再取消同步状态 </span><br><span class="line"></span><br><span class="line">echo &quot;Run SLAVEOF NO ONE cmd ...&quot;&gt;&gt; $LOGFILE</span><br><span class="line"></span><br><span class="line">$REDISCLI SLAVEOF NO ONE &gt;&gt; $LOGFILE 2&gt;&amp;1</span><br><span class="line">if [ $? -ne 0 ];then</span><br><span class="line">    echo &quot;Run SLAVEOF NO ONE cmd fail.&quot; &gt;&gt;$LOGFILE 2&gt;&amp;1</span><br><span class="line">else</span><br><span class="line">    echo &quot;Run SLAVEOF NO ONE cmd OK.&quot; &gt;&gt; $LOGFILE  2&gt;&amp;1</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">5. vi redis_stop.sh</span><br><span class="line">#!/bin/bash</span><br><span class="line"></span><br><span class="line">LOGFILE=/var/log/keepalived-redis-state.log</span><br><span class="line"></span><br><span class="line">echo &quot;[stop]&quot; &gt;&gt; $LOGFILE</span><br><span class="line"></span><br><span class="line">date &gt;&gt; $LOGFILE</span><br></pre></td></tr></table></figure></p>
+<p>Slave KeepAlived—191</p>
+<p>#创建存放脚本目录：<br>mkdir -p /etc/keepalived/script<br>cd /etc/keepalived/script</p>
+<p>—-script里面只需要更改redis_master.sh和redis_backup.sh里面的ip即可，fault和stop的脚本 主从一样</p>
+<p>///注解：</p>
+<p>Keepalived在转换状态时会依照状态来呼叫:</p>
+<p>当keepalived进入Master状态时，会执行notify_master; </p>
+<p>当keepalived进入Backup状态时，会执行notify_backup;</p>
+<p>当keepalived发现异常情况时进入进入fault状态时，会执行notify_fault；</p>
+<p>当Keepalived程序终止进入stop状态时，会执行notify_stop；</p>
+<p>///</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/11/伊始/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -386,7 +544,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-count">42</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
