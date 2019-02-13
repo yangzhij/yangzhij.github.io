@@ -229,6 +229,126 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/16/python之用户认证/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/01/16/python之用户认证/" itemprop="url">python之用户认证</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-16T10:30:53+08:00">
+                2019-01-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>同目录下创建account.txt及account_lock.txt<br>允许用户输入三次，三次都错误，则锁定账户。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">import sys,os</span><br><span class="line">count = 0</span><br><span class="line">name_list = []</span><br><span class="line">while count &lt; 3:</span><br><span class="line">    name = input(&quot;请输入用户名：&quot;)</span><br><span class="line">    lock_file = open(&apos;account_lock.txt&apos;, &apos;r+&apos;)</span><br><span class="line">    lock_list = lock_file.readlines()</span><br><span class="line"></span><br><span class="line">    for lock_line in lock_list:</span><br><span class="line">        lock_line = lock_line.strip(&apos;\n&apos;)</span><br><span class="line">        if name == lock_line:</span><br><span class="line">            sys.exit(&apos;用户 %s 已经被锁定,请联系管理员解锁.&apos; % name)</span><br><span class="line">    user_file = open(&apos;account.txt&apos;,&apos;r&apos;)</span><br><span class="line">    user_list = user_file.readlines()</span><br><span class="line">    for user_line in user_list:</span><br><span class="line">        (user,password) = user_line.strip(&apos;\n&apos;).split()</span><br><span class="line">        name_list.append(user_line)</span><br><span class="line">        #print(&quot;--------&quot;, name_list)                  #不想输出用户名密码可以注释此行</span><br><span class="line">        if name == user:</span><br><span class="line">            i = 0</span><br><span class="line">            while i &lt; 3:</span><br><span class="line">                passwd = input(&apos;请输入您的密码：&apos;)</span><br><span class="line">                if passwd == password:</span><br><span class="line">                    print(&apos;欢迎 %s 登录&apos; % name)</span><br><span class="line">                    sys.exit(0)</span><br><span class="line">                else:</span><br><span class="line">                    if i &lt; 2:</span><br><span class="line">                        print(&apos;用户 %s 密码错误，请重新输入，还有 %d 次机会.&apos; % (name,2 - i))</span><br><span class="line">                i += 1</span><br><span class="line">            else:</span><br><span class="line">                lock_file.write(name + &apos;\n&apos;)</span><br><span class="line">                sys.exit(&apos;用户 %s 输错密码三次，用户将被锁定并退出，请联系管理员解锁.&apos; % name)</span><br><span class="line">        else:</span><br><span class="line">            pass</span><br><span class="line">    else:</span><br><span class="line">        if count &lt; 2:</span><br><span class="line">            print(&apos;用户 %s 不存在，请重新输入，还有 %d 次机会&apos; % (name,2 - count))</span><br><span class="line">    count += 1</span><br><span class="line">else:</span><br><span class="line">    lock_file.write(name + &apos;\n&apos;)</span><br><span class="line">    sys.exit(&apos;用户 %s 可能是个山炮，退出应用&apos; % name)</span><br><span class="line"></span><br><span class="line">lock_file.close()</span><br><span class="line">user_file.close()</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/16/python脚本涉及知识点/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1365,133 +1485,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/29/Docker简介及安装/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/29/Docker简介及安装/" itemprop="url">Docker简介及安装</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-29T00:47:02+08:00">
-                2018-12-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>devops：开发自运维。  这应该是你的方向。<br>docker基于Go语言实现的云开源项目。可以让程序带环境安装：通过docker封装好原始环境（代码，配置，数据，系统…….）<br><strong>docker中文网站： <a href="https://docker-cn.com" target="_blank" rel="noopener">https://docker-cn.com</a></strong><br><strong>docker出现：</strong><br>经常性的运维开发扯皮。部署开发提交的代码（jar包/war包），开发本地可以，运维部署出现问题：环境和配置。<br>之前，开发交代码—有了docker以后，开发可以交镜像（把环境打包成镜像，一次封装，处处运行）</p>
-<p><strong>为什么docker比虚拟机快呢？</strong><br>虚拟机模拟的是整套操作系统（软件+硬件）。对于底层系统而言，虚拟机就是一个文件。不用了就删除。不影响别的。分钟级启动。<br>Linux容器模拟的不是一整套操作系统，只对进程进行隔离。容器没有内核，也不虚拟硬件，共用宿主机的，运行速度快（秒级启动）。可以理解为高度浓缩版的liunx系统。系统上只有一个docker引擎，没有硬件资源，不加载内核，宿主机的资源统一用（与宿主机共享OS）。  干掉了操作系统和硬件虚拟资源。</p>
-<p><strong>安装前提：  centos6.5以上版本，64位版本</strong><br>Client端(shell终端，也叫docker客户端)：  docker build;    docker pull;   docker run;<br>Docker_Host:  装docker的主机<br>Registry: 注册仓库， 需要运行什么，直接从仓库拉取镜像，镜像即容器实例。仓库注册服务器上会存放多个仓库。 </p>
-<p>docker: 容器运行的载体，是一个管理引擎。  只有通过镜像文件才能生成docker容器。<br>ocker原理： c/s结构。  dockers守护进程运行在主机上，通过socket连接从客户端访问。守护进程从客户端接收命令并管理运行在主机上的机器，容器是一个运行时的环境，即集装箱。<br><strong>docker三要素：</strong><br>镜像： 模板，容器实例.<br>容器： 独立运行的一个或一组应用。  容器是用镜像创建的运行实例。容器间相互隔离。<br>仓库： 存放镜像文件。<br>仓库分公开库和私有库。有名的公开库docker hub： 放容器的仓库，国内基本用不到，因为是国外的网站，太慢。国内用阿里云和网易云。</p>
-<p><strong>安装：</strong><br>centos6.8安装<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">yum install -y epel-release    #依赖库</span><br><span class="line">yum -y install docker-io</span><br><span class="line">安装后的配置文件：  vi /etc/sysconfig/docker</span><br><span class="line">other_args=&quot;--registry-mirror=自己账号的加速信息&quot;   #指定从国内阿里云下载镜像</span><br><span class="line">启动docker后台服务： service docker start</span><br><span class="line">验证： docker version</span><br><span class="line">启动测试：docker run hello-world</span><br></pre></td></tr></table></figure></p>
-<p><strong>run干了什么?</strong><br>先会在本机找镜像，如果本地有，以镜像为模板生成容器实例运行，没有，就去仓库查找该镜像，能找到，先下载到本地，以镜像为模板生成容器实例运行，没有则返回错误信息–查不到该镜像。</p>
-<p>centos7安装docker<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">yum -y update</span><br><span class="line">yum install -y yum-utils device-mapper-persistent-data lvm2</span><br><span class="line">yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo  (国外用dockerhub)</span><br><span class="line">yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo (国内用阿里云)</span><br><span class="line">yum list docker-ce --showduplicates | sort -r              #查看所有仓库中所有docker版本，并选择特定版本安装</span><br><span class="line">yum -y install docker-ce-17.12.1.ce                        #安装所选版本</span><br><span class="line">yum -y install docker-ce            #直接安装最新版本，可忽略上两行命令                        </span><br><span class="line">systemctl start docker              //启动docker</span><br></pre></td></tr></table></figure></p>
-<p>卸载docker<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">systemctl stop docker</span><br><span class="line">yum remove docker-ce -y</span><br><span class="line">rm -rf /var/lib/docker</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1542,7 +1535,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">45</span>
+                  <span class="site-state-item-count">46</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
