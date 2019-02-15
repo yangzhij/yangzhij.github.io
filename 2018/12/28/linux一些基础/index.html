@@ -79,17 +79,17 @@
 
 
 
-<meta name="description" content="//java123456//环境变量vi /etc/profileexport JAVA_HOME=/usr/local/java/jdk1.8.0_171export CLASSPATH=.:$JAVA_HOME/jre/lib/rt.jar:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jarexport PATH=$PATH:$JAVA_HOME/bi">
+<meta name="description" content="//java配置环境变量12345vi /etc/profileexport JAVA_HOME=/usr/local/java/jdk1.8.0_171                //这个要和自己安装的路径相对应export CLASSPATH=.:$JAVA_HOME/jre/lib/rt.jar:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar">
 <meta property="og:type" content="article">
 <meta property="og:title" content="linux一些基础">
 <meta property="og:url" content="http://yoursite.com/2018/12/28/linux一些基础/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="//java123456//环境变量vi /etc/profileexport JAVA_HOME=/usr/local/java/jdk1.8.0_171export CLASSPATH=.:$JAVA_HOME/jre/lib/rt.jar:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jarexport PATH=$PATH:$JAVA_HOME/bi">
+<meta property="og:description" content="//java配置环境变量12345vi /etc/profileexport JAVA_HOME=/usr/local/java/jdk1.8.0_171                //这个要和自己安装的路径相对应export CLASSPATH=.:$JAVA_HOME/jre/lib/rt.jar:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-02-13T10:26:01.377Z">
+<meta property="og:updated_time" content="2019-02-15T02:11:28.990Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="linux一些基础">
-<meta name="twitter:description" content="//java123456//环境变量vi /etc/profileexport JAVA_HOME=/usr/local/java/jdk1.8.0_171export CLASSPATH=.:$JAVA_HOME/jre/lib/rt.jar:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jarexport PATH=$PATH:$JAVA_HOME/bi">
+<meta name="twitter:description" content="//java配置环境变量12345vi /etc/profileexport JAVA_HOME=/usr/local/java/jdk1.8.0_171                //这个要和自己安装的路径相对应export CLASSPATH=.:$JAVA_HOME/jre/lib/rt.jar:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar">
 
 
 
@@ -299,7 +299,7 @@
       
 
       
-        <p>//java<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//环境变量</span><br><span class="line">vi /etc/profile</span><br><span class="line">export JAVA_HOME=/usr/local/java/jdk1.8.0_171</span><br><span class="line">export CLASSPATH=.:$JAVA_HOME/jre/lib/rt.jar:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar</span><br><span class="line">export PATH=$PATH:$JAVA_HOME/bin</span><br><span class="line">source /etc/profile</span><br></pre></td></tr></table></figure></p>
+        <p>//java配置环境变量<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/profile</span><br><span class="line">export JAVA_HOME=/usr/local/java/jdk1.8.0_171                //这个要和自己安装的路径相对应</span><br><span class="line">export CLASSPATH=.:$JAVA_HOME/jre/lib/rt.jar:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar</span><br><span class="line">export PATH=$PATH:$JAVA_HOME/bin</span><br><span class="line">source /etc/profile</span><br></pre></td></tr></table></figure></p>
 <p>//查询端口是否被占用，被哪个进程占用有两种方式：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1、netstat -anl | grep &quot;80&quot; </span><br><span class="line">2、lsof -i:80</span><br><span class="line">终止进程的方式：kill -9 pid</span><br></pre></td></tr></table></figure></p>
 <p>//用tomcat进行http传输：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">如在172.20.101.225上：</span><br><span class="line">1、下载安装启动Tomcat (必要时修改端口server.xml）</span><br><span class="line">2、把要传输的文件放入tomcat目录的webapps\ROOT下(可以在该目录创建新的目录，便于区分文件)</span><br><span class="line"></span><br><span class="line">下载方执行如下命令即可：</span><br><span class="line">cd /home  （进哪个目录按需求来定）</span><br><span class="line">wget 172.20.101.225:8080/wget/no_queue.conf</span><br></pre></td></tr></table></figure></p>
 <p>//centos7.0 没有netstat 和 ifconfig命令问题<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">运行yum install net-tools 就OK了</span><br></pre></td></tr></table></figure></p>

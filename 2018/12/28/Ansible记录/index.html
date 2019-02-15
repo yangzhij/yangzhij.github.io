@@ -79,19 +79,19 @@
 
 
 
-<meta name="description" content="Ansible:用于配置管理的自动化工具，基于python开发，分布式，使用ssh来管理客户端。ansible不需要启动服务，批量管理远程主机，执行结果会在本地返回。 //ansible 使用依赖于 ssh123//在管理端输入此命令，直接回车，生成密钥对，在/root/.ssh/下有两个文件。一个公钥，一个私钥。然后把公钥分发至被管理主机上。ssh-keygen     //连续回车生成密钥ss">
+<meta name="description" content="Ansible简单说明:用于配置管理的自动化工具，基于python开发，分布式，使用ssh来管理客户端。可以实现多节点的软件部署，程序部署，配置管理等。ansible不需要启动服务，批量管理远程主机，执行结果会在本地返回。 //ansible 使用依赖于 ssh123//在管理端输入此命令，直接回车，生成密钥对，在/root/.ssh/下有两个文件。一个公钥，一个私钥。然后把公钥分发至被管理主机上">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Ansible记录">
 <meta property="og:url" content="http://yoursite.com/2018/12/28/Ansible记录/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="Ansible:用于配置管理的自动化工具，基于python开发，分布式，使用ssh来管理客户端。ansible不需要启动服务，批量管理远程主机，执行结果会在本地返回。 //ansible 使用依赖于 ssh123//在管理端输入此命令，直接回车，生成密钥对，在/root/.ssh/下有两个文件。一个公钥，一个私钥。然后把公钥分发至被管理主机上。ssh-keygen     //连续回车生成密钥ss">
+<meta property="og:description" content="Ansible简单说明:用于配置管理的自动化工具，基于python开发，分布式，使用ssh来管理客户端。可以实现多节点的软件部署，程序部署，配置管理等。ansible不需要启动服务，批量管理远程主机，执行结果会在本地返回。 //ansible 使用依赖于 ssh123//在管理端输入此命令，直接回车，生成密钥对，在/root/.ssh/下有两个文件。一个公钥，一个私钥。然后把公钥分发至被管理主机上">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://raw.githubusercontent.com/yangzhij/myself-images/master/yaml.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/yangzhij/myself-images/master/jenk-ssh.png">
-<meta property="og:updated_time" content="2019-01-06T11:14:14.886Z">
+<meta property="og:updated_time" content="2019-02-15T02:53:39.630Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ansible记录">
-<meta name="twitter:description" content="Ansible:用于配置管理的自动化工具，基于python开发，分布式，使用ssh来管理客户端。ansible不需要启动服务，批量管理远程主机，执行结果会在本地返回。 //ansible 使用依赖于 ssh123//在管理端输入此命令，直接回车，生成密钥对，在/root/.ssh/下有两个文件。一个公钥，一个私钥。然后把公钥分发至被管理主机上。ssh-keygen     //连续回车生成密钥ss">
+<meta name="twitter:description" content="Ansible简单说明:用于配置管理的自动化工具，基于python开发，分布式，使用ssh来管理客户端。可以实现多节点的软件部署，程序部署，配置管理等。ansible不需要启动服务，批量管理远程主机，执行结果会在本地返回。 //ansible 使用依赖于 ssh123//在管理端输入此命令，直接回车，生成密钥对，在/root/.ssh/下有两个文件。一个公钥，一个私钥。然后把公钥分发至被管理主机上">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/yangzhij/myself-images/master/yaml.png">
 
 
@@ -302,7 +302,7 @@
       
 
       
-        <p>Ansible:用于配置管理的自动化工具，基于python开发，分布式，使用ssh来管理客户端。<br>ansible不需要启动服务，批量管理远程主机，执行结果会在本地返回。</p>
+        <p><strong>Ansible简单说明:</strong><br>用于配置管理的自动化工具，基于python开发，分布式，使用ssh来管理客户端。可以实现多节点的软件部署，程序部署，配置管理等。ansible不需要启动服务，批量管理远程主机，执行结果会在本地返回。</p>
 <p><em>//ansible 使用依赖于 ssh</em><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">//在管理端输入此命令，直接回车，生成密钥对，在/root/.ssh/下有两个文件。一个公钥，一个私钥。然后把公钥分发至被管理主机上。</span><br><span class="line">ssh-keygen     //连续回车生成密钥</span><br><span class="line">ssh-copy-id root@10.0.0.1            //推送公钥到远程主机</span><br></pre></td></tr></table></figure></p>
 <p>开始安装ansible<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">//管理端</span><br><span class="line">yum install epel-release  -y</span><br><span class="line">yum install ansible -y</span><br><span class="line"></span><br><span class="line">//若客户端缺少插件则安装</span><br><span class="line">yum install libselinux-python  -y	</span><br><span class="line">yum -y install python-devel</span><br></pre></td></tr></table></figure></p>
 <p>主机管理端配置文件 vim /etc/ansible/hosts   //在此配置文件中如下定义主机组，文件末尾追加即可。如下默认端口是22，特殊端口需指定<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[db-test]</span><br><span class="line">10.0.0.1</span><br><span class="line">10.0.0.2  ansible_ssh_port=9999</span><br><span class="line">[mq-test]</span><br><span class="line">10.0.0.32          </span><br><span class="line">10.0.0.33</span><br><span class="line">10.0.0.3[2:3]   //也可这样写，和上面一样</span><br></pre></td></tr></table></figure></p>
