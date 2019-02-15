@@ -86,7 +86,7 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="//java配置环境变量12345vi /etc/profileexport JAVA_HOME=/usr/local/java/jdk1.8.0_171                //这个要和自己安装的路径相对应export CLASSPATH=.:$JAVA_HOME/jre/lib/rt.jar:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-02-15T02:11:28.990Z">
+<meta property="og:updated_time" content="2019-02-15T05:45:42.817Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="linux一些基础">
 <meta name="twitter:description" content="//java配置环境变量12345vi /etc/profileexport JAVA_HOME=/usr/local/java/jdk1.8.0_171                //这个要和自己安装的路径相对应export CLASSPATH=.:$JAVA_HOME/jre/lib/rt.jar:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar">
@@ -311,6 +311,7 @@
 <p>//安装npm和nodejs<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl -sL https://rpm.nodesource.com/setup_8.x | bash -</span><br><span class="line">yum -y install nodejs</span><br><span class="line">npm install gulp -g</span><br></pre></td></tr></table></figure></p>
 <p>//安装Gtop<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">yum -y install git</span><br><span class="line">git clone https://github.com/aksakalli/gtop.git</span><br><span class="line">curl -sL https://rpm.nodesource.com/setup_8.x | bash -</span><br><span class="line">yum -y install nodejs</span><br><span class="line">npm install gtop -g</span><br><span class="line">#使用：命令行输入gtop即可</span><br></pre></td></tr></table></figure></p>
 <p>//清除系统缓存<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sync 同步缓存信息，把缓存的信息保存到磁盘</span><br><span class="line">echo 3 &gt; /proc/sys/vm/drop_caches 清空缓存</span><br><span class="line"></span><br><span class="line">如果是程序占用的资源过多，不行就重启一下程序</span><br></pre></td></tr></table></figure></p>
+<p>//centos7安装pip<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget https://bootstrap.pypa.io/get-pip.py</span><br><span class="line">python get-pip.py</span><br></pre></td></tr></table></figure></p>
 
       
     </div>
@@ -415,7 +416,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-count">47</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

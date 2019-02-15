@@ -229,6 +229,128 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/15/linux免秘钥登录/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/15/linux免秘钥登录/" itemprop="url">linux免秘钥登录</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-15T13:46:28+08:00">
+                2019-02-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>//单台免秘钥登录<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen    //生成密钥</span><br><span class="line">ssh-copy-id   root@10.0.0.1      //推到远程主机，此过程需要输入密码</span><br><span class="line">ssh 10.0.0.1   //测试</span><br></pre></td></tr></table></figure></p>
+<p>//比如3台主机相互免密码登录，就需要在3台上面都执行以上命令，新的秘钥会追加到相应文件，不会影响原来的。即：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1.在3台上都生成秘钥  ssh-keygen</span><br><span class="line">2.推送到其他两台 ssh-copy-id   root@10.0.0.2</span><br><span class="line">3.测试</span><br></pre></td></tr></table></figure></p>
+<p>//比如几十台都通过免秘钥登陆呢？这时候就需要ansible了。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">vim  /etc/ansible/hosts </span><br><span class="line">[jenkins]·</span><br><span class="line">172.20.100.126</span><br><span class="line">172.20.100.217</span><br><span class="line">[jjaaa]</span><br><span class="line">172.20.100.218</span><br><span class="line">172.20.100.219</span><br><span class="line">执行下列语句(all是所有的，也可指定单个组，如下jjaaa)，如果ip的密码都是一样的，执行的时候需输入一次密码</span><br><span class="line">ansible all -m authorized_key -a &quot;user=root key=&apos;&#123;&#123; lookup(&apos;file&apos;, &apos;/root/.ssh/id_rsa.pub&apos;)&#125;&#125;&apos; path=&apos;/root/.ssh/authorized_keys&apos; manage_dir=no&quot; --ask-pass -c paramiko</span><br><span class="line">ansible jjaaa -m authorized_key -a &quot;user=root key=&apos;&#123;&#123; lookup(&apos;file&apos;, &apos;/root/.ssh/id_rsa.pub&apos;)&#125;&#125;&apos; path=&apos;/root/.ssh/authorized_keys&apos; manage_dir=no&quot; --ask-pass -c paramiko</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[jenkins]</span><br><span class="line">172.20.100.126 ansible_ssh_pass=&quot;old123456&quot;</span><br><span class="line">172.20.100.217 ansible_ssh_pass=&quot;123456</span><br><span class="line">如果密码不同  需要自定义</span><br><span class="line">ansible all -m authorized_key -a &quot;user=root key=&apos;&#123;&#123; lookup(&apos;file&apos;, &apos;/root/.ssh/id_rsa.pub&apos;)&#125;&#125;&apos; path=&apos;/root/.ssh/authorized_keys&apos; manage_dir=no&quot; --ask-pass -c paramiko</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[jenkins]</span><br><span class="line">172.20.100.126</span><br><span class="line">172.20.100.217</span><br><span class="line">172.20.100.157 ansible_ssh_pass=&quot;ley123456&quot;</span><br><span class="line">如果密码不同  需要自定义，</span><br><span class="line"></span><br><span class="line">看到这样的，&quot;Are you sure you want to continue connecting (yes/no)?&quot;。。。。直接回车就可以了</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/13/挂载磁盘/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1374,145 +1496,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/18/ELK部署/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/01/18/ELK部署/" itemprop="url">ELK部署</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-18T12:49:36+08:00">
-                2019-01-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>#lasticsearch默认安装后设置的内存是1GB，对于任何一个现实业务来说，这个设置都太小了。如果你正在使用这个默认堆内存配置，你的集群配置可能会很快发生问题。</p>
-<p>#最简单的一个方法就是指定ES_HEAP_SIZE环境变量。建议设置内存的一半，但不超过32G<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">//命令行直接设置 </span><br><span class="line">export ES_HEAP_SIZE=16g</span><br><span class="line">//或者如下</span><br><span class="line">vi /etc/sysconfig/elasticsearch </span><br><span class="line">ES_HEAP_SIZE=16g #设置内存，建议设置系统内存的一半</span><br></pre></td></tr></table></figure></p>
-<p>//关闭防火墙<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">setenforce 0</span><br><span class="line">systemctl stop firewalld.service</span><br></pre></td></tr></table></figure></p>
-<p>//安装相关软件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">yum -y install screen</span><br><span class="line">yum -y install wget</span><br><span class="line">wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.2.3.tar.gz</span><br><span class="line">wget https://artifacts.elastic.co/downloads/kibana/kibana-6.2.3-linux-x86_64.tar.gz</span><br><span class="line">wget https://artifacts.elastic.co/downloads/logstash/logstash-6.2.3.tar.gz</span><br><span class="line">wget https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-6.2.3-linux-x86_64.tar.gz</span><br><span class="line">tar zxvf elasticsearch-6.2.3.tar.gz</span><br><span class="line">tar zxvf kibana-6.2.3-linux-x86_64.tar.gz</span><br><span class="line">mv kibana-6.2.3-linux-x86_64 kibana-6.2.3</span><br><span class="line">tar zxvf logstash-6.2.3.tar.gz</span><br><span class="line">tar zxvf filebeat-6.2.3-linux-x86_64.tar.gz</span><br></pre></td></tr></table></figure></p>
-<p>//创建启动启动elk的用户<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">useradd  -m elastic</span><br><span class="line">chown elastic.elastic -R /usr/local/elk/elasticsearch-6.2.3</span><br></pre></td></tr></table></figure></p>
-<p>//更改配置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">sed -i &apos;s/#cluster.name: */cluster.name: aaa/&apos; /usr/local/elk/elasticsearch-6.2.3/config/elasticsearch.yml</span><br><span class="line">sed -i &apos;s/#node.name: */node.name: $hostname/&apos; /usr/local/elk/elasticsearch-6.2.3/config/elasticsearch.yml</span><br><span class="line">sed -i &apos;s/#node.master: */node.master: true/&apos; /usr/local/elk/elasticsearch-6.2.3/config/elasticsearch.yml</span><br><span class="line">sed -i &apos;s/#path.data: */path.data: /data/es-data/&apos; /usr/local/elk/elasticsearch-6.2.3/config/elasticsearch.yml</span><br><span class="line">sed -i &apos;s/#path.logs: */path.logs: /var/log/es-log/&apos; /usr/local/elk/elasticsearch-6.2.3/config/elasticsearch.yml</span><br><span class="line">sed -i &apos;s/#bootstrap.memory_lock: */bootstrap.memory_lock: true/&apos; /usr/local/elk/elasticsearch-6.2.3/config/elasticsearch.yml</span><br><span class="line">sed -i &apos;s/#network.host: */network.host: $ip/&apos; /usr/local/elk/elasticsearch-6.2.3/config/elasticsearch.yml</span><br><span class="line">sed -i &apos;s/#http.port: */http.port: 9202/&apos; /usr/local/elk/elasticsearch-6.2.3/config/elasticsearch.yml</span><br><span class="line"></span><br><span class="line">/* </span><br><span class="line">cluster.name: my-elk  ##elk集群名称，随意。注意顶格，冒号后空一格，下同</span><br><span class="line">node.name: host1      ##节点1名称，注意解析问题</span><br><span class="line">path.data: /var/lib/elasticsearch/  ##数据存储路径，当然可以自定义，如下图，elasticsearch用户自动创建，不用手动创建</span><br><span class="line">bootstrap.mlockall: true    ##锁定内存</span><br><span class="line">network.host: 172.25.0.1    ##本节点ip</span><br><span class="line">http.port: 9200             ##apache端口 </span><br><span class="line">*/</span><br></pre></td></tr></table></figure></p>
-<p>//创建es所需要的数据目录和日志目录，设置属性<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p /data/es-data</span><br><span class="line">mkdir -p /var/log/es-log</span><br><span class="line">chown -R elastic.elastic /data/es-data/</span><br><span class="line">chown -R elastic.elastic /var/log/es-log/</span><br></pre></td></tr></table></figure></p>
-<p>//升级系统相关<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;vm.max_map_count=655360&quot; &gt;&gt;/etc/sysctl.conf</span><br><span class="line">sysctl -p</span><br><span class="line"></span><br><span class="line">echo &quot;elastic hard nofile 65536&quot; &gt;&gt;/etc/security/limits.conf</span><br><span class="line">echo &quot;elastic soft nofile 65536&quot; &gt;&gt;/etc/security/limits.conf</span><br></pre></td></tr></table></figure></p>
-<p>//修改kibana配置文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">mv kibana-6.2.3-linux-x86_64 kibana-6.2.3</span><br><span class="line">cd /usr/local/elk/kibana-6.2.3/config</span><br><span class="line">sed -i &apos;s/#server.port: 5601/server.port: 5601/&apos; kibana.yml </span><br><span class="line">sed -i &apos;s/#server.host: */server.host: $ip/&apos; kibana.yml</span><br><span class="line">sed -i &apos;s/#elasticsearch.url/elasticsearch.url/&apos; kibana.yml </span><br><span class="line"></span><br><span class="line">#server.port: 5601</span><br><span class="line">#server.host: &quot;10.0.0.1&quot;</span><br><span class="line">#elasticsearch.url: &quot;http://10.0.0.1:9200&quot;</span><br></pre></td></tr></table></figure></p>
-<p>//设置kibana用service启动<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/systemd/system/kibana.service</span><br><span class="line">[Service]</span><br><span class="line">ExecStart=/usr/local/elk/kibana-6.2.3/bin/kibana</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br><span class="line"></span><br><span class="line">systemctl enable kibana.service</span><br><span class="line">systemctl start kibana.service</span><br><span class="line">systemctl status kibana.service</span><br></pre></td></tr></table></figure></p>
-<p>//查看集群状态：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">curl -XGET &apos;http://172.20.100.219:9200/_cat/nodes&apos;</span><br><span class="line"></span><br><span class="line">curl -XGET &apos;http://172.20.100.219:9200/_cat/health?v&apos;</span><br><span class="line"></span><br><span class="line">curl -XGET &apos;http://172.20.100.219:9200/_cluster/state/nodes?pretty&apos;</span><br></pre></td></tr></table></figure></p>
-<p>//索引相关命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">创建索引</span><br><span class="line">curl -XPUT &apos;localhost:9200/two-cattle-service-2018.10.28&apos;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">清除索引：</span><br><span class="line">curl -XDELETE 172.20.100.219:9200/two-cattle-service-2018.10.28</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">查看索引：</span><br><span class="line">curl -XGET &apos;http://172.20.100.219:9200/_cat/indices/?v&apos;</span><br></pre></td></tr></table></figure></p>
-<p>//设置nginx用户认证<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">yum -y install epel-release</span><br><span class="line">yum -y install nginx httpd-tools</span><br><span class="line">删除或注释掉文件/etc/nginx/nginx.conf中的一段server&#123;&#125;</span><br><span class="line"></span><br><span class="line">cd /etc/nginx/conf.d/</span><br><span class="line">vim kibana.conf          #输入以下内容</span><br><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">    listen 80;</span><br><span class="line">    #server_name 172.20.100.219;</span><br><span class="line">    auth_basic &quot;Restricted Access&quot;;</span><br><span class="line">    auth_basic_user_file /etc/nginx/htpasswd.users;</span><br><span class="line">    location / &#123;</span><br><span class="line">            proxy_pass http://172.20.100.219:5601;</span><br><span class="line">            proxy_http_version 1.1;</span><br><span class="line">            proxy_set_header Upgrade $http_upgrade;</span><br><span class="line">            proxy_set_header Connection &apos;upgrade&apos;;</span><br><span class="line">            proxy_set_header Host $host;</span><br><span class="line">            proxy_cache_bypass $http_upgrade;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">~</span><br><span class="line">保存退出</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">配置用户文件</span><br><span class="line">touch /etc/nginx/htpasswd.users      </span><br><span class="line"></span><br><span class="line">配置登录验证</span><br><span class="line">yum install -y httpd-tools</span><br><span class="line">htpasswd -bc /etc/nginx/htpasswd.users admin admin123</span><br><span class="line"></span><br><span class="line">查看文件，密码会加密</span><br><span class="line">cat /usr/local/nginx/conf/htpasswd.users  </span><br><span class="line"></span><br><span class="line">cd /etc/nginx/conf.d/</span><br><span class="line">nginx -t      --检测</span><br><span class="line"></span><br><span class="line">systemctl start nginx</span><br><span class="line">systemctl enable nginx</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">浏览器访问 http://172.20.100.219  登陆即可     （此为内网IP，必要的话，映射一个外网ip或域名即可）</span><br><span class="line"></span><br><span class="line">然后http://172.20.100.219:5601 也可以，  这个不需要密码登入</span><br></pre></td></tr></table></figure></p>
-<p>集群自动选举：</p>
-<p>elasticsearch集群一旦建立起来以后，会选举出一个master，其他都为slave节点。<br>但是具体操作的时候，每个节点都提供写和读的操作。就是说，你不论往哪个节点中做写操作，这个数据也会分配到集群上的所有节点中。</p>
-<p>这里有某个节点挂掉的情况，如果是slave节点挂掉了，那么首先关心，数据会不会丢呢？不会。如果你开启了replicate，那么这个数据一定在别的机器上是有备份的。<br>别的节点上的备份分片会自动升格为这份分片数据的主分片。这里要注意的是这里会有一小段时间的yellow状态时间。</p>
-<p>如果是主节点挂掉怎么办呢？当从节点们发现和主节点连接不上了，那么他们会自己决定再选举出一个节点为主节点。<br>但是这里有个脑裂的问题，假设有5台机器，3台在一个机房，2台在另一个机房，当两个机房之间的联系断了之后，每个机房的节点会自己聚会，推举出一个主节点。<br>这个时候就有两个主节点存在了，当机房之间的联系恢复了之后，这个时候就会出现数据冲突了。<br>解决的办法就是设置参数：</p>
-<p>discovery.zen.minimum_master_nodes<br>为3(超过一半的节点数)，那么当两个机房的连接断了之后，就会以大于等于3的机房的master为主，另外一个机房的节点就停止服务了。</p>
-<p>//集群<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">ABC三台安装elk集群  (不要安装x-pack，收费，只能免费使用一个月，一个月后就报错;   使用x-pack后查集群信息就查不出来了;   )</span><br><span class="line"></span><br><span class="line">A -es,logstash,kibana</span><br><span class="line">B,C -es</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">安装x-pack插件：    在A上安装配置密码即可（es,kibana）。  然后分别在BC上安装es的x-pack，不用配置密码。 然后才能在kibana启动。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">kibanna</span><br><span class="line">cd /usr/local/elk/kibana-6.2.3/bin</span><br><span class="line">./kibana-plugin install x-pack</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">es  (安装x-pack的时候，先把BC两台es停掉，然后安装)</span><br><span class="line">cd /usr/local/elk/elasticsearch-6.2.3/bin</span><br><span class="line">./elasticsearch-plugin install x-pack</span><br><span class="line">chown elastic.elastic /usr/local/elk/elasticsearch-6.2.3/config/elasticsearch.keystore</span><br><span class="line">./x-pack/setup-passwords interactive</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">cd /usr/local/elk/</span><br><span class="line">wget https://artifacts.elastic.co/downloads/packs/x-pack/x-pack-6.2.3.zip</span><br><span class="line">cd /usr/local/elk/elasticsearch-6.2.3/bin</span><br><span class="line">./elasticsearch-plugin install file:///usr/local/elk/x-pack-6.2.3.zip</span><br></pre></td></tr></table></figure></p>
-<p>//根据索引删除elk历史日志<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">//编写脚本</span><br><span class="line">#!/bin/bash</span><br><span class="line">aa=`cat server.conf`</span><br><span class="line">ip=172.20.100.219</span><br><span class="line">port=9200</span><br><span class="line">date=&quot;2018.10.29&quot;</span><br><span class="line">date1=&quot;2018.10.30&quot;</span><br><span class="line">for i in $aa</span><br><span class="line">do</span><br><span class="line">    curl -XDELETE $ip:$port/$i-$date</span><br><span class="line">    curl -XDELETE $ip:$port/$i-$date1    </span><br><span class="line">done</span><br><span class="line"></span><br><span class="line">//同目录下编写文件，输入日志索引名称</span><br><span class="line">vi server.conf    把索引名称写入文件</span><br><span class="line"></span><br><span class="line">account-service</span><br><span class="line">activity-service</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1563,7 +1546,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-count">47</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
