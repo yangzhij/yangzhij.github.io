@@ -229,6 +229,127 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/18/ELK相关/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/01/18/ELK相关/" itemprop="url">ELK相关</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-18T13:59:07+08:00">
+                2019-01-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>//之前做es的配置，其余节点只需改node.name即可，剩下的都一样<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cluster.name: my-elk</span><br><span class="line">node.name: node-2</span><br><span class="line">path.data: /data/es-data</span><br><span class="line">path.logs: /var/log/es-log</span><br><span class="line">network.host: 0.0.0.0</span><br><span class="line">http.port: 9200</span><br><span class="line">discovery.zen.ping.unicast.hosts: [&quot;172.20.100.219&quot;,&quot;172.20.100.135&quot;,&quot;172.20.100.136&quot;]</span><br></pre></td></tr></table></figure></p>
+<p>//es配置参考<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">[root@host1 ~]# vim /etc/elasticsearch/elasticsearch.yml </span><br><span class="line">cluster.name: my-elk</span><br><span class="line">node.name: node-1</span><br><span class="line">node.master: true    ##做master角色</span><br><span class="line">node.data: false     ##不做数据节点</span><br><span class="line">path.data: /var/data/es-data</span><br><span class="line">bootstrap.mlockall: true</span><br><span class="line">network.host: 0.0.0.0</span><br><span class="line">http.port: 9200</span><br><span class="line">discovery.zen.ping.unicast.hosts: [&quot;172.20.100.219&quot;,&quot;172.20.100.135&quot;,&quot;172.20.100.136&quot;]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[root@host2 ~]# vim /etc/elasticsearch/elasticsearch.yml </span><br><span class="line"></span><br><span class="line">cluster.name: my-elk</span><br><span class="line">node.name: node-2</span><br><span class="line">node.master: false   #不做master节点</span><br><span class="line">node.data: true      #只做数据节点，只负责存储数据，后期提供存储和查询服务</span><br><span class="line">path.data: /var/data/es-data</span><br><span class="line">path.logs: /var/log/es-log</span><br><span class="line">bootstrap.mlockall: true      //添加此选项，防止在内存不够用的时候，elasticsearch的内存被交换至交换区，导致性能骤降。保证了节点加入集群后的稳定性。</span><br><span class="line">network.host: 0.0.0.0</span><br><span class="line">http.port: 9200</span><br><span class="line">discovery.zen.ping.unicast.hosts: [&quot;172.20.100.219&quot;,&quot;172.20.100.135&quot;,&quot;172.20.100.136&quot;]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[root@host3 ~]# vim /etc/elasticsearch/elasticsearch.yml</span><br><span class="line">cluster.name: my-elk</span><br><span class="line">node.name: node-3</span><br><span class="line">node.master: false      ##表示host3本节点不充当，精选master角色</span><br><span class="line">node.data: true         ##表示host3节点充当数据节点</span><br><span class="line">path.data: /var/data/es-data</span><br><span class="line">bootstrap.mlockall: true</span><br><span class="line">network.host: 0.0.0.0</span><br><span class="line">http.port: 9200</span><br><span class="line">discovery.zen.ping.unicast.hosts: [&quot;172.20.100.219&quot;,&quot;172.20.100.135&quot;,&quot;172.20.100.136&quot;]</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/18/ELK部署/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1372,136 +1493,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/29/Docker数据卷容器/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/29/Docker数据卷容器/" itemprop="url">Docker数据卷容器</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-29T06:21:51+08:00">
-                2018-12-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><strong>数据卷：</strong>可以完成容器到主机，主机到容器的数据共享.主要用于数据持久化<br>docker容器产生的数据，如果不通过docker commit生成新的镜像，使得数据作为镜像的一部分保存下来，那么当容器删除后，数据就没了。所以为了能保存数据在docker中做数据持久化，我们使用数据卷。<br><strong>数据卷的添加：</strong> </p>
-<ol>
-<li><p>直接用命令添加</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker run -it -v /宿主机绝对路径目录:/容器内目录 (--privileged=true)  镜像名          //读写</span><br><span class="line">docker run -it -v /宿主机绝对路径目录:/容器内目录:ro  镜像名                 //容器内只读</span><br><span class="line"></span><br><span class="line">docker run -it -v /home/datahome:/datadocker centos</span><br><span class="line">docker run -it -v /home/datahome:/datadocker:ro centos</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>dockerfile添加</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">dockerfile是对镜像的一种源码描述。Dockerfile添加数据卷的简单操作：</span><br><span class="line"></span><br><span class="line">1.根目录下新建mydocker文件夹并进入     mkdir /mydocker</span><br><span class="line"></span><br><span class="line">2.编辑Dockerfile文件，使用VOLUME指令来给镜像添加一个或多个数据卷</span><br><span class="line">[root@localhost mydocker]# more Dockefile </span><br><span class="line">#volume test</span><br><span class="line">FROM centos</span><br><span class="line">VOLUME [&quot;/home/data1&quot;,&quot;/home/data2&quot;]          //此指令是在容器内新建两个数据目录来和外界交互</span><br><span class="line">CMD echo &quot;finshed,-------------success!&quot;</span><br><span class="line">CMD /bin/bash</span><br><span class="line"></span><br><span class="line">3.file构建---把dockerfile文件build成一个新镜像，build后生成一个新镜像remy/centos(镜像名随意)   . 表示在当前目录下面</span><br><span class="line">docker build -f /mydocker/Dockefile -t remy/centos .</span><br><span class="line"></span><br><span class="line">4.run容器     docker run -it remy/centos</span><br><span class="line">5.docker inspect 容器id      //查看对应的宿主机的目录</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>docker inspect 容器id      //查看，此时容器内目录就可以和宿主机对应的目录进行数据同步了，可以新建文件测试<br><img src="https://raw.githubusercontent.com/yangzhij/myself-images/master/docker-shujujuan.png" alt="https://raw.githubusercontent.com/yangzhij/myself-images/master/docker-shujujuan.png"></p>
-<p><strong>数据卷容器：通过挂载父容器来实现数据的传递依赖，相当于一条绳上的蚂蚱，容器之间、容器与宿主机之间数据同步共享</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">以之前的数据卷为基础</span><br><span class="line"></span><br><span class="line">docker run -it --name dc01 remy/centos        运行之前生成的一个镜像，该镜像本身自带数据卷         </span><br><span class="line"></span><br><span class="line">docker run -it --name dc02 --volumes-from dc01 remy/centos         --volumes-from  继承的容器名   镜像名</span><br><span class="line"></span><br><span class="line">docker run -it --name dc03 --volumes-from dc01 remy/centos</span><br><span class="line"></span><br><span class="line">现在的情况是：</span><br><span class="line">dc01容器上面本身有data1和data2目录，因为dc02和dc03都继承dc01，所以2和3上也有。</span><br><span class="line">如果把dc01的容器干掉，dc02和dc03的目录依然存在，在2或3上的数据卷目录下新建文件，彼此都会有。</span><br><span class="line">只要存在1个，那就会继承。</span><br><span class="line">如果新加一个dc04继承dc02，同样dc04也有，在dc04上新建文件，2和3也会有。</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1552,7 +1543,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">47</span>
+                  <span class="site-state-item-count">48</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

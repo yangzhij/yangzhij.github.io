@@ -79,17 +79,17 @@
 
 
 
-<meta name="description" content="svn客户端下载地址https://tortoisesvn.net/downloads.zh.html下载完毕后，直接下一步安装。安装后，右键SVN Checkout如果服务端IP为172.20.100.115，那么如下设置的game的访问目录就为：svn://172.20.100.115/game点击ok后，会提示你输入用户名及密码。验证通过后，即可将项目下载到本地">
+<meta name="description" content="//须知123451.前提：ansible已安装，hosts文件已配置2.编写rabbitmq.yaml3.ansible-playbook --syntax-check rabbitmq.yaml    进行剧本配置信息语法检查3.执行ansible-playbook rabbitmq.yaml4.访问172.20.100.126:15672 rabbitmq.yaml内容如下，注意不要有中文1">
 <meta property="og:type" content="article">
-<meta property="og:title" content="SVN客户端安装">
-<meta property="og:url" content="http://yoursite.com/2018/12/28/SVN客户端安装/index.html">
+<meta property="og:title" content="playbook安装rabbitmq">
+<meta property="og:url" content="http://yoursite.com/2019/02/16/playbook安装rabbitmq/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="svn客户端下载地址https://tortoisesvn.net/downloads.zh.html下载完毕后，直接下一步安装。安装后，右键SVN Checkout如果服务端IP为172.20.100.115，那么如下设置的game的访问目录就为：svn://172.20.100.115/game点击ok后，会提示你输入用户名及密码。验证通过后，即可将项目下载到本地">
+<meta property="og:description" content="//须知123451.前提：ansible已安装，hosts文件已配置2.编写rabbitmq.yaml3.ansible-playbook --syntax-check rabbitmq.yaml    进行剧本配置信息语法检查3.执行ansible-playbook rabbitmq.yaml4.访问172.20.100.126:15672 rabbitmq.yaml内容如下，注意不要有中文1">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-01-06T11:21:15.732Z">
+<meta property="og:updated_time" content="2019-02-16T17:50:32.372Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="SVN客户端安装">
-<meta name="twitter:description" content="svn客户端下载地址https://tortoisesvn.net/downloads.zh.html下载完毕后，直接下一步安装。安装后，右键SVN Checkout如果服务端IP为172.20.100.115，那么如下设置的game的访问目录就为：svn://172.20.100.115/game点击ok后，会提示你输入用户名及密码。验证通过后，即可将项目下载到本地">
+<meta name="twitter:title" content="playbook安装rabbitmq">
+<meta name="twitter:description" content="//须知123451.前提：ansible已安装，hosts文件已配置2.编写rabbitmq.yaml3.ansible-playbook --syntax-check rabbitmq.yaml    进行剧本配置信息语法检查3.执行ansible-playbook rabbitmq.yaml4.访问172.20.100.126:15672 rabbitmq.yaml内容如下，注意不要有中文1">
 
 
 
@@ -119,13 +119,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/12/28/SVN客户端安装/">
+  <link rel="canonical" href="http://yoursite.com/2019/02/16/playbook安装rabbitmq/">
 
 
 
 
 
-  <title>SVN客户端安装 | Hexo</title>
+  <title>playbook安装rabbitmq | Hexo</title>
   
 
 
@@ -232,7 +232,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/28/SVN客户端安装/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/16/playbook安装rabbitmq/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John Doe">
@@ -249,7 +249,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">SVN客户端安装</h1>
+          <h1 class="post-title" itemprop="name headline">playbook安装rabbitmq</h1>
         
 
         <div class="post-meta">
@@ -261,8 +261,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-28T01:56:21+08:00">
-                2018-12-28
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-16T23:47:50+08:00">
+                2019-02-16
               </time>
             
 
@@ -299,7 +299,8 @@
       
 
       
-        <p>svn客户端下载地址<br><a href="https://tortoisesvn.net/downloads.zh.html" target="_blank" rel="noopener">https://tortoisesvn.net/downloads.zh.html</a><br>下载完毕后，直接下一步安装。安装后，右键SVN Checkout<br>如果服务端IP为172.20.100.115，那么如下设置的game的访问目录就为：svn://172.20.100.115/game<br>点击ok后，会提示你输入用户名及密码。验证通过后，即可将项目下载到本地</p>
+        <p>//须知<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1.前提：ansible已安装，hosts文件已配置</span><br><span class="line">2.编写rabbitmq.yaml</span><br><span class="line">3.ansible-playbook --syntax-check rabbitmq.yaml    进行剧本配置信息语法检查</span><br><span class="line">3.执行ansible-playbook rabbitmq.yaml</span><br><span class="line">4.访问172.20.100.126:15672</span><br></pre></td></tr></table></figure></p>
+<p>rabbitmq.yaml内容如下，注意不要有中文<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">- hosts: 172.20.100.126        //这里可以是单台主机，可以是多台，也可以是主机组，用:分隔。 all代表所有主机</span><br><span class="line">  remote_user: root</span><br><span class="line">  </span><br><span class="line">  tasks:</span><br><span class="line">        - name: installed need package         //name是对此任务进行解释，可以不写冒号后面的东西</span><br><span class="line">          yum: name=&#123;&#123; item &#125;&#125; state=present</span><br><span class="line">          with_items:</span><br><span class="line">                - gcc</span><br><span class="line">                - glibc-devel</span><br><span class="line">                - make</span><br><span class="line">                - ncurses-devel</span><br><span class="line">                - openssl-devel</span><br><span class="line">                - xmlto</span><br><span class="line">                - perl</span><br><span class="line">                - ntpdate</span><br><span class="line"></span><br><span class="line">        - name: set timezone to Asia/Shanghai</span><br><span class="line">          timezone:</span><br><span class="line">            name: Asia/Shanghai</span><br><span class="line"></span><br><span class="line">        - name: update time</span><br><span class="line">          shell: /usr/sbin/ntpdate cn.pool.ntp.org</span><br><span class="line">        </span><br><span class="line">        - name: write to system  </span><br><span class="line">          shell: hwclock --systohc</span><br><span class="line"></span><br><span class="line">        - selinux: state=disabled</span><br><span class="line"></span><br><span class="line">        - name: stop firewalld server </span><br><span class="line">          service: name=firewalld state=stopped enabled=false</span><br><span class="line">        </span><br><span class="line"></span><br><span class="line">        - name: install rabbitmq erlang package</span><br><span class="line">          yum: name=https://packagecloud.io/rabbitmq/erlang/packages/el/7/erlang-20.3-1.el7.centos.x86_64.rpm/download.rpm state=present</span><br><span class="line"></span><br><span class="line">        - name: install rabbitmq key file</span><br><span class="line">          shell: rpm --import https://www.rabbitmq.com/rabbitmq-release-signing-key.asc</span><br><span class="line"></span><br><span class="line">        - name: install socat</span><br><span class="line">          yum: name=socat state=latest</span><br><span class="line"></span><br><span class="line">        - name: install rabbitmq server</span><br><span class="line">          yum: name=https://github.com/rabbitmq/rabbitmq-server/releases/download/v3.7.8/rabbitmq-server-3.7.8-1.el7.noarch.rpm state=present</span><br><span class="line"></span><br><span class="line">        - name: start rabbitmq server</span><br><span class="line">          service: name=rabbitmq-server state=started enabled=true</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        - name: enable plugins</span><br><span class="line">          shell: rabbitmq-plugins enable rabbitmq_management</span><br><span class="line"></span><br><span class="line">        - name: restart servier</span><br><span class="line">          service: name=rabbitmq-server state=restarted</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        - name: enable account</span><br><span class="line">          shell: rabbitmqctl add_user admin admin123</span><br><span class="line">          </span><br><span class="line">        - name: grant account</span><br><span class="line">          shell: rabbitmqctl set_permissions -p / admin &quot;.*&quot; &quot;.*&quot; &quot;.*&quot;</span><br><span class="line">          </span><br><span class="line">        - name: setting account</span><br><span class="line">          shell: rabbitmqctl set_user_tags admin administrator</span><br></pre></td></tr></table></figure></p>
 
       
     </div>
@@ -324,8 +325,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/12/28/mysql基础/" rel="next" title="mysql基础">
-                <i class="fa fa-chevron-left"></i> mysql基础
+              <a href="/2019/02/15/linux免秘钥登录/" rel="next" title="linux免秘钥登录">
+                <i class="fa fa-chevron-left"></i> linux免秘钥登录
               </a>
             
           </div>
@@ -333,10 +334,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/12/28/Ansible记录/" rel="prev" title="Ansible记录">
-                Ansible记录 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
