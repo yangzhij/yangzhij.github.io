@@ -79,17 +79,17 @@
 
 
 
-<meta name="description" content="升级python为3.7，centos7自带python为Python 2.7，    直接执行即可123456789101112131415161718mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backupcd /etc/yum.repos.d/wget -O /etc/yum.repos.d/C">
+<meta name="description" content="速度发货过来[^注释][^注释]: Eddie是非常棒的">
 <meta property="og:type" content="article">
-<meta property="og:title" content="centos7升级python">
-<meta property="og:url" content="http://yoursite.com/2018/12/14/centos7升级python/index.html">
+<meta property="og:title" content="测试一些语法">
+<meta property="og:url" content="http://yoursite.com/2019/02/19/测试一些语法/index.html">
 <meta property="og:site_name" content="闹着玩呢">
-<meta property="og:description" content="升级python为3.7，centos7自带python为Python 2.7，    直接执行即可123456789101112131415161718mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backupcd /etc/yum.repos.d/wget -O /etc/yum.repos.d/C">
+<meta property="og:description" content="速度发货过来[^注释][^注释]: Eddie是非常棒的">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-12-19T10:44:46.687Z">
+<meta property="og:updated_time" content="2019-02-19T07:44:16.606Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="centos7升级python">
-<meta name="twitter:description" content="升级python为3.7，centos7自带python为Python 2.7，    直接执行即可123456789101112131415161718mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backupcd /etc/yum.repos.d/wget -O /etc/yum.repos.d/C">
+<meta name="twitter:title" content="测试一些语法">
+<meta name="twitter:description" content="速度发货过来[^注释][^注释]: Eddie是非常棒的">
 
 
 
@@ -119,13 +119,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/12/14/centos7升级python/">
+  <link rel="canonical" href="http://yoursite.com/2019/02/19/测试一些语法/">
 
 
 
 
 
-  <title>centos7升级python | 闹着玩呢</title>
+  <title>测试一些语法 | 闹着玩呢</title>
   
 
 
@@ -232,7 +232,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/14/centos7升级python/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/19/测试一些语法/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="作者">
@@ -249,7 +249,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">centos7升级python</h1>
+          <h1 class="post-title" itemprop="name headline">测试一些语法</h1>
         
 
         <div class="post-meta">
@@ -261,8 +261,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-14T09:38:07+08:00">
-                2018-12-14
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-19T11:30:10+08:00">
+                2019-02-19
               </time>
             
 
@@ -299,13 +299,7 @@
       
 
       
-        <p>升级python为3.7，centos7自带python为Python 2.7，    直接执行即可<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup</span><br><span class="line">cd /etc/yum.repos.d/</span><br><span class="line">wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo</span><br><span class="line">yum makecache</span><br><span class="line">cd /usr/local/src</span><br><span class="line">wget &quot;https://www.python.org/ftp/python/3.7.0/Python-3.7.0.tgz&quot;</span><br><span class="line">tar -zxvf  Python-3.7.0.tgz -C /tmp</span><br><span class="line">cd /tmp/Python-3.7.0/</span><br><span class="line">yum -y groupinstall &quot;Development tools&quot;</span><br><span class="line">yum -y install openssl-devel bzip2-devel expat-devel gdbm-devel readline-devel sqlite-devel</span><br><span class="line">yum install libffi-devel -y</span><br><span class="line">./configure --prefix=/usr/local/python3</span><br><span class="line">./configure --enable-optimizations</span><br><span class="line">make &amp;&amp; make install</span><br><span class="line">cd /usr/bin</span><br><span class="line">ln -s /usr/local/python/bin/python3.7 /usr/bin/python3</span><br><span class="line">rm  python</span><br><span class="line">ln -s /usr/local/bin/python3.7 /bin/python</span><br></pre></td></tr></table></figure></p>
-<p>python    进入python3<br>python2    进入python2</p>
-<font color="#FF0000"> 升级完后可能会导致yum不能用，解决方法如下：</font> 
-
-
-<p>将下列3个文件中原来的 /usr/bin/python   改成  /usr/bin/python2.7  就行<br>centos6  的改成 python2.6<br>centos7  的改成 python2.7</p>
-<p>1、vi /usr/bin/yum<br>2、vi /usr/libexec/urlgrabber-ext-down<br>3、vi /usr/bin/yum-config-manager</p>
+        <p>速度发货过来<code>[^注释]</code><br><code>[^注释]</code>: Eddie是非常棒的</p>
 
       
     </div>
@@ -330,8 +324,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/12/13/ftp记录/" rel="next" title="ftp记录">
-                <i class="fa fa-chevron-left"></i> ftp记录
+              <a href="/2019/02/18/zabbix配置邮件报警/" rel="next" title="zabbix配置邮件报警">
+                <i class="fa fa-chevron-left"></i> zabbix配置邮件报警
               </a>
             
           </div>
@@ -339,10 +333,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/12/14/Linux截取某段时间日志/" rel="prev" title="Linux截取某段时间日志">
-                Linux截取某段时间日志 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
