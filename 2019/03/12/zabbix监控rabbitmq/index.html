@@ -79,17 +79,27 @@
 
 
 
-<meta name="description" content="Docker三要素：镜像 image容器仓库 centos7安装docker12345yum -y updateyum install -y yum-utils device-mapper-persistent-data lvm2yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo">
+<meta name="description" content="rabbitMQ监控 1. 运行状态     mq本身运行状态     消息队列状态：有无数据     erlang VM运行时间（没有用，写不写无所谓）  2. 服务器性能     流量 incoming    outcoming     CPU   --&amp;gt;CPU system time  CPU在内核运行的时间     Memory --&amp;gt; free memory      磁盘空">
 <meta property="og:type" content="article">
-<meta property="og:title" content="centos7安装docker">
-<meta property="og:url" content="http://yoursite.com/2018/12/26/centos7安装docker/index.html">
+<meta property="og:title" content="zabbix监控rabbitmq">
+<meta property="og:url" content="http://yoursite.com/2019/03/12/zabbix监控rabbitmq/index.html">
 <meta property="og:site_name" content="闹着玩呢">
-<meta property="og:description" content="Docker三要素：镜像 image容器仓库 centos7安装docker12345yum -y updateyum install -y yum-utils device-mapper-persistent-data lvm2yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo">
+<meta property="og:description" content="rabbitMQ监控 1. 运行状态     mq本身运行状态     消息队列状态：有无数据     erlang VM运行时间（没有用，写不写无所谓）  2. 服务器性能     流量 incoming    outcoming     CPU   --&amp;gt;CPU system time  CPU在内核运行的时间     Memory --&amp;gt; free memory      磁盘空">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-12-25T17:03:38.577Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/yangzhij/images2/master/zmq1.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yangzhij/images2/master/zmq2.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yangzhij/images2/master/zmq3.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yangzhij/images2/master/mq1.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yangzhij/images2/master/mq2.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yangzhij/images2/master/mq3.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yangzhij/images2/master/mq4.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yangzhij/images2/master/mq5.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yangzhij/images2/master/mq5-1.png">
+<meta property="og:updated_time" content="2019-03-12T12:16:20.093Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="centos7安装docker">
-<meta name="twitter:description" content="Docker三要素：镜像 image容器仓库 centos7安装docker12345yum -y updateyum install -y yum-utils device-mapper-persistent-data lvm2yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo">
+<meta name="twitter:title" content="zabbix监控rabbitmq">
+<meta name="twitter:description" content="rabbitMQ监控 1. 运行状态     mq本身运行状态     消息队列状态：有无数据     erlang VM运行时间（没有用，写不写无所谓）  2. 服务器性能     流量 incoming    outcoming     CPU   --&amp;gt;CPU system time  CPU在内核运行的时间     Memory --&amp;gt; free memory      磁盘空">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/yangzhij/images2/master/zmq1.png">
 
 
 
@@ -119,13 +129,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/12/26/centos7安装docker/">
+  <link rel="canonical" href="http://yoursite.com/2019/03/12/zabbix监控rabbitmq/">
 
 
 
 
 
-  <title>centos7安装docker | 闹着玩呢</title>
+  <title>zabbix监控rabbitmq | 闹着玩呢</title>
   
 
 
@@ -232,7 +242,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/26/centos7安装docker/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/12/zabbix监控rabbitmq/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="yangzhijun">
@@ -249,7 +259,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">centos7安装docker</h1>
+          <h1 class="post-title" itemprop="name headline">zabbix监控rabbitmq</h1>
         
 
         <div class="post-meta">
@@ -261,8 +271,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-26T00:54:13+08:00">
-                2018-12-26
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-12T20:13:24+08:00">
+                2019-03-12
               </time>
             
 
@@ -299,9 +309,30 @@
       
 
       
-        <p><strong>Docker三要素：</strong><br>镜像 image<br>容器<br>仓库</p>
-<p><strong>centos7安装docker</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">yum -y update</span><br><span class="line">yum install -y yum-utils device-mapper-persistent-data lvm2</span><br><span class="line">yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo</span><br><span class="line">yum list docker-ce --showduplicates | sort -r              #查看所有仓库中所有docker版本，并选择特定版本安装</span><br><span class="line">yum -y install docker-ce-17.12.1.ce                        #安装所选版本</span><br></pre></td></tr></table></figure></p>
-<p><strong>docker基本信息查看</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">docker version          #版本号</span><br><span class="line">docker info             # 查看系统(docker)层面信息</span><br><span class="line">docker search 镜像名    #搜索镜像</span><br><span class="line">docker pull 镜像名      #下载镜像</span><br><span class="line">docker images           #列出本地有的镜像</span><br><span class="line">docker images -a        #列出所有的images（包含历史）</span><br></pre></td></tr></table></figure></p>
+        <p>rabbitMQ监控</p>
+<pre><code>1. 运行状态
+    mq本身运行状态
+    消息队列状态：有无数据
+    erlang VM运行时间（没有用，写不写无所谓）
+
+2. 服务器性能
+    流量 incoming    outcoming
+    CPU   --&gt;CPU system time  CPU在内核运行的时间
+    Memory --&gt; free memory 
+    磁盘空间 /   Filesystems     Free disk space on /
+
+3. rabbitMQ性能
+    消息与准备就绪的消息
+    消费者个数和连接数
+    总共读取磁盘数据大小
+    写入磁盘数据总量
+</code></pre><p>在客户端添加rabbitmq_status.py和rabbitmq_status.conf文件，文件在github上（<a href="https://github.com/yangzhij/zhifou下）。机器上文件路径为：" target="_blank" rel="noopener">https://github.com/yangzhij/zhifou下）。机器上文件路径为：</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/etc/zabbix/rabbitmq_status.py</span><br><span class="line">/etc/zabbix/zabbix_agentd.d/rabbitmq_status.conf</span><br></pre></td></tr></table></figure></p>
+<p>zabbix界面操作：<br>1.新建主机组，如rabbitMQ<br>2.添加主机并加入属组linux server及rabbitMQ<br>3.新建模板Template OS RabbitMQ<br>4.创建应用集RabbitMq Node、RabbitMq Overview、RabbitMq Queues<br>5.添加监控项，如下<br><img src="https://raw.githubusercontent.com/yangzhij/images2/master/zmq1.png" alt="https://raw.githubusercontent.com/yangzhij/images2/master/zmq1.png"><br><img src="https://raw.githubusercontent.com/yangzhij/images2/master/zmq2.png" alt="https://raw.githubusercontent.com/yangzhij/images2/master/zmq2.png"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">名称                           键值</span><br><span class="line">rabbitmq.active             rabbitmq.active</span><br><span class="line">RabbitMq Channels			rabbitmq[overview,channels]</span><br><span class="line">RabbitMQ Connections		rabbitmq[overview,connections]</span><br><span class="line">RabbitMQ Consumers	        rabbitmq[overview,consumers]	     </span><br><span class="line">RabbitMQ Exchanges	        rabbitmq[overview,exchanges]	     </span><br><span class="line">RabbitMQ Messages	        rabbitmq[overview,messages]	             </span><br><span class="line">RabbitMQ Messages_ready	 	rabbitmq[overview,messages_ready]</span><br><span class="line">RabbitMQ Server IO Read Bytes Rate	 	rabbitmq[server,io_read_bytes]	</span><br><span class="line">RabbitMQ Server IO Write Bytes Rate	 	rabbitmq[server,io_write_bytes]</span><br><span class="line">RabbitMQ Server Uptime	 	rabbitmq[server,uptime]</span><br><span class="line">Rabbit Queue Status		     rabbitmq.queues</span><br></pre></td></tr></table></figure>
+<p>创建触发器：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">名称                                        表达式</span><br><span class="line">rabbitmq is down                   &#123;Template OS RabbitMQ:rabbitmq.active.last(,30)&#125;=0</span><br><span class="line">rabbitmq message heap up	       &#123;Template OS RabbitMQ:rabbitmq[overview,messages].last(0)&#125;&gt;9000</span><br><span class="line">rabbitmq queues nodata	           &#123;Template OS RabbitMQ:rabbitmq.queues.last(0)&#125;=0</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://raw.githubusercontent.com/yangzhij/images2/master/zmq3.png" alt="https://raw.githubusercontent.com/yangzhij/images2/master/zmq3.png"></p>
+<p>结束了别忘了重启zabbix-agent哟~~~~</p>
+<p>grafana上的操作<br><img src="https://raw.githubusercontent.com/yangzhij/images2/master/mq1.png" alt="https://raw.githubusercontent.com/yangzhij/images2/master/mq1.png"><br><img src="https://raw.githubusercontent.com/yangzhij/images2/master/mq2.png" alt="https://raw.githubusercontent.com/yangzhij/images2/master/mq2.png"><br><img src="https://raw.githubusercontent.com/yangzhij/images2/master/mq3.png" alt="https://raw.githubusercontent.com/yangzhij/images2/master/mq3.png"><br><img src="https://raw.githubusercontent.com/yangzhij/images2/master/mq4.png" alt="https://raw.githubusercontent.com/yangzhij/images2/master/mq4.png"><br><img src="https://raw.githubusercontent.com/yangzhij/images2/master/mq5.png" alt="https://raw.githubusercontent.com/yangzhij/images2/master/mq5.png"><br><img src="https://raw.githubusercontent.com/yangzhij/images2/master/mq5-1.png" alt="https://raw.githubusercontent.com/yangzhij/images2/master/mq5-1.png"></p>
 
       
     </div>
@@ -326,8 +357,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/12/24/ddos攻击及黑洞机制/" rel="next" title="ddos攻击及黑洞机制">
-                <i class="fa fa-chevron-left"></i> ddos攻击及黑洞机制
+              <a href="/2019/03/04/随笔/" rel="next" title="随笔">
+                <i class="fa fa-chevron-left"></i> 随笔
               </a>
             
           </div>
@@ -335,10 +366,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/12/26/Docker集中化web管理平台/" rel="prev" title="Docker集中化web管理平台">
-                Docker集中化web管理平台 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
