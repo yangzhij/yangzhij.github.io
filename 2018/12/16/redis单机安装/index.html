@@ -86,7 +86,7 @@
 <meta property="og:site_name" content="yangzhijun">
 <meta property="og:description" content="1.浏览器查看下载哪个版本http://download.redis.io/release2.安装依赖 yum -y install gcc3.安装123456cd /usr/localwget http://download.redis.io/releases/redis-5.0.1.tar.gztar zxvf redis-5.0.1.tar.gz cd redis-5.0.1make MAL">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-12-19T10:34:24.295Z">
+<meta property="og:updated_time" content="2019-04-19T05:42:38.218Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="redis单机安装">
 <meta name="twitter:description" content="1.浏览器查看下载哪个版本http://download.redis.io/release2.安装依赖 yum -y install gcc3.安装123456cd /usr/localwget http://download.redis.io/releases/redis-5.0.1.tar.gztar zxvf redis-5.0.1.tar.gz cd redis-5.0.1make MAL">
@@ -303,12 +303,22 @@
 <p>4.更改配置： #以守护进程方式启动  #允许所有ip访问   #有必要的情况下修改默认端口<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sed -i &apos;s/daemonize no/daemonize yes/&apos; /usr/local/redis-5.0.1/redis.conf</span><br><span class="line">sed -i &apos;s/bind 127.0.0.1/#bind 127.0.0.1/&apos; /usr/local/redis-5.0.1/redis.conf</span><br><span class="line">sed -i &apos;s/port 6379/port 6377/&apos; /usr/local/redis-5.0.1/redis.conf</span><br></pre></td></tr></table></figure></p>
 <p>5.启动，两种方式，一般通过后台进程启动<br>1.直接启动redis<br>cd /usr/local/redis-5.0.1/src<br>./redis-server<br>该启动方式需要一直打开窗口，ctrl + c退出。</p>
 <p>2.后台进程方式启动,指定文件启动<br>./redis-server ../redis.conf</p>
-<p>测试连接：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost redis-5.0.1]# cd /root/redis-5.0.1/src/</span><br><span class="line">[root@localhost src]# redis-cli </span><br><span class="line">127.0.0.1:6379&gt;</span><br></pre></td></tr></table></figure></p>
-<p>设置软连接，让redis指令可以在任意目录下直接使用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ln -s /root/redis-5.0.1/src/redis-cli /usr/bin/redis</span><br><span class="line">[root@localhost ~]# redis</span><br><span class="line">127.0.0.1:6379&gt;</span><br></pre></td></tr></table></figure></p>
-<p>或者将redis-cli拷贝到/usr/bin/下，让redis-cli指令可以在任意目录下直接使用<br>cp /root/redis-5.0.1/src/redis-cli /usr/local/bin</p>
+<p>测试连接：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost redis-5.0.1]# cd /usr/local/redis-5.0.1/src</span><br><span class="line">[root@localhost src]# redis-cli </span><br><span class="line">127.0.0.1:6379&gt;</span><br></pre></td></tr></table></figure></p>
+<p>设置软连接，让redis指令可以在任意目录下直接使用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ln -s /usr/local/redis-5.0.1/src/redis-cli /usr/bin/redis</span><br><span class="line">[root@localhost ~]# redis</span><br><span class="line">127.0.0.1:6379&gt;</span><br></pre></td></tr></table></figure></p>
+<p>或者将redis-cli拷贝到/usr/bin/下，让redis-cli指令可以在任意目录下直接使用<br>cp /usr/local/redis-5.0.1/src/redis-cli /usr/local/bin</p>
 <p>设置redis密码，一般也不设置吧，不清楚，反正我们公司总没有设置，具体看要求吧<br>cd /usr/local/redis-5.0.1/<br>打开redis.conf文件，搜索requirepass关键字，在#requirepass foobared下面添加一行<br>requirepass    123456         #设置redis密码为123456</p>
 <p>保存退出并重启redis</p>
 <p>通过客户端连接的话必须加上密码参数才能正常连接：<br><code>[root@localhost redis-5.0.1]# redis -a 123456</code></p>
+<p>//系统调优<br>文件末尾添加下面4行<br>vi /etc/security/limits.conf</p>
+<ul>
+<li>soft nofile 102400</li>
+<li><p>hard nofile 102400</p>
+</li>
+<li><p>soft nproc 102400</p>
+</li>
+<li>hard nproc 102400</li>
+</ul>
+<p>//文件末未添加<br>vi /etc/sysctl.conf<br>fs.file-max=102400   #保存退出<br>sysctl -p  生效配置<br>//可以打开的最大文件数量及用户最大可用的进程数<br>ulimit -n 65000<br>ulimit -u 65000</p>
 
       
     </div>
