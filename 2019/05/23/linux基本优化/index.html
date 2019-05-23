@@ -79,17 +79,17 @@
 
 
 
-<meta name="description" content="//单台免秘钥登录123ssh-keygen    //生成密钥ssh-copy-id   root@10.0.0.1      //推到远程主机，此过程需要输入密码ssh 10.0.0.1   //测试 //比如3台主机相互免密码登录，就需要在3台上面都执行以上命令，新的秘钥会追加到相应文件，不会影响原来的。即：1231.在3台上都生成秘钥  ssh-keygen2.推送到其他两台 ssh-co">
+<meta name="description" content="//内核优化(调整Linux网络内核对TCP连接的有关限制等)1234567891011121314151617181920212223242526272829303132333435vim /etc/sysctl.confnet.ipv4.route.gc_timeout = 100net.core.rmem_default = 256960net.ipv4.ip_local_port_rang">
 <meta property="og:type" content="article">
-<meta property="og:title" content="linux免秘钥登录">
-<meta property="og:url" content="http://yoursite.com/2019/02/15/linux免秘钥登录/index.html">
+<meta property="og:title" content="linux基本优化">
+<meta property="og:url" content="http://yoursite.com/2019/05/23/linux基本优化/index.html">
 <meta property="og:site_name" content="yangzhijun">
-<meta property="og:description" content="//单台免秘钥登录123ssh-keygen    //生成密钥ssh-copy-id   root@10.0.0.1      //推到远程主机，此过程需要输入密码ssh 10.0.0.1   //测试 //比如3台主机相互免密码登录，就需要在3台上面都执行以上命令，新的秘钥会追加到相应文件，不会影响原来的。即：1231.在3台上都生成秘钥  ssh-keygen2.推送到其他两台 ssh-co">
+<meta property="og:description" content="//内核优化(调整Linux网络内核对TCP连接的有关限制等)1234567891011121314151617181920212223242526272829303132333435vim /etc/sysctl.confnet.ipv4.route.gc_timeout = 100net.core.rmem_default = 256960net.ipv4.ip_local_port_rang">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-02-15T05:49:27.288Z">
+<meta property="og:updated_time" content="2019-05-23T01:57:26.288Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="linux免秘钥登录">
-<meta name="twitter:description" content="//单台免秘钥登录123ssh-keygen    //生成密钥ssh-copy-id   root@10.0.0.1      //推到远程主机，此过程需要输入密码ssh 10.0.0.1   //测试 //比如3台主机相互免密码登录，就需要在3台上面都执行以上命令，新的秘钥会追加到相应文件，不会影响原来的。即：1231.在3台上都生成秘钥  ssh-keygen2.推送到其他两台 ssh-co">
+<meta name="twitter:title" content="linux基本优化">
+<meta name="twitter:description" content="//内核优化(调整Linux网络内核对TCP连接的有关限制等)1234567891011121314151617181920212223242526272829303132333435vim /etc/sysctl.confnet.ipv4.route.gc_timeout = 100net.core.rmem_default = 256960net.ipv4.ip_local_port_rang">
 
 
 
@@ -119,13 +119,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/02/15/linux免秘钥登录/">
+  <link rel="canonical" href="http://yoursite.com/2019/05/23/linux基本优化/">
 
 
 
 
 
-  <title>linux免秘钥登录 | yangzhijun</title>
+  <title>linux基本优化 | yangzhijun</title>
   
 
 
@@ -232,7 +232,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/15/linux免秘钥登录/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/23/linux基本优化/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="yangzhijun">
@@ -249,7 +249,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">linux免秘钥登录</h1>
+          <h1 class="post-title" itemprop="name headline">linux基本优化</h1>
         
 
         <div class="post-meta">
@@ -261,8 +261,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-15T13:46:28+08:00">
-                2019-02-15
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-05-23T09:55:48+08:00">
+                2019-05-23
               </time>
             
 
@@ -299,9 +299,9 @@
       
 
       
-        <p>//单台免秘钥登录<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen    //生成密钥</span><br><span class="line">ssh-copy-id   root@10.0.0.1      //推到远程主机，此过程需要输入密码</span><br><span class="line">ssh 10.0.0.1   //测试</span><br></pre></td></tr></table></figure></p>
-<p>//比如3台主机相互免密码登录，就需要在3台上面都执行以上命令，新的秘钥会追加到相应文件，不会影响原来的。即：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1.在3台上都生成秘钥  ssh-keygen</span><br><span class="line">2.推送到其他两台 ssh-copy-id   root@10.0.0.2</span><br><span class="line">3.测试</span><br></pre></td></tr></table></figure></p>
-<p>//比如几十台都通过免秘钥登陆呢？这时候就需要ansible了。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">vim  /etc/ansible/hosts </span><br><span class="line">[jenkins]·</span><br><span class="line">172.20.100.126</span><br><span class="line">172.20.100.217</span><br><span class="line">[jjaaa]</span><br><span class="line">172.20.100.218</span><br><span class="line">172.20.100.219</span><br><span class="line">执行下列语句(all是所有的，也可指定单个组，如下jjaaa)，如果ip的密码都是一样的，执行的时候需输入一次密码</span><br><span class="line">ansible all -m authorized_key -a &quot;user=root key=&apos;&#123;&#123; lookup(&apos;file&apos;, &apos;/root/.ssh/id_rsa.pub&apos;)&#125;&#125;&apos; path=&apos;/root/.ssh/authorized_keys&apos; manage_dir=no&quot; --ask-pass -c paramiko</span><br><span class="line">ansible jjaaa -m authorized_key -a &quot;user=root key=&apos;&#123;&#123; lookup(&apos;file&apos;, &apos;/root/.ssh/id_rsa.pub&apos;)&#125;&#125;&apos; path=&apos;/root/.ssh/authorized_keys&apos; manage_dir=no&quot; --ask-pass -c paramiko</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[jenkins]</span><br><span class="line">172.20.100.126 ansible_ssh_pass=&quot;old123456&quot;</span><br><span class="line">172.20.100.217 ansible_ssh_pass=&quot;123456</span><br><span class="line">如果密码不同  需要自定义</span><br><span class="line">ansible all -m authorized_key -a &quot;user=root key=&apos;&#123;&#123; lookup(&apos;file&apos;, &apos;/root/.ssh/id_rsa.pub&apos;)&#125;&#125;&apos; path=&apos;/root/.ssh/authorized_keys&apos; manage_dir=no&quot; --ask-pass -c paramiko</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[jenkins]</span><br><span class="line">172.20.100.126</span><br><span class="line">172.20.100.217</span><br><span class="line">172.20.100.157 ansible_ssh_pass=&quot;ley123456&quot;</span><br><span class="line">如果密码不同  需要自定义，</span><br><span class="line"></span><br><span class="line">看到这样的，&quot;Are you sure you want to continue connecting (yes/no)?&quot;。。。。直接回车就可以了</span><br></pre></td></tr></table></figure></p>
+        <p>//内核优化(调整Linux网络内核对TCP连接的有关限制等)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/sysctl.conf</span><br><span class="line">net.ipv4.route.gc_timeout = 100</span><br><span class="line">net.core.rmem_default = 256960</span><br><span class="line">net.ipv4.ip_local_port_range = 1024 65000</span><br><span class="line">net.core.rmem_max = 513920</span><br><span class="line">net.core.wmem_default = 256960</span><br><span class="line">net.core.wmem_max = 513920</span><br><span class="line">net.ipv4.tcp_rmem = 8760  256960  4088000</span><br><span class="line">net.ipv4.tcp_rmem = 8760  256960  4088000</span><br><span class="line">net.ipv4.tcp_wmem = 8760  256960  4088000</span><br><span class="line">net.ipv4.tcp_fin_timeout = 30</span><br><span class="line">net.ipv4.tcp_tw_recycle = 1</span><br><span class="line">net.ipv4.tcp_timestamps = 1</span><br><span class="line">net.ipv4.tcp_window_scaling = 1</span><br><span class="line">net.ipv4.tcp_sack = 1</span><br><span class="line">net.ipv4.tcp_fack = 1</span><br><span class="line">net.ipv4.tcp_congestion_control = htcp</span><br><span class="line">net.ipv4.tcp_mtu_probing = 1</span><br><span class="line">net.core.optmem_max = 81920</span><br><span class="line">net.core.netdev_max_backlog = 2000</span><br><span class="line">net.ipv4.tcp_no_metrics_save = 1</span><br><span class="line">net.core.somaxconn = 262144</span><br><span class="line">net.ipv4.tcp_mem = 131072  262144  524288</span><br><span class="line">net.ipv4.tcp_syncookies = 1</span><br><span class="line">net.ipv4.tcp_tw_reuse = 1</span><br><span class="line">net.ipv4.tcp_max_orphans = 262144</span><br><span class="line">net.ipv4.tcp_max_syn_backlog = 2048</span><br><span class="line">net.ipv4.tcp_synack_retries = 1</span><br><span class="line">net.ipv4.tcp_syn_retries = 1</span><br><span class="line">kernel.shmmax = 134217728</span><br><span class="line">net.ipv4.tcp_keepalive_time = 1800</span><br><span class="line">net.ipv4.tcp_keepalive_intvl = 30</span><br><span class="line">net.ipv4.tcp_keepalive_probes = 3</span><br><span class="line">//参数及时生效命令</span><br><span class="line">sysctl -p</span><br></pre></td></tr></table></figure></p>
+<p>//文件连接数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/security/limits.conf </span><br><span class="line">*                   soft    nofile  655350</span><br><span class="line">*                   hard    nofile  655350</span><br><span class="line">*                   soft    nproc   655350</span><br><span class="line">*                   hard    nproc   655350</span><br></pre></td></tr></table></figure></p>
+<p>//历史数据条数优化<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/profile</span><br><span class="line"># add at 2019-05-13</span><br><span class="line">HISTFILESIZE=30000</span><br><span class="line">HISTSIZE=10000</span><br><span class="line">HISTTIMEFORMAT=&apos;%Y-%m-%dT%T &apos;</span><br><span class="line">export HISTTIMEFORMAT</span><br></pre></td></tr></table></figure></p>
 
       
     </div>
@@ -326,8 +326,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/02/13/挂载磁盘/" rel="next" title="挂载磁盘">
-                <i class="fa fa-chevron-left"></i> 挂载磁盘
+              <a href="/2019/05/20/mysql5-7-mycat-keepalived/" rel="next" title="mysql5.7+mycat+keepalived">
+                <i class="fa fa-chevron-left"></i> mysql5.7+mycat+keepalived
               </a>
             
           </div>
@@ -335,10 +335,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/02/16/playbook安装rabbitmq/" rel="prev" title="playbook安装rabbitmq">
-                playbook安装rabbitmq <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
