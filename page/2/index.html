@@ -232,6 +232,128 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/16/python脚本涉及知识点/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangzhijun">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/yangzhij/images2/master/1.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yangzhijun">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/01/16/python脚本涉及知识点/" itemprop="url">python脚本涉及知识点</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-16T10:26:27+08:00">
+                2019-01-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 创建一个文件并写入内容</span><br><span class="line"></span><br><span class="line">ge = &quot;E:\PycharmProjects\ge.conf&quot;           #文件路径</span><br><span class="line">file = &quot;www.test.com&quot;             #文件内容</span><br><span class="line">f = open(ge, &apos;w&apos;)    </span><br><span class="line">f.write(file)</span><br><span class="line">f.close()</span><br></pre></td></tr></table></figure>
+<p>#判断是否存在目录，不存在则创建<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">root = input(&quot;输入站点目录(例如:bokeqipai):&quot;).strip()</span><br><span class="line">wwwroot=&quot;E:\PycharmProjects\\&quot;         #路径</span><br><span class="line">if os.path.isdir(root):         #目录是否存在</span><br><span class="line">    print(&quot;存在%s文件夹&quot;%root)</span><br><span class="line">else:</span><br><span class="line">    print(&quot;文件夹%s不存在&quot;%root)</span><br><span class="line">    print(&quot;创建文件夹%s&quot;%root)</span><br><span class="line">    os.mkdir(root)         #创建目录</span><br><span class="line">    print(&quot;%s 文件夹创建完成&quot;%root)</span><br></pre></td></tr></table></figure></p>
+<p>#re.sub是个正则表达式方面的函数，用来实现通过正则表达式，实现比普通字符串的replace更加强大的替换功能；<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">import re</span><br><span class="line">inputStr1 = &quot;hello 111 world 111&quot;</span><br><span class="line">replacedStr1 = inputStr1.replace(&quot;111&quot;, &quot;222&quot;)              #把字符串中的111换成222</span><br><span class="line">print(replacedStr1)</span><br><span class="line"></span><br><span class="line">inputStr = &quot;hello 123 world 456&quot;</span><br><span class="line">replacedStr = re.sub(&quot;\d+&quot;, &quot;222&quot;, inputStr)              #把字符串中的123和456都换成222</span><br><span class="line">print(replacedStr)</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/16/python脚本/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1838,6 +1960,7 @@
 <p>//清除系统缓存<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sync 同步缓存信息，把缓存的信息保存到磁盘</span><br><span class="line">echo 3 &gt; /proc/sys/vm/drop_caches 清空缓存</span><br><span class="line"></span><br><span class="line">如果是程序占用的资源过多，不行就重启一下程序</span><br></pre></td></tr></table></figure></p>
 <p>//centos7安装pip<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget https://bootstrap.pypa.io/get-pip.py</span><br><span class="line">python get-pip.py</span><br></pre></td></tr></table></figure></p>
 <p>//修改linux用户登录后默认目录<br>linux用户登录后默认目录是在/etc/passwd文件设置的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/passwd</span><br><span class="line">以下列两行为例，/root即为root用户登录后的默认目录;/home/wwwroot即为linuxaa用户登录后的默认目录</span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line">linuxaa:x:1005:1005::/home/wwwroot:/bin/bash</span><br><span class="line">所以直接修改这个地方的路径就ok了</span><br></pre></td></tr></table></figure></p>
+<p>//打开文件乱码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">首先查看系统对中文的支持</span><br><span class="line">locale -a | grep zh_CN8</span><br><span class="line">yum groupinstall chinese-support</span><br><span class="line"></span><br><span class="line">输出样例如下</span><br><span class="line">zh_CN.gbk</span><br><span class="line">zh_CN.utf8</span><br><span class="line"></span><br><span class="line">vim 只能正确识别列表中的中文编码文件，如需识别其他编码类型的中文文件，则需要做系统升级</span><br><span class="line"></span><br><span class="line">vi ~/.bash_profile</span><br><span class="line">文件末尾添加</span><br><span class="line"></span><br><span class="line">export LANG=&quot;zh_CN.UTF-8&quot;</span><br><span class="line"></span><br><span class="line">export LC_ALL=&quot;zh_CN.UTF-8&quot;</span><br></pre></td></tr></table></figure></p>
 <p>//jumpserver<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://docs.jumpserver.org/zh/docs/</span><br></pre></td></tr></table></figure></p>
 <p>//ssh加速<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sed -i &apos;s/#UseDNS yes/UseDNS no/&apos; /etc/ssh/sshd_config</span><br><span class="line">sed -i &apos;s/GSSAPIAuthentication yes/GSSAPIAuthentication no/&apos; /etc/ssh/sshd_config</span><br></pre></td></tr></table></figure></p>
 <p>数据库web管理工具，已下载到云盘<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://www.jianshu.com/p/51a9d5520d2a</span><br></pre></td></tr></table></figure></p>
@@ -2637,131 +2760,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/22/mongodb单机安装/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yangzhijun">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://raw.githubusercontent.com/yangzhij/images2/master/1.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="yangzhijun">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/22/mongodb单机安装/" itemprop="url">mongodb 单机安装</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-22T18:32:21+08:00">
-                2018-12-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><strong>MongoDB是一个基于分布式文件存储的数据库，其目的在于为WEB应用提供可扩展的高性能数据存储解决方案。</strong><br>此为单机部署mongodb, 直接操作此文档命令即可………………………<br>软件下载<a href="https://fastdl.mongodb.org，可以看看目前版本，然后直接在下面改下版本号即可" target="_blank" rel="noopener">https://fastdl.mongodb.org，可以看看目前版本，然后直接在下面改下版本号即可</a><br>安装过程如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local</span><br><span class="line">wget https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-rhel70-4.0.4.tgz</span><br><span class="line">tar xvf mongodb-linux-x86_64-rhel70-4.0.4.tgz</span><br><span class="line">mkdir mongodb</span><br><span class="line">mv mongodb-linux-x86_64-rhel70-4.0.4 mongodb/mongodb4.0.4</span><br><span class="line">cd mongodb/mongodb4.0.4</span><br><span class="line">mkdir conf logs</span><br><span class="line">mkdir -p data/db</span><br></pre></td></tr></table></figure></p>
-<p><strong>conf 存放配置文件的目录  logs 存放日志的目录   data/db存放数据文件的目录 </strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">cd conf/</span><br><span class="line">vi mongodb.conf （复制下列内容即可）</span><br><span class="line">#idae - MongoDB config start - 2018-11-27</span><br><span class="line">#设置数据文件的存放目录</span><br><span class="line">dbpath = /usr/local/mongodb/mongodb4.0.4/data/db</span><br><span class="line">#设置日志文件的存放目录及其日志文件名</span><br><span class="line">logpath = /usr/local/mongodb/mongodb4.0.4/logs/mongodb.log</span><br><span class="line"># 设置端口号</span><br><span class="line">port = 27017</span><br><span class="line">#设置运行任意ip连接</span><br><span class="line">bind_ip = 0.0.0.0</span><br><span class="line"># 设置为以守护进程的方式运行，即在后台运行</span><br><span class="line">fork = true</span><br><span class="line">保存退出</span><br></pre></td></tr></table></figure></p>
-<p>#启动<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ../bin</span><br><span class="line">./mongod --config ../conf/mongodb.conf</span><br></pre></td></tr></table></figure></p>
-<p>启动完毕后，用客户端连接，没有用户名密码</p>
-<p><strong>加入开机自启动..将 mongodb 服务加入到自启动文件中,即在文件末尾追加如下命令:</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/rc.local </span><br><span class="line">/usr/local/mongodb/mongodb4.0.4/bin/mongod --config /usr/local/mongodb/mongodb4.0.4/conf/mongodb.conf</span><br><span class="line">chmod +x /etc/rc.local   #执行权限</span><br></pre></td></tr></table></figure></p>
-<p>如下一行命令搞定<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">echo /usr/local/mongodb/mongodb4.0.4/bin/mongod --config /usr/local/mongodb/mongodb4.0.4/conf/mongodb.conf &gt;&gt;/etc/rc.local</span><br><span class="line">chmod +x /etc/rc.local</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2814,7 +2812,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">54</span>
+                  <span class="site-state-item-count">55</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

@@ -86,7 +86,7 @@
 <meta property="og:site_name" content="yangzhijun">
 <meta property="og:description" content="//java安装及配置环境变量12345678安装Java：wget http://download.oracle.com/otn-pub/java/jdk/8u171-b13/e9e7ea248e2c4826b92b3f075a80e441/jdk-8u171-linux-x64.tar.gz配置环境变量vi /etc/profileexport JAVA_HOME=/usr/local/jav">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-05-23T01:58:59.417Z">
+<meta property="og:updated_time" content="2019-05-29T18:39:47.904Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="linux一些基础">
 <meta name="twitter:description" content="//java安装及配置环境变量12345678安装Java：wget http://download.oracle.com/otn-pub/java/jdk/8u171-b13/e9e7ea248e2c4826b92b3f075a80e441/jdk-8u171-linux-x64.tar.gz配置环境变量vi /etc/profileexport JAVA_HOME=/usr/local/jav">
@@ -313,6 +313,7 @@
 <p>//清除系统缓存<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sync 同步缓存信息，把缓存的信息保存到磁盘</span><br><span class="line">echo 3 &gt; /proc/sys/vm/drop_caches 清空缓存</span><br><span class="line"></span><br><span class="line">如果是程序占用的资源过多，不行就重启一下程序</span><br></pre></td></tr></table></figure></p>
 <p>//centos7安装pip<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget https://bootstrap.pypa.io/get-pip.py</span><br><span class="line">python get-pip.py</span><br></pre></td></tr></table></figure></p>
 <p>//修改linux用户登录后默认目录<br>linux用户登录后默认目录是在/etc/passwd文件设置的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/passwd</span><br><span class="line">以下列两行为例，/root即为root用户登录后的默认目录;/home/wwwroot即为linuxaa用户登录后的默认目录</span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line">linuxaa:x:1005:1005::/home/wwwroot:/bin/bash</span><br><span class="line">所以直接修改这个地方的路径就ok了</span><br></pre></td></tr></table></figure></p>
+<p>//打开文件乱码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">首先查看系统对中文的支持</span><br><span class="line">locale -a | grep zh_CN8</span><br><span class="line">yum groupinstall chinese-support</span><br><span class="line"></span><br><span class="line">输出样例如下</span><br><span class="line">zh_CN.gbk</span><br><span class="line">zh_CN.utf8</span><br><span class="line"></span><br><span class="line">vim 只能正确识别列表中的中文编码文件，如需识别其他编码类型的中文文件，则需要做系统升级</span><br><span class="line"></span><br><span class="line">vi ~/.bash_profile</span><br><span class="line">文件末尾添加</span><br><span class="line"></span><br><span class="line">export LANG=&quot;zh_CN.UTF-8&quot;</span><br><span class="line"></span><br><span class="line">export LC_ALL=&quot;zh_CN.UTF-8&quot;</span><br></pre></td></tr></table></figure></p>
 <p>//jumpserver<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://docs.jumpserver.org/zh/docs/</span><br></pre></td></tr></table></figure></p>
 <p>//ssh加速<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sed -i &apos;s/#UseDNS yes/UseDNS no/&apos; /etc/ssh/sshd_config</span><br><span class="line">sed -i &apos;s/GSSAPIAuthentication yes/GSSAPIAuthentication no/&apos; /etc/ssh/sshd_config</span><br></pre></td></tr></table></figure></p>
 <p>数据库web管理工具，已下载到云盘<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://www.jianshu.com/p/51a9d5520d2a</span><br></pre></td></tr></table></figure></p>
@@ -423,7 +424,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">54</span>
+                  <span class="site-state-item-count">55</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
