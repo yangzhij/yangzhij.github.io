@@ -549,14 +549,18 @@
 
       
         
-          The article has been encrypted, please enter your password to view.<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/05/31/Mysql-DBA基础/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+          
+            <h3 id="数据库相关概念"><a href="#数据库相关概念" class="headerlink" title="//数据库相关概念"></a>//数据库相关概念</h3><p>DBMS：数据库管理系统，用于管理DB实例<br>DB：数据库，保存一组有组织的数据的容器<br>SQL: 结构化查询语言</p>
+<h3 id="数据库存储数据特点"><a href="#数据库存储数据特点" class="headerlink" title="//数据库存储数据特点"></a>//数据库存储数据特点</h3><p>数据在表中，表在库中。一个数据库中可以有多个表，表名具有唯一性。表由列组成，也称列为字段。表中的数据是按行存储的。</p>
+<h3 id="SQL常见命令"><a href="#SQL常见命令" class="headerlink" title="//SQL常见命令"></a>//SQL常见命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">show databases;		查看所有的数据库</span><br><span class="line">use 库名	打开指定的库</span><br><span class="line">show tables;	显示库中的所有表</span><br><span class="line">show tables from 库名;   显示指定库中的所有表</span><br><span class="line">desc 表名;    查看表结构</span><br><span class="line">select version();    查看mysql版本</span><br><span class="line">mysql --version 或 mysql --V</span><br></pre></td></tr></table></figure>
+<h3 id="语法规范"><a href="#语法规范" class="headerlink" title="//语法规范"></a>//语法规范</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">不区分大小写，命令最好用分号结尾。</span><br><span class="line">注释：</span><br><span class="line">单行注释：#注释文字</span><br><span class="line">单行注释：-- 注释文字，--后面有一个空格</span><br><span class="line">多行注释：/* 注释文字 */</span><br></pre></td></tr></table></figure>
+<h3 id="SQL语言分类"><a href="#SQL语言分类" class="headerlink" title="//SQL语言分类"></a>//SQL语言分类</h3><p>1.DML:数据操作语言<br>select（DQL 数据查询语言）、insert 、update、delete<br>2.DDL：数据定义语言，针对的是库和表<br>create、drop、alter<br>3.TCL：事务控制语言<br>commit、rollback<br>4.DCL：数据权限控制语言</p>
+<h3 id="DQL语言"><a href="#DQL语言" class="headerlink" title="//DQL语言"></a>//DQL语言</h3><p>select查询完的结果，是一个虚拟的表格，不是真实存在。要查询的东西 可以是常量值、可以是表达式、可以是字段、可以是函数<br>1.基础查询<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">select 查询列表 from 表名;</span><br><span class="line">select distinct  列名 from 表名;   distinct去重</span><br><span class="line">select concat(‘参数1’,&apos;参数2&apos;,...) AS &apos;别名&apos; from 表名;    concat拼接，AS别名</span><br><span class="line">select ifnull(列名,0) AS 别名 from 表名;     infull判断字段是否为空，是的话则返回0，不是返回原本的值</span><br></pre></td></tr></table></figure></p>
+<p>2.条件查询<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select 查询列表 from 表名 where 筛选条件;</span><br></pre></td></tr></table></figure></p>
+<p>筛选条件分类：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">按条件表达式</span><br><span class="line">	条件运算符：&gt; &lt; &gt;= &lt;= = != &lt;&gt;</span><br><span class="line">按逻辑表达式</span><br><span class="line">	逻辑运算符：and（&amp;&amp;）or(||) not(!)</span><br><span class="line">	逻辑运算符的作用： 用于连接条件表达式</span><br><span class="line">		select * from 表名 where not(条件1  and 条件2) or 条件3;</span><br><span class="line">模糊查询</span><br><span class="line">	like</span><br><span class="line">		like &apos;%a%&apos;   </span><br><span class="line">		like &apos;__n_w%&apos;  第三个字符为n,第五个字符为w</span><br><span class="line">		like &apos;_\_%&apos;;   第二个字符为_，其中\为转义;	like &apos;_$_%&apos; escape &apos;$&apos;;  转移符可以是任意的，后面用escape定义一下就好了</span><br><span class="line">	between and</span><br><span class="line">		如id在100到120之间   id &gt;= 100 and id &lt;=120 可以写成 id between 100 and 120;</span><br><span class="line">	in 判断某字段的值是否属于in列表的某一项</span><br><span class="line">		... where id in (15,16,17);</span><br><span class="line">	is null   为空</span><br><span class="line">	is not null 不为空</span><br></pre></td></tr></table></figure></p>
+<p>3.排序查询</p>
+
+          
         
       
     </div>
