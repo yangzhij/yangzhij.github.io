@@ -86,7 +86,7 @@
 <meta property="og:site_name" content="yangzhijun">
 <meta property="og:description" content="~~很简单的，闲的没事就写一下喽//安装前提须有java及其环境变量, 安装配置见linux一些基础 //安装1234567891011cd /homewget http://mirrors.tuna.tsinghua.edu.cn/apache/tomcat/tomcat-9/v9.0.14/bin/apache-tomcat-9.0.14.tar.gztar zxvf apache-tomca">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-06-20T08:38:51.327Z">
+<meta property="og:updated_time" content="2019-06-20T08:40:09.830Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Tomcat安装及优化">
 <meta name="twitter:description" content="~~很简单的，闲的没事就写一下喽//安装前提须有java及其环境变量, 安装配置见linux一些基础 //安装1234567891011cd /homewget http://mirrors.tuna.tsinghua.edu.cn/apache/tomcat/tomcat-9/v9.0.14/bin/apache-tomcat-9.0.14.tar.gztar zxvf apache-tomca">
@@ -302,7 +302,7 @@
         <p>~~很简单的，闲的没事就写一下喽<br>//安装前提<br>须有java及其环境变量, 安装配置见linux一些基础</p>
 <p>//安装<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">cd /home</span><br><span class="line">wget http://mirrors.tuna.tsinghua.edu.cn/apache/tomcat/tomcat-9/v9.0.14/bin/apache-tomcat-9.0.14.tar.gz</span><br><span class="line">tar zxvf apache-tomcat-9.0.14.tar.gz </span><br><span class="line">mv apache-tomcat-9.0.14 Jenkinstomcat          //可以把目录改个名字，便于区分</span><br><span class="line">cd Jenkinstomcat/conf/</span><br><span class="line">vi server.xml #有需要修改Tomcat端口,例如改为83端口   </span><br><span class="line">sed -i &apos;s/Connector port=&quot;8080&quot;/Connector port=&quot;83&quot;/&apos; /home/Jenkinstomcat/conf/server.xml  </span><br><span class="line">cd ../webapps/</span><br><span class="line">项目是放到这个目录下的</span><br><span class="line">cd ../bin/</span><br><span class="line">./startup.sh</span><br></pre></td></tr></table></figure></p>
 <p>注：在一台机器上运行多个Tomcat实例，就把目录名改一下，server.xml里端口改一下，分别启动就ok了</p>
-<p>//优化<br>Tomcat一般来讲做优化的话，除了机器本身优化外,还有就是Tomcat容器内（conf目录下server.xml）针对吞吐量做优化，就是一些连接参数的优化.</p>
+<p>//优化<br>Tomcat一般来讲做优化的话，除了机器本身优化(见linux基本优化),还有就是Tomcat容器内（conf目录下server.xml）针对吞吐量做优化，就是一些连接参数的优化.</p>
 <pre><code>&lt;Connector port=&quot;83&quot; protocol=&quot;HTTP/1.1&quot;          
     URIEncoding=&quot;UTF-8&quot;            
     minSpareThreads=&quot;25&quot;    #表示即使没有人使用也开这么多空线程等待       
