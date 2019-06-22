@@ -232,6 +232,139 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/22/rsync-inotify-实现文件实时同步/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangzhijun">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/yangzhij/images2/master/1.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yangzhijun">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/06/22/rsync-inotify-实现文件实时同步/" itemprop="url">rsync+inotify 实现文件实时同步</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-22T14:58:45+08:00">
+                2019-06-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><strong>rsync</strong><br>rsync首次同步数据时会把全部文件拷贝一次，使本地和远程两个主机之间的文件达到同步。之后再同步时，会扫描所有文件后进行比对，然后进行差量传输。<br>rsync具有安全性高、备份迅速、支持增量备份。可以解决对实时性要求不高的数据备份需求。如定期地备份文件服务器数据到远程服务器上，对本地磁盘定期进行数据镜像等。但，rsync不能够实时监测、同步数据。如果有这方面要求，这就需要和inotify组合，来实现数据的实时同步。</p>
+<p><strong>项目需求</strong><br>把公司热更服务器上的/home/wwwroot下所有目录及文件备份至文件服务器/home/wwwroot，要求实现目录实时同步。</p>
+<p>热更服务器 172.20.100.155<br>文件服务器 172.20.100.115</p>
+<p><strong>文件服务器操作</strong><br>//安装：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">检查rsync 是否已经安装：rpm -qa|grep rsync；若已经安装，则使用rpm -e 命令卸载(如果提示有依赖，可以加上 --nodeps)。</span><br><span class="line">yum -y install gcc</span><br><span class="line">wget https://download.samba.org/pub/rsync/rsync-3.1.3.tar.gz </span><br><span class="line">tar -xzf rsync-3.1.3.tar.gz</span><br><span class="line">cd rsync-3.1.3</span><br><span class="line">./configure</span><br><span class="line">make &amp;&amp; make install</span><br><span class="line">/usr/local/bin/rsync --daemon     //启动</span><br><span class="line">设置开机启动：echo “/usr/local/bin/rsync –daemon”&gt;&gt;/etc/rc.local</span><br></pre></td></tr></table></figure></p>
+<p>//编辑配置文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/rsyncd.conf</span><br><span class="line">uid = root</span><br><span class="line">gid = root</span><br><span class="line">use chroot = yes</span><br><span class="line">max connections = 10</span><br><span class="line">strict mode=yes</span><br><span class="line">pid file = /var/run/rsyncd.pid</span><br><span class="line">lock file=/var/run/rsync.lock</span><br><span class="line">log file=/var/log/rsyncd.log</span><br><span class="line">[web1]   //模块名</span><br><span class="line">path = /home/wwwroot               //这个目录手动创建   同步的内容会放到这个目录下</span><br><span class="line">comment = web1 file</span><br><span class="line">ignore errrors</span><br><span class="line">read only=no</span><br><span class="line">write only=no</span><br><span class="line">hosts allow=*           //允许所有主机</span><br><span class="line">hosts deny=192.168.100.10    //拒绝某台主机</span><br><span class="line">list=false</span><br><span class="line">uid=root</span><br><span class="line">gid=root</span><br><span class="line">auth users=web1user          //允许用户</span><br><span class="line">secrets file=/etc/web1.pass</span><br></pre></td></tr></table></figure></p>
+<p>//创建密码文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/web1.pass    格式如下</span><br><span class="line"></span><br><span class="line">web1user:admin123</span><br></pre></td></tr></table></figure></p>
+<p>//修改密码文件权限<br>chmod 600 /etc/web1.pass</p>
+<p><strong>热更服务器操作</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">//安装</span><br><span class="line">yum -y install gcc</span><br><span class="line">cd /usr/local/src</span><br><span class="line">wget https://download.samba.org/pub/rsync/rsync-3.1.3.tar.gz </span><br><span class="line">tar zxvf rsync-3.1.3.tar.gz -C /opt</span><br><span class="line">cd /opt/rsync-3.1.3</span><br><span class="line">./configure</span><br><span class="line">make &amp;&amp; make install</span><br><span class="line"></span><br><span class="line">生成rsync的密码文件</span><br><span class="line">vim /etc/server.pass   直接把密码放里面，保存即可</span><br><span class="line"></span><br><span class="line">admin123</span><br><span class="line"></span><br><span class="line">//权限</span><br><span class="line">chmod 600 /etc/server.pass</span><br></pre></td></tr></table></figure></p>
+<p><strong>先测试一下~~~</strong><br>把热更上/home/wwwroot   同步到远程机器上<br>·<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">rsync -vzrtopg --progress --delete /home/wwwroot web1user@172.20.100.115::web1 --password-file=/etc/server.pass</span><br><span class="line"></span><br><span class="line">//解释</span><br><span class="line">--progress是指显示出详细的进度情况</span><br><span class="line">--delete是指如果服务器端删除了这一文件，那么客户端也相应把文件删除，保持真正的一致。</span><br><span class="line">--password-file来指定密码文件</span><br><span class="line">web1user@172.20.100.115::web1    用户名@ip::模块名</span><br></pre></td></tr></table></figure></p>
+<p>//inotify 下载安装<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">wget http://github.com/downloads/rvoicilas/inotify-tools/inotify-tools-3.14.tar.gz</span><br><span class="line">tar zxvf inotify-tools-3.14.tar.gz -C /opt</span><br><span class="line">cd -C /opt/inotify-tools-3.14</span><br><span class="line">cd /opt/inotify-tools-3.14</span><br><span class="line">./configure</span><br><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure></p>
+<p>//修改内核的inotify参数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/sysctl.conf </span><br><span class="line"></span><br><span class="line">fs.inotify.max_user_instances = 65535</span><br><span class="line">fs.inotify.max_user_watches = 6553500         监控的文件数量很大时，对应的数值需要修改</span><br><span class="line">fs.inotify.max_queued_events = 6553500</span><br><span class="line"></span><br><span class="line">sysctl -p       #让上述修改立刻生效</span><br></pre></td></tr></table></figure></p>
+<p>//写脚本来监控热更机器/home/wwwroot/ 目录<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">vim /web/inotifyrsync.sh</span><br><span class="line"></span><br><span class="line">#!/bin/bash</span><br><span class="line">host1=172.20.100.155         // 热更服务器</span><br><span class="line">src=/home/wwwroot/           // 监控目录</span><br><span class="line">mokuai=web1</span><br><span class="line">user1=web1user</span><br><span class="line">/usr/local/bin/inotifywait -mrq --timefmt &apos;%d/%m/%y %H:%M&apos; --format &apos;%T %w%f%e&apos; -e close_write,delete,create,attrib $src \</span><br><span class="line">| while read files</span><br><span class="line">do</span><br><span class="line">        rsync -vzrtopg --progress --delete $src --password-file=/etc/server.pass  $user1@$host1::$mokuai &gt; /dev/null 2&gt;&amp;1</span><br><span class="line">        echo &quot;$&#123;files&#125; was rsynced.&quot; &gt;&gt; /tmp/rsync.log 2&gt;&amp;1</span><br><span class="line">done</span><br></pre></td></tr></table></figure></p>
+<p>//测试脚本<br>chmod 755 /web/inotifyrsync.sh<br>/web/inotifyrsync.sh &amp;</p>
+<p>//开机启动脚本<br>echo “/web/inotifyrsync.sh &amp;” &gt;&gt; /etc/rc.local</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/20/Tomcat安装及优化/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -2585,137 +2718,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/18/win10安装mysql/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yangzhijun">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://raw.githubusercontent.com/yangzhij/images2/master/1.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="yangzhijun">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/01/18/win10安装mysql/" itemprop="url">win10安装mysql</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-18T20:19:57+08:00">
-                2019-01-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>win10安装mysql</p>
-<p>//下载<br><a href="https://dev.mysql.com/downloads/mysql/" target="_blank" rel="noopener">https://dev.mysql.com/downloads/mysql/</a> </p>
-<p>//解压:在你想安装的目录下解压，本次安装在E:\Mysql\ 下</p>
-<p>//配置环境变量<br>系统变量<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">path</span><br><span class="line">E:\Mysql\mysql-8.0.13-winx64\bin</span><br></pre></td></tr></table></figure></p>
-<p>//在E:\Mysql\mysql-8.0.13-winx64新建my-default.ini，内容如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">[mysqld]</span><br><span class="line"># 设置3306端口</span><br><span class="line">port=3306</span><br><span class="line"># 设置mysql的安装目录</span><br><span class="line">basedir=E:\Mysql\mysql-8.0.13-winx64</span><br><span class="line"># 设置mysql数据库的数据的存放目录</span><br><span class="line">datadir=E:\Mysql\mysql-8.0.13-winx64\data</span><br><span class="line"># 允许最大连接数</span><br><span class="line">max_connections=200</span><br><span class="line"># 允许连接失败的次数。这是为了防止有人从该主机试图攻击数据库系统</span><br><span class="line">max_connect_errors=10</span><br><span class="line"># 服务端使用的字符集默认为UTF8</span><br><span class="line">character-set-server=utf8</span><br><span class="line"># 创建新表时将使用的默认存储引擎</span><br><span class="line">default-storage-engine=INNODB</span><br><span class="line"># 默认使用“mysql_native_password”插件认证</span><br><span class="line">default_authentication_plugin=mysql_native_password</span><br><span class="line">[mysql]</span><br><span class="line"># 设置mysql客户端默认字符集</span><br><span class="line">default-character-set=utf8</span><br><span class="line">[client]</span><br><span class="line"># 设置mysql客户端连接服务端时默认使用的端口</span><br><span class="line">port=3306</span><br><span class="line">default-character-set=utf8</span><br></pre></td></tr></table></figure></p>
-<p>// cmd 以管理员身份运行，开始装及初始化ySQL服务<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\Admin&gt;E:</span><br><span class="line"></span><br><span class="line">E:\&gt;cd E:\Mysql\mysql-8.0.13-winx64\bin</span><br><span class="line"></span><br><span class="line">//安装</span><br><span class="line">mysqld --install</span><br><span class="line">//初始化</span><br><span class="line">mysqld --initialize --console</span><br></pre></td></tr></table></figure></p>
-<p>初始化完后会生成一个原始密码。其中root@localhost:后面的”Ng*jbnKGd2_!”就是初始密码（不含首位空格）。在没有更改密码前，需要记住这个密码，后续登录需要用到。<br>如果没保存住，也没关系。删掉初始化的 data 目录，再执行一遍初始化命令，又会重新生成的。</p>
-<p>//启动<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">net start mysql</span><br></pre></td></tr></table></figure></p>
-<p>//进入<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -u root -p     然后输入之前保存的密码</span><br></pre></td></tr></table></figure></p>
-<p>//修改用户密码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">ALTER USER &apos;root&apos;@&apos;localhost&apos; IDENTIFIED WITH mysql_native_password BY &apos;新密码&apos;;</span><br><span class="line"></span><br><span class="line">CREATE USER &apos;test&apos;@&apos;%&apos; IDENTIFIED WITH mysql_native_password BY &apos;test123&apos;;            //创建用户</span><br><span class="line"></span><br><span class="line">GRANT ALL PRIVILEGES ON *.* TO &apos;test&apos;@&apos;%&apos;；  // #授权所有权限 </span><br><span class="line"></span><br><span class="line">#授权基本的查询修改权限，按需求设置</span><br><span class="line">GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,ALTER ON *.* TO &apos;test&apos;@&apos;%&apos;;   </span><br><span class="line"></span><br><span class="line">flush privileges;    //刷新保存</span><br></pre></td></tr></table></figure></p>
-<p>然后  工具就可以连接了</p>
-<p>只要在CMD里输入一条命令就可以将服务删除：<br>sc delete mysql //这里的mysql是你要删除的服务名<br>这样一来服务就被删除了。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2768,7 +2770,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">58</span>
+                  <span class="site-state-item-count">59</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
