@@ -232,6 +232,140 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/04/centos7部署NextCloud/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangzhijun">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/yangzhij/images2/master/1.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yangzhijun">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/07/04/centos7部署NextCloud/" itemprop="url">centos7部署NextCloud</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-04T14:15:30+08:00">
+                2019-07-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>//检查下列服务若自带则卸载（rpm -e … –nodeps）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rpm -qa|grep php</span><br><span class="line">rpm -qa|grep php-common</span><br><span class="line">rpm -qa|grep nginx</span><br></pre></td></tr></table></figure></p>
+<p>//安装相关组件；并检查php-fpm是否已正常安装<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">yum -y install epel-release</span><br><span class="line">yum -y install nginx</span><br><span class="line">rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm</span><br><span class="line">yum -y install php70w-fpm php70w-cli php70w-gd php70w-mcrypt php70w-mysql php70w-pear php70w-xml php70w-mbstring php70w-pdo php70w-json php70w-pecl-apcu php70w-pecl-apcu-devel</span><br><span class="line">php -v</span><br></pre></td></tr></table></figure></p>
+<p>配置php-fpm<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sed -i &apos;s/user = apache/user = nginx/&apos; /etc/php-fpm.d/www.conf</span><br><span class="line">sed -i &apos;s/group = apache/group = nginx/&apos; /etc/php-fpm.d/www.conf</span><br><span class="line">sed -i &apos;s/;env/env/g&apos; /etc/php-fpm.d/www.conf</span><br></pre></td></tr></table></figure></p>
+<p>在/var/lib目录下为session路径创建一个新的文件夹，并将用户名和组设为nginx<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p /var/lib/php/session</span><br><span class="line">chown nginx:nginx -R /var/lib/php/session/</span><br><span class="line">ll -d /var/lib/php/session/</span><br></pre></td></tr></table></figure></p>
+<p>启动Nginx和php-fpm服务，并添加开机启动<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">systemctl start php-fpm</span><br><span class="line">systemctl start nginx</span><br><span class="line">systemctl enable php-fpm</span><br><span class="line">systemctl enable nginx</span><br></pre></td></tr></table></figure></p>
+<p>安装并配置MariaDB,启动并添加开机启动<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yum -y install mariadb mariadb-server</span><br><span class="line">systemctl start mariadb</span><br><span class="line">systemctl enable mariadb</span><br></pre></td></tr></table></figure></p>
+<p>//接下来设置MariaDB的root密码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@nextcloud-server ~]# mysql_secure_installation        //按照提示设置密码，首先会询问当前密码，密码默认为空，直接回车即可</span><br><span class="line">Enter current password for root (enter for none):          //直接回车</span><br><span class="line">Set root password? [Y/n] Y</span><br><span class="line">New password:                                              //输入新密码</span><br><span class="line">Re-enter new password:                                     //再次输入新密码</span><br><span class="line">     </span><br><span class="line">Remove anonymous users? [Y/n] Y</span><br><span class="line">Disallow root login remotely? [Y/n] Y</span><br><span class="line">Remove test database and access to it? [Y/n] Y</span><br><span class="line">Reload privilege tables now? [Y/n] Y</span><br></pre></td></tr></table></figure></p>
+<p>//进入mysql   并为Nextcloud创建相应的用户和数据库。例如数据库为nextcloud_db，用户为nextclouduser，密码为cloudpasswd<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# mysql -p</span><br><span class="line"></span><br><span class="line">MariaDB [(none)]&gt; create database nextcloud_db;</span><br><span class="line">Query OK, 1 row affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">MariaDB [(none)]&gt; create user nextclouduser@localhost identified by &apos;cloudpasswd&apos;;</span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">MariaDB [(none)]&gt; grant all privileges on nextcloud_db.* to nextclouduser@localhost identified by &apos;cloudpasswd&apos;;</span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">MariaDB [(none)]&gt; flush privileges;</span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">MariaDB [(none)]&gt; exit</span><br></pre></td></tr></table></figure></p>
+<p>//为Nextcloud生成自签名SSL证书<br>为SSL证书创建一个新的文件夹，然后将证书文件的权限设置为660<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# mkdir /etc/nginx/cert/ &amp;&amp; cd /etc/nginx/cert/</span><br><span class="line">[root@localhost ~]# openssl req -new -x509 -days 365 -nodes -out /etc/nginx/cert/nextcloud.crt -keyout /etc/nginx/cert/nextcloud.key</span><br><span class="line"></span><br><span class="line">Country Name (2 letter code) [XX]:cn                                           //国家</span><br><span class="line">State or Province Name (full name) []:beijing                                  //省份</span><br><span class="line">Locality Name (eg, city) [Default City]:beijing                                //地区名字</span><br><span class="line">Organization Name (eg, company) [Default Company Ltd]:weiruan                       //公司名</span><br><span class="line">Organizational Unit Name (eg, section) []:IT                           //部门</span><br><span class="line">Common Name (eg, your name or your server&apos;s hostname) []:weiruan                 //CA主机名</span><br><span class="line">Email Address []:weiruan@gmail.com           </span><br><span class="line"></span><br><span class="line">chmod 700 /etc/nginx/cert</span><br><span class="line">chmod 600 /etc/nginx/cert/*</span><br></pre></td></tr></table></figure></p>
+<p>//下载并安装Nextcloud<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">yum -y install wget unzip</span><br><span class="line">cd /usr/local/src/</span><br><span class="line">wget https://download.nextcloud.com/server/releases/nextcloud-12.0.4.zip</span><br><span class="line">unzip nextcloud-12.0.4.zip</span><br><span class="line">mv nextcloud /usr/share/nginx/html/</span><br><span class="line">cd /usr/share/nginx/html/</span><br><span class="line">mkdir -p nextcloud/data/</span><br><span class="line">chown nginx:nginx -R nextcloud/</span><br></pre></td></tr></table></figure></p>
+<p>//设置Nginx虚拟主机<br>进入Nginx的虚拟主机配置文件所在目录并创建一个新的虚拟主机配置（记得修改两个server_name为自己的域名）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# cd /etc/nginx/conf.d/ </span><br><span class="line">[root@localhost ~]# vim nextcloud.conf      //复制下面内容</span><br><span class="line"></span><br><span class="line">upstream php-handler &#123;</span><br><span class="line">    server 127.0.0.1:9000;</span><br><span class="line">&#125;</span><br><span class="line">     </span><br><span class="line">server &#123;</span><br><span class="line">    listen 80;</span><br><span class="line">    server_name nextcloud.remy.com;</span><br><span class="line">    return 301 https://$server_name$request_uri;</span><br><span class="line">&#125;</span><br><span class="line">     </span><br><span class="line">server &#123;</span><br><span class="line">    listen 443 ssl;</span><br><span class="line">    server_name nextcloud.remy.com;</span><br><span class="line">     </span><br><span class="line">    ssl_certificate /etc/nginx/cert/nextcloud.crt;</span><br><span class="line">    ssl_certificate_key /etc/nginx/cert/nextcloud.key;</span><br><span class="line">     </span><br><span class="line">    add_header Strict-Transport-Security &quot;max-age=15768000;</span><br><span class="line">    includeSubDomains; preload;&quot;;</span><br><span class="line">    add_header X-Content-Type-Options nosniff;</span><br><span class="line">    add_header X-Frame-Options &quot;SAMEORIGIN&quot;;</span><br><span class="line">    add_header X-XSS-Protection &quot;1; mode=block&quot;;</span><br><span class="line">    add_header X-Robots-Tag none;</span><br><span class="line">    add_header X-Download-Options noopen;</span><br><span class="line">    add_header X-Permitted-Cross-Domain-Policies none;</span><br><span class="line">     </span><br><span class="line">    # Path to the root of your installation</span><br><span class="line">    root /usr/share/nginx/html/nextcloud/;</span><br><span class="line">     </span><br><span class="line">    location = /robots.txt &#123;</span><br><span class="line">        allow all;</span><br><span class="line">        log_not_found off;</span><br><span class="line">        access_log off;</span><br><span class="line">    &#125;</span><br><span class="line">     </span><br><span class="line">    location = /.well-known/carddav &#123;</span><br><span class="line">      return 301 $scheme://$host/remote.php/dav;</span><br><span class="line">    &#125;</span><br><span class="line">    location = /.well-known/caldav &#123;</span><br><span class="line">      return 301 $scheme://$host/remote.php/dav;</span><br><span class="line">    &#125;</span><br><span class="line">     </span><br><span class="line">    # set max upload size</span><br><span class="line">    client_max_body_size 512M;</span><br><span class="line">    fastcgi_buffers 64 4K;</span><br><span class="line">     </span><br><span class="line">    # Disable gzip to avoid the removal of the ETag header</span><br><span class="line">    gzip off;</span><br><span class="line"></span><br><span class="line">     </span><br><span class="line">    error_page 403 /core/templates/403.php;</span><br><span class="line">    error_page 404 /core/templates/404.php;</span><br><span class="line">     </span><br><span class="line">    location / &#123;</span><br><span class="line">        rewrite ^ /index.php$uri;</span><br><span class="line">    &#125;</span><br><span class="line">     </span><br><span class="line">    location ~ ^/(?:build|tests|config|lib|3rdparty|templates|data)/ &#123;</span><br><span class="line">        deny all;</span><br><span class="line">    &#125;</span><br><span class="line">    location ~ ^/(?:\.|autotest|occ|issue|indie|db_|console) &#123;</span><br><span class="line">        deny all;</span><br><span class="line">    &#125;</span><br><span class="line">     </span><br><span class="line">    location ~ ^/(?:index|remote|public|cron|core/ajax/update|status|ocs/v[12]|updater/.+|ocs-provider/.+|core/templates/40[34])\.php(?:$|/) &#123;</span><br><span class="line">        include fastcgi_params;</span><br><span class="line">        fastcgi_split_path_info ^(.+\.php)(/.*)$;</span><br><span class="line">        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;</span><br><span class="line">        fastcgi_param PATH_INFO $fastcgi_path_info;</span><br><span class="line">        fastcgi_param HTTPS on;</span><br><span class="line">        #Avoid sending the security headers twice</span><br><span class="line">        fastcgi_param modHeadersAvailable true;</span><br><span class="line">        fastcgi_param front_controller_active true;</span><br><span class="line">        fastcgi_pass php-handler;</span><br><span class="line">        fastcgi_intercept_errors on;</span><br><span class="line">        fastcgi_request_buffering off;</span><br><span class="line">    &#125;</span><br><span class="line">     </span><br><span class="line">    location ~ ^/(?:updater|ocs-provider)(?:$|/) &#123;</span><br><span class="line">        try_files $uri/ =404;</span><br><span class="line">        index index.php;</span><br><span class="line">    &#125;</span><br><span class="line">     </span><br><span class="line">    location ~* \.(?:css|js)$ &#123;</span><br><span class="line">        try_files $uri /index.php$uri$is_args$args;</span><br><span class="line">        add_header Cache-Control &quot;public, max-age=7200&quot;;</span><br><span class="line">        # Add headers to serve security related headers (It is intended to</span><br><span class="line">        # have those duplicated to the ones above)</span><br><span class="line">        # Before enabling Strict-Transport-Security headers please read into</span><br><span class="line">        # this topic first.</span><br><span class="line">        add_header Strict-Transport-Security &quot;max-age=15768000;includeSubDomains; preload;&quot;;</span><br><span class="line">        add_header X-Content-Type-Options nosniff;</span><br><span class="line">        add_header X-Frame-Options &quot;SAMEORIGIN&quot;;</span><br><span class="line">        add_header X-XSS-Protection &quot;1; mode=block&quot;;</span><br><span class="line">        add_header X-Robots-Tag none;</span><br><span class="line">        add_header X-Download-Options noopen;</span><br><span class="line">        add_header X-Permitted-Cross-Domain-Policies none;</span><br><span class="line">        # Optional: Don&apos;t log access to assets</span><br><span class="line">        access_log off;</span><br><span class="line">    &#125;</span><br><span class="line">     </span><br><span class="line">    location ~* \.(?:svg|gif|png|html|ttf|woff|ico|jpg|jpeg)$ &#123;</span><br><span class="line">        try_files $uri /index.php$uri$is_args$args;</span><br><span class="line">        # Optional: Don&apos;t log access to other assets</span><br><span class="line">        access_log off;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>//测试配置文件是否有误，确保没有问题后重启Nginx服务。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost conf.d]# nginx -t</span><br><span class="line">[root@localhost conf.d]# nginx -s reload</span><br><span class="line">[root@localhost conf.d]# systemctl restart nginx</span><br></pre></td></tr></table></figure></p>
+<p>//nextcloud上传文件大小的自身限制为512M，修改php.ini上传文件大小限制<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sed -i &apos;s/max_execution_time = 30/max_execution_time = 0/&apos; /etc/php.ini</span><br><span class="line">sed -i &apos;s/post_max_size = 8M/post_max_size = 10800M/&apos; /etc/php.ini</span><br><span class="line">sed -i &apos;s/upload_max_filesize = 2M/upload_max_filesize = 10240M/&apos; /etc/php.ini</span><br></pre></td></tr></table></figure></p>
+<p>//解析上面nginx中配置的域名nextcloud.remy.com，浏览器访问nextcloud.remy.com进行Nextcloud界面安装</p>
+<p>参考<a href="https://www.cnblogs.com/kevingrace/p/8343060.html" target="_blank" rel="noopener">https://www.cnblogs.com/kevingrace/p/8343060.html</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/22/rsync-inotify-实现文件实时同步/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -2598,125 +2732,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/20/wahaha/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yangzhijun">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://raw.githubusercontent.com/yangzhij/images2/master/1.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="yangzhijun">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/01/20/wahaha/" itemprop="url">wahaha-----</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-20T02:17:06+08:00">
-                2019-01-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">熟悉linux操作系统的维护及日常管理工作。</span><br><span class="line">熟悉shell/python编程脚本。</span><br><span class="line">熟悉mysql,oracle的安装配置、备份及增删改查等。</span><br><span class="line">熟悉常用的集群架构：负载均衡集群（Web服务器集群、数据库集群和应用服务器集群）、高可用集群。</span><br><span class="line">熟悉nginx、redis、memcached、rabbitmq、mongo等软件的安装配置调优。</span><br><span class="line">熟悉SVN，Git的安装、配置管理与使用等。</span><br><span class="line">熟悉日志采集ELK、finder的部署、配置与管理。</span><br><span class="line">熟悉集成工具jenkins的配置使用及其分布式配置。</span><br><span class="line">熟悉监控软件zabbix，cacti的安装、配置与维护。</span><br><span class="line">对docker容器有一定的了解，熟悉dockerfile语法等。</span><br><span class="line"></span><br><span class="line">负载均衡系统：集群中所有的节点都处于活动状态，它们分摊系统的工作负载（常用的是nginx负载均衡）</span><br><span class="line">高可用集群是指以减少服务中断时间为目的的服务器集群技术</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">新环境部署注意事项：</span><br><span class="line">1.系统层面</span><br><span class="line">	机器选型：虚拟机给多少内存，cpu，避免资源浪费</span><br><span class="line">	基本环境的安装</span><br><span class="line">	系统优化(内核优化，最大连接数)</span><br><span class="line">2.应用部署</span><br><span class="line">	这里面会涉及很多服务，像什么基础服务啊，游戏服务啊等等，看是部署单台还是双节点。通过什么方式部署   Jenkins+git</span><br><span class="line">3.数据库</span><br><span class="line">	 会用到哪些架构，如redis, mongodb, mysql, oracle</span><br><span class="line">	 数据备份迁移</span><br><span class="line">	 研发配合做数据更新</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2769,7 +2784,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">60</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
